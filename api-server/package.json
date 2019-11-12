@@ -1,0 +1,59 @@
+{
+	"name": "api-server",
+	"version": "1.0.0",
+	"description": "cocode api service",
+	"main": "app.js",
+	"scripts": {
+		"dev": "nodemon --exec babel-node src/app.js",
+		"start": "babel-node src/app.js",
+		"test": "echo 'empty test script'"
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "npm test && lint-staged",
+			"pre-push": "npm test",
+			"commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+		}
+	},
+	"lint-staged": {
+		"*.js": [
+			"eslint --fix",
+			"git add"
+		]
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/connect-foundation/2019-04"
+	},
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/connect-foundation/2019-04/issues"
+	},
+	"homepage": "https://github.com/connect-foundation/2019-04#readme",
+	"dependencies": {
+		"@babel/runtime": "^7.6.2",
+		"cookie-parser": "~1.4.4",
+		"cors": "^2.8.5",
+		"debug": "~2.6.9",
+		"express": "~4.16.1",
+		"mongoose": "^5.7.9"
+	},
+	"devDependencies": {
+		"@babel/cli": "^7.6.2",
+		"@babel/core": "^7.6.2",
+		"@babel/node": "^7.6.2",
+		"@babel/plugin-transform-runtime": "^7.6.2",
+		"@babel/polyfill": "^7.6.0",
+		"@babel/preset-env": "^7.6.2",
+		"nodemon": "^1.19.0",
+		"husky": "^3.0.9",
+		"lint-staged": "^9.4.2",
+		"prettier": "^1.19.1",
+		"@commitlint/cli": "^8.2.0",
+		"@commitlint/config-conventional": "^8.2.0",
+		"eslint": "^6.6.0",
+		"eslint-config-prettier": "^6.5.0",
+		"eslint-plugin-react": "^7.16.0"
+	}
+}
