@@ -23,7 +23,7 @@ jobs:
       install:
         - yarn install
       script:
-        - yarn test
+        - yarn jest
     - name: API Server Test
       before_install:
         - cd ./api-server
