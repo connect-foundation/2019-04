@@ -1,0 +1,33 @@
+language: node_js
+
+node_js:
+  - 12
+
+cache: npm
+
+services:
+  - docker
+
+branches:
+  only:
+    - master
+
+jobs:
+  include:
+    - stage: Tests
+      env:
+        - SKIP_PREFLIGHT_CHECK=true
+      name: Cocode Client Test
+      before_install:
+        - cd ./cocode
+      install:
+        - yarn install
+      script:
+        - yarn jest
+    - name: API Server Test
+      before_install:
+        - cd ./api-server
+      install:
+        - npm install
+      script:
+        - npm run test

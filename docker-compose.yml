@@ -1,0 +1,47 @@
+version: "3.7"
+
+services:
+  api-server:
+    container_name: api-server
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./api-server
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./api-server/:/usr/src/app
+      - ./api-server/node_modules:/usr/src/app/node_modules
+    networks:
+      - cocode-backend
+
+  cocode-client:
+    container_name: cocode-client
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./cocode
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./cocode/:/usr/src/app
+      - ./cocode/node_modules:/usr/src/app/node_modules
+    networks:
+      - cocode-backend
+
+  mongo:
+    container_name: cocode-mongodb
+    image: mongo:3.6.15-xenial
+    restart: always
+    volumes:
+      - data:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - cocode-backend
+
+networks:
+  cocode-backend:
+    driver: bridge
+
+volumes:
+  data:
+    driver: local
