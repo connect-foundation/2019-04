@@ -21,9 +21,9 @@ jobs:
       before_install:
         - cd ./cocode
       install:
-        - npm install
+        - yarn install
       script:
-        - npm run test
+        - yarn test
     - name: API Server Test
       before_install:
         - cd ./api-server
