@@ -8,9 +8,9 @@ cache: npm
 services:
   - docker
 
-branches:
-  only:
-    - master
+env:
+  global:
+    - DOCKER_USER=wltn3231
 
 jobs:
   include:
@@ -21,13 +21,37 @@ jobs:
       before_install:
         - cd ./cocode
       install:
-        - yarn install
+        - yarn
       script:
-        - yarn jest
+        - yarn test
     - name: API Server Test
       before_install:
         - cd ./api-server
       install:
-        - npm install
+        - yarn
       script:
-        - npm run test
+        - yarn test
+    - stage: Deploy
+      if: branch = master AND type = pull_request
+      before_install:
+        - openssl aes-256-cbc -K $encrypted_0395e9fbd9ff_key -iv $encrypted_0395e9fbd9ff_iv -in env.tar.enc -out env.tar -d
+        - tar xvf env.tar
+      install:
+        - sudo apt-get install sshpass
+      before_script:
+        - echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+        - export SERVICE=$TRAVIS_PULL_REQUEST_BRANCH
+      script:
+        - echo "deploy ${SERVICE} service"
+        - cd "$SERVICE"
+        - docker build -t "$DOCKER_USER"/"$SERVICE":1.0 .
+        - docker tag "$DOCKER_USER"/"$SERVICE":1.0 "$DOCKER_USER"/"$SERVICE":latest
+        - docker push "$DOCKER_USER"/"$SERVICE":latest && docker push "$DOCKER_USER"/"$SERVICE":1.0
+        - |
+          if [ "${SERVICE}" = "cocode" ]; then
+              sshpass -p "${COCODE_PASSWORD}" ssh -o StrictHostKeyChecking=no root@"${COCODE_IP}" /root/2019-04/script/deploy.sh "$SERVICE" "$COCODE_PORT"
+          elif [ "${SERVICE}" = "api-server" ]; then
+              sshpass -p "${API_SERVER_PASSWORD}" ssh -o StrictHostKeyChecking=no root@"${API_SERVER_IP}" /root/2019-04/script/deploy.sh "$SERVICE" "$API_SERVER_PORT"
+          else
+              echo "${SERVICE} nono!"
+          fi

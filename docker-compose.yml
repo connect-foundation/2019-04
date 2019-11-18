@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile.dev
       context: ./api-server
     ports:
-      - "4000:4000"
+      - "3030:3030"
     volumes:
       - ./api-server/:/usr/src/app
       - ./api-server/node_modules:/usr/src/app/node_modules
@@ -29,7 +29,7 @@ services:
 
   mongo:
     container_name: cocode-mongodb
-    image: mongo:3.6.15-xenial
+    image: mongo:latest
     restart: always
     volumes:
       - data:/data/db
