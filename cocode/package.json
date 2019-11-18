@@ -8,7 +8,8 @@
 		"watch": "webpack --watch",
 		"build": "webpack --production",
 		"build:dev": "webpack --develope",
-		"test": "react-scripts test"
+		"test:dev": "react-scripts test",
+		"test": "jest"
 	},
 	"husky": {
 		"hooks": {
