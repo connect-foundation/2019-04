@@ -7,8 +7,8 @@
 		"start": "webpack-dev-server --open",
 		"start:docker": "webpack-dev-server --open --host 0.0.0.0",
 		"watch": "webpack --watch",
-		"build": "webpack --production",
-		"build:dev": "webpack --develope",
+		"build": "webpack --mode production",
+		"build:dev": "webpack --mode development",
 		"test:dev": "react-scripts test",
 		"test": "jest"
 	},
