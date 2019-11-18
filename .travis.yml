@@ -34,7 +34,7 @@ jobs:
     - stage: Deploy
       if: branch = master AND type = pull_request
       before_install:
-        - openssl aes-256-cbc -K $encrypted_4f20d19946f1_key -iv $encrypted_4f20d19946f1_iv -in env.tar.enc -out env.tar -d
+        - openssl aes-256-cbc -K $encrypted_0395e9fbd9ff_key -iv $encrypted_0395e9fbd9ff_iv -in env.tar.enc -out env.tar -d
         - tar xvf env.tar
       install:
         - sudo apt-get install sshpass
