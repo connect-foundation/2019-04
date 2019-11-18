@@ -49,9 +49,9 @@ jobs:
         - docker push "$DOCKER_USER"/"$SERVICE":latest && docker push "$DOCKER_USER"/"$SERVICE":1.0
         - |
           if [ "${SERVICE}" = "cocode" ]; then
-              sshpass -p "${COCODE_PASSWORD}" ssh -o StrictHostKeyChecking=no root@"${COCODE_IP}" /root/practice-boilerplate-monorepo/script/deploy.sh "$SERVICE" "$COCODE_PORT"
+              sshpass -p "${COCODE_PASSWORD}" ssh -o StrictHostKeyChecking=no root@"${COCODE_IP}" /root/2019-04/script/deploy.sh "$SERVICE" "$COCODE_PORT"
           elif [ "${SERVICE}" = "api-server" ]; then
-              sshpass -p "${API_SERVER_PASSWORD}" ssh -o StrictHostKeyChecking=no root@"${API_SERVER_IP}" /root/practice-boilerplate-monorepo/script/deploy.sh "$SERVICE" "$API_SERVER_PORT"
+              sshpass -p "${API_SERVER_PASSWORD}" ssh -o StrictHostKeyChecking=no root@"${API_SERVER_IP}" /root/2019-04/script/deploy.sh "$SERVICE" "$API_SERVER_PORT"
           else
               echo "${SERVICE} nono!"
           fi
