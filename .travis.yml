@@ -21,16 +21,16 @@ jobs:
       before_install:
         - cd ./cocode
       install:
-        - yarn install
+        - yarn
       script:
         - yarn test
     - name: API Server Test
       before_install:
         - cd ./api-server
       install:
-        - npm install
+        - yarn
       script:
-        - npm run test
+        - yarn test
     - stage: Deploy
       if: branch = master AND type = pull_request
       before_install:
