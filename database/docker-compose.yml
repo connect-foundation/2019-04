@@ -1,0 +1,15 @@
+version: "3.3"
+
+services:
+  database:
+    container_name: cocode-mongodb
+    image: mongo:latest
+    restart: always
+    volumes:
+      - data:/data/db
+    ports:
+      - "27017:27017"
+
+volumes:
+  data:
+    driver: local
