@@ -1,7 +1,7 @@
 import React from 'react';
 import * as Styled from './style';
 
-function Hgeader() {
+function Header() {
 	return (
 		<Styled.Header>
 			<Styled.SignInButton>Sign In</Styled.SignInButton>
