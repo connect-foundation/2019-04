@@ -16,6 +16,10 @@ const GlobalStyle = createGlobalStyle`
         width: 100%;
         font-size: 16px;
     }
+
+    button {
+        cursor: pointer;
+    }
 `;
 
 export default GlobalStyle;
