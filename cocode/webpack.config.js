@@ -43,7 +43,8 @@ module.exports = {
 			'.jpeg',
 			'.gif',
 			'.svg'
-		]
+		],
+		modules: [path.join(__dirname, 'src'), 'node_modules']
 	},
 	plugins: [
 		new webpack.HotModuleReplacementPlugin(),

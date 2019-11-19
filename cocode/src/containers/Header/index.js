@@ -1,6 +1,6 @@
 import React from 'react';
 import * as Styled from './style';
-import Logo from '../../components/Logo';
+import Logo from 'components/Logo';
 import { Grid } from '@material-ui/core';
 
 function Header() {
