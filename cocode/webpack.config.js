@@ -27,13 +27,23 @@ module.exports = {
 				use: ['style-loader', 'css-loader']
 			},
 			{
-				test: /\.(svg)$/,
+				test: /\.(jpg|png|jpeg|gif|svg)$/,
 				use: ['file-loader']
 			}
 		]
 	},
 	resolve: {
-		extensions: ['*', '.js', '.jsx', '.css', '.svg']
+		extensions: [
+			'*',
+			'.js',
+			'.jsx',
+			'.css',
+			'.jpg',
+			'.png',
+			'.jpeg',
+			'.gif',
+			'.svg'
+		]
 	},
 	plugins: [
 		new webpack.HotModuleReplacementPlugin(),
