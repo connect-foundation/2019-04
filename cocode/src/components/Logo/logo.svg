@@ -5,7 +5,7 @@
   </clipPath>
 </defs>
 <g id="a" clip-path="url(#clip-path)">
-  <rect id="사각형_1" width="66.614" height="60" fill="#fff"/>
+  <rect id="사각형_1" width="66.614" height="60" fill='none'/>
   <g id="그룹_11" transform="translate(-9.956)">
     <path id="패스_8" d="M26.457,0C41.068,0,52.913,12.374,52.913,27.638S41.068,55.276,26.457,55.276c-6.823,0-12.7-3.407-17.488-7.929C4.083,42.171,0,35.774,0,27.638,0,12.374,11.845,0,26.457,0Z" transform="translate(23.656)" fill="#6d4c41"/>
     <g id="그룹_10" transform="translate(0 5.017)">
