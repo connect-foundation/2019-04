@@ -10,7 +10,9 @@
 		"build": "webpack --mode production",
 		"build:dev": "webpack --mode development",
 		"test:dev": "react-scripts test",
-		"test": "jest"
+		"test": "jest",
+		"storybook": "start-storybook -p 9009 -s public",
+		"build-storybook": "build-storybook -s public"
 	},
 	"husky": {
 		"hooks": {
@@ -56,6 +58,10 @@
 		"@babel/preset-react": "^7.7.0",
 		"@commitlint/cli": "^8.2.0",
 		"@commitlint/config-conventional": "^8.2.0",
+		"@storybook/react": "^5.2.6",
+		"@storybook/addon-actions": "^5.2.6",
+		"@storybook/addon-links": "^5.2.6",
+		"@storybook/addons": "^5.2.6",
 		"@testing-library/jest-dom": "^4.2.3",
 		"@testing-library/react": "^9.3.2",
 		"babel": "^6.23.0",
