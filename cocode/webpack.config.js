@@ -25,11 +25,15 @@ module.exports = {
 			{
 				test: /\.(css)$/,
 				use: ['style-loader', 'css-loader']
+			},
+			{
+				test: /\.(svg)$/,
+				use: ['file-loader']
 			}
 		]
 	},
 	resolve: {
-		extensions: ['*', '.js', '.jsx', '.css']
+		extensions: ['*', '.js', '.jsx', '.css', '.svg']
 	},
 	plugins: [
 		new webpack.HotModuleReplacementPlugin(),
