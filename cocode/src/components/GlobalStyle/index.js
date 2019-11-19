@@ -11,6 +11,11 @@ const GlobalStyle = createGlobalStyle`
         background: none;
     }
     
+    html {
+        background-color: ${({ theme }) => theme.backgroundColor};
+        color: ${({ theme }) => theme.textColor};
+    }
+
     html, body {
         height: 100%;
         width: 100%;
