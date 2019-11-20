@@ -1,8 +1,13 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import mongoose from 'mongoose';
+import cors from 'cors';
 
 dotenv.config();
+
+import passport from './middlewares/passport';
+import apiRouter from './routes';
+
 const app = express();
 const PORT = 3030;
 
@@ -20,6 +25,9 @@ mongoose.connect(MONGODB_URI, {
 	useUnifiedTopology: true
 });
 
-app.get('/', (req, res) => res.send('Hello World!'));
+app.use(cors());
+app.use(passport.initialize());
+
+app.use('/api', apiRouter);
 
 app.listen(PORT, () => console.log(`Example app listening on port ${PORT}!`));
