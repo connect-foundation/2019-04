@@ -1,5 +1,6 @@
 import React from 'react';
 import * as Styled from './style';
+import { Link } from 'react-router-dom';
 
 import ReactLogo from 'components/ReactLogo';
 
@@ -30,7 +31,7 @@ function Description() {
     return (
         <Styled.Description>
             <Title />
-            <OpenButton />
+            <Link to="/project"><OpenButton /></Link>
         </Styled.Description>
     );
 }
