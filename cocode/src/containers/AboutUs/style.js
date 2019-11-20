@@ -7,11 +7,13 @@ const AboutUs = styled.section`
 
 		display: flex;
 		flex-direction: column;
+		justify-content: center;
 
 		padding: 5rem 10rem;
 	}
+	
 	.AboutUs-item {
-		padding: 5rem;
+		padding: 3rem;
 	}
 `;
 
@@ -25,6 +27,7 @@ const AboutUsTitle = styled.h1`
 
 	.AboutUsTitle-main {
 		color: ${({ theme }) => theme.mainColor};
+		font-weight: 400;
 	}
 `;
 
@@ -42,16 +45,17 @@ const AboutUsProfileCard = styled.div`
 	}
 
 	.AboutUsProfileCard-item {
-		padding: 0.5rem;
+		padding: 0.2rem;
 	}
 `;
 
 const AboutUsProfileImage = styled.img`
 	& {
-		height: 12rem;
-		width: 12rem;
-
-		margin: 0 auto;
+		height: 11rem;
+		width: 11rem;
+		
+		padding: 0.5rem;
+		margin-bottom: 1.5rem;
 	}
 `;
 
@@ -59,7 +63,7 @@ const AboutUsProfileName = styled.h2`
 	& {
 		text-align: center;
 
-		font-size: 2rem;
+		font-size: 1.5rem;
 		font-weight: 100;
 	}
 `;
@@ -70,12 +74,12 @@ const AboutUsProfileLink = styled.a`
 		text-decoration: none;
 
 		color: ${({ theme }) => theme.textColor};
-		font-size: 2rem;
+		font-size: 1.5rem;
 		font-weight: 100;
 	}
 
 	&:hover {
-		text-decoration: underline;
+		color: ${({ theme }) => theme.mainColor};
 	}
 `;
 

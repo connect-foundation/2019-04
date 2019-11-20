@@ -25,6 +25,7 @@ const GlobalStyle = createGlobalStyle`
     
     button {
         cursor: pointer;
+        color: ${({ theme }) => theme.textColor};
     }
 `;
 

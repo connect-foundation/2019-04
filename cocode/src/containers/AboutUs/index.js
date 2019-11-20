@@ -19,7 +19,7 @@ function AboutUsProfileCard({ name, nickName, src }) {
 				className="AboutUsProfileCard-item"
 				href={`https://github.com/${nickName}`}
 			>
-				{nickName}
+				@{nickName}
 			</Styled.AboutUsProfileLink>
 		</Styled.AboutUsProfileCard>
 	);
