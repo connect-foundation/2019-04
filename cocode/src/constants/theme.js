@@ -13,4 +13,17 @@ const BROWSER_THEME = {
 	browserHeignt: '88.8vh'
 };
 
-export { DEFAULT_THEME, BROWSER_THEME };
+const TAB_CONTAINER_THEME = {
+	tabContainerBGColor: '#0e0f10',
+	tabContainerTitleColor: '#7E7E7E',
+	tabContainerFileTextColor: '#878788',
+	tabContainerFileHoverTextColor: '#fff',
+	tabContainerFileHoverBGColor: '#2accf944',
+
+	tabContainerTitleSize: '1.25rem',
+	tabContainerFileTextSize: '1rem',
+
+	tabContainerTitleWeight: '600'
+};
+
+export { DEFAULT_THEME, BROWSER_THEME, TAB_CONTAINER_THEME };
