@@ -1,5 +1,4 @@
 import React from 'react';
-import { Grid } from '@material-ui/core';
 import * as Styled from './style';
 
 import profiles from './profiles';
@@ -7,10 +6,20 @@ import profiles from './profiles';
 function AboutUsProfileCard({ name, nickName, src }) {
 	return (
 		<Styled.AboutUsProfileCard>
-			<Styled.AboutUsProfileImage src={src} />
-			<Styled.AboutUsProfileName>{name}</Styled.AboutUsProfileName>
-			<Styled.AboutUsProfileLink href={'https://github.com/' + nickName}>
-				@{nickName}
+			<Styled.AboutUsProfileImage
+				className="AboutUsProfileCard-item"
+				src={src}
+				alt={`profiles/${nickName}.png`}
+				title={nickName}
+			/>
+			<Styled.AboutUsProfileName className="AboutUsProfileCard-item">
+				{name}
+			</Styled.AboutUsProfileName>
+			<Styled.AboutUsProfileLink
+				className="AboutUsProfileCard-item"
+				href={`https://github.com/${nickName}`}
+			>
+				{nickName}
 			</Styled.AboutUsProfileLink>
 		</Styled.AboutUsProfileCard>
 	);
@@ -19,29 +28,14 @@ function AboutUsProfileCard({ name, nickName, src }) {
 function AboutUs() {
 	return (
 		<Styled.AboutUs>
-			<Grid container direction="column">
-				<Grid item>
-					<Styled.AboutUsTitle>
-						Who's making{' '}
-						<font className="AboutUsTitle-main">cocode</font>?
-					</Styled.AboutUsTitle>
-				</Grid>
-				<Grid item container direction="row" justify="space-around">
-					{profiles.map((profile, index) => (
-						<Grid
-							key={index}
-							item
-							container
-							sm={3}
-							direction="column"
-							justify="space-between"
-							alignContent="center"
-						>
-							<AboutUsProfileCard {...profile} />
-						</Grid>
-					))}
-				</Grid>
-			</Grid>
+			<Styled.AboutUsTitle className="AboutUs-item">
+				Who's making <font className="AboutUsTitle-main">cocode</font>?
+			</Styled.AboutUsTitle>
+			<Styled.AboutUsProfiles className="AboutUs-item">
+				{profiles.map((profile, index) => (
+					<AboutUsProfileCard {...profile} key={index} />
+				))}
+			</Styled.AboutUsProfiles>
 		</Styled.AboutUs>
 	);
 }
