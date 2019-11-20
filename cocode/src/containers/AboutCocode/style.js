@@ -1,8 +1,12 @@
 import styled from 'styled-components';
 
 const AboutCocode = styled.section`
-	&,
-	.AboutCocode {
+	& {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+
 		height: 100vh;
 	}
 `;
