@@ -17,7 +17,7 @@ const DescriptionPhrase = styled.h1`
 
 	.DescriptionPhrase-emphasis {
 		color: ${({ theme }) => theme.mainColor};
-		font-weight: 600;
+		font-weight: 400;
 	}
 `;
 
