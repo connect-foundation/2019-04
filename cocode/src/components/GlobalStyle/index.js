@@ -16,13 +16,13 @@ const GlobalStyle = createGlobalStyle`
         background-color: ${({ theme }) => theme.backgroundColor};
         color: ${({ theme }) => theme.textColor};
     }
-
+    
     html, body {
         height: 100%;
         width: 100%;
         font-size: 16px;
     }
-
+    
     button {
         cursor: pointer;
     }
