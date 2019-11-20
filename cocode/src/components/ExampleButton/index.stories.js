@@ -8,18 +8,20 @@ export default {
 	title: 'Button'
 };
 
-export const basicButton = () => {
+function basicButton() {
 	return <Button onClick={action('onClick')}>{text('Value', 'Text')}</Button>;
-};
+}
 
-export const hrefButton = () => {
+function hrefButton() {
 	return (
 		<Button href={text('href', 'https://www.naver.com')}>
 			{text('Value', 'Text')}
 		</Button>
 	);
-};
+}
 
-export const redButton = () => {
+function redButton() {
 	return <Button red={boolean('red', true)}>{text('Value', 'Text')}</Button>;
-};
+}
+
+export { basicButton, hrefButton, redButton };

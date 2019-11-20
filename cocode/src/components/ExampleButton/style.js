@@ -14,12 +14,14 @@ const styles = css`
 	color: white;
 `;
 
-export const LinkButton = styled(Link)`
+const LinkButton = styled(Link)`
 	${styles};
 `;
-export const AButton = styled.a`
+const AButton = styled.a`
 	${styles};
 `;
-export const Button = styled.button`
+const Button = styled.button`
 	${styles};
 `;
+
+export { LinkButton, AButton, Button };

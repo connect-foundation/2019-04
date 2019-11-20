@@ -1,6 +1,6 @@
 import { addDecorator, configure } from '@storybook/react';
 import { withKnobs } from '@storybook/addon-knobs';
-import { ThemeDecorator } from '../src/stories/decorators/ThemeDecorator';
+import { ThemeDecorator } from 'stories/decorators/ThemeDecorator';
 
 addDecorator(withKnobs);
 addDecorator(ThemeDecorator);
