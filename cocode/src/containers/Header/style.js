@@ -11,8 +11,12 @@ const Header = styled.header`
 `;
 
 const SignInButton = styled.button`
-	color: ${({ theme }) => theme.textColor};
 	font-size: 1.5rem;
+	font-weight: 100;
+	
+	&:hover {
+	    font-weight: 400;
+	}
 `;
 
 export { Header, SignInButton };
