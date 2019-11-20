@@ -6,7 +6,7 @@ import CloseButton from 'components/CloseButton';
 function Modal({ modalBody, onClose }) {
 	return (
 		<Styled.ModalBackGround>
-			<Styled.Modal>
+			<Styled.Modal role="dialog">
 				<Styled.ModalHeader>
 					<CloseButton onClick={onClose} />
 				</Styled.ModalHeader>
