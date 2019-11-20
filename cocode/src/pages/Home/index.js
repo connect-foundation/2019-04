@@ -1,13 +1,16 @@
 import React from 'react';
+import Header from 'containers/Header';
+import Main from 'containers/Main';
+import AboutCocode from 'containers/AboutCocode';
+import AboutUs from 'containers/AboutUs';
 
 function Home() {
 	return (
 		<>
-			<header>
-				<h1>Hello! Home!!</h1>
-			</header>
-			<section></section>
-			<footer></footer>
+			<Header />
+			<Main />
+			<AboutCocode />
+			<AboutUs />
 		</>
 	);
 }

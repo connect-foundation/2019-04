@@ -25,11 +25,26 @@ module.exports = {
 			{
 				test: /\.(css)$/,
 				use: ['style-loader', 'css-loader']
+			},
+			{
+				test: /\.(jpg|png|jpeg|gif|svg)$/,
+				use: ['file-loader']
 			}
 		]
 	},
 	resolve: {
-		extensions: ['*', '.js', '.jsx', '.css']
+		extensions: [
+			'*',
+			'.js',
+			'.jsx',
+			'.css',
+			'.jpg',
+			'.png',
+			'.jpeg',
+			'.gif',
+			'.svg'
+		],
+		modules: [path.join(__dirname, 'src'), 'node_modules']
 	},
 	plugins: [
 		new webpack.HotModuleReplacementPlugin(),
