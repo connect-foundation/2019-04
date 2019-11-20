@@ -6,7 +6,7 @@ const Browser = styled.section`
 		flex-direction: column;
 		justify-content: stretch;
 
-		height: 88.8vh;
+		height: ${({ height }) => height};
 	}
 `;
 
@@ -18,7 +18,7 @@ const BrowserHeader = styled.header`
 
 		padding: 0.4rem 0.6rem;
 
-		background-color: #1d2022;
+		background-color: ${({ browserHeaderBGColor }) => browserHeaderBGColor};
 	}
 
 	.BrowserHeader-item {
@@ -32,8 +32,8 @@ const AddressInput = styled.input`
 
 		padding: 0.5rem 1rem;
 
-		background: black;
-		color: white;
+		background: ${({ adressInputBGColor }) => adressInputBGColor};
+		color: ${({ adressInputTextColor }) => adressInputTextColor};
 		font-size: 1rem;
 	}
 `;

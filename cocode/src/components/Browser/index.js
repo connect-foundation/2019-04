@@ -14,10 +14,11 @@ function BrowserHeader({
 	onGoForward,
 	onReload,
 	addressInputURL,
-	handleAddressInputKeyDown
+	handleAddressInputKeyDown,
+	theme
 }) {
 	return (
-		<Styled.BrowserHeader>
+		<Styled.BrowserHeader browserHeaderBGColor={theme.browserHeaderBGColor}>
 			<BackwardButton
 				className="BrowserHeader-item"
 				onClick={onGoBackward}
@@ -33,12 +34,14 @@ function BrowserHeader({
 				aria-label="browserAddress"
 				defaultValue={addressInputURL}
 				onKeyUp={handleAddressInputKeyDown}
+				adressInputBGColor={theme.adressInputBGColor}
+				adressInputFontColor={theme.adressInputTextColor}
 			/>
 		</Styled.BrowserHeader>
 	);
 }
 
-function Browser({ onGoBackward, onGoForward, onReload, url }) {
+function Browser({ onGoBackward, onGoForward, onReload, url, theme }) {
 	const [addressInputURL, setAddressInput] = useState(
 		url ? url : DEFAULT_URL
 	);
@@ -50,13 +53,14 @@ function Browser({ onGoBackward, onGoForward, onReload, url }) {
 	};
 
 	return (
-		<Styled.Browser>
+		<Styled.Browser height={theme.browserHeignt}>
 			<BrowserHeader
 				onGoBackward={onGoBackward}
 				onGoForward={onGoForward}
 				onReload={onReload}
 				addressInputURL={addressInputURL}
 				handleAddressInputKeyDown={handleAddressInputKeyDown}
+				theme={theme}
 			/>
 			<Styled.Iframe src={currentURL} />
 		</Styled.Browser>
