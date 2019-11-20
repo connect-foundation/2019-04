@@ -52,7 +52,6 @@ const Button = styled.button`
         background-color: ${({ theme }) => theme.mainOpaqueColor};
         font-size: 1.3rem;
         font-weight: 400;
-        color: ${({ theme }) => theme.textColor};
     }
     
     &:hover {
