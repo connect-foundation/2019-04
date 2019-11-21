@@ -23,6 +23,14 @@ describe('Login modal behavior test', () => {
 });
 
 function prepareForReactPortal() {
+	let rootElement = document.getElementById('root');
+	if (!rootElement) {
+		rootElement = document.createElement('div');
+		rootElement.setAttribute('id', 'root');
+		rootElement.setAttribute('style', '{ overflow: hidden; }');
+		document.body.appendChild(rootElement);
+	}
+
 	let modalElement = document.getElementById('modal');
 	if (!modalElement) {
 		modalElement = document.createElement('div');

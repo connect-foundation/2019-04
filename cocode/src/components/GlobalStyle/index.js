@@ -51,6 +51,10 @@ const GlobalStyle = createGlobalStyle`
         font-size: 16px;
     }
     
+    #root {
+        height: 100%;
+    }
+    
     button {
         cursor: pointer;
         color: ${({ theme }) => theme.textColor};
