@@ -6,8 +6,6 @@ const TabBar = styled.nav`
 		flex-direction: column;
 		justify-content: flex-start;
 
-		height: 100vh;
-
 		background-color: ${({ tabBarBGColor }) => tabBarBGColor};
 	}
 `;
