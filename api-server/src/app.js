@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 
@@ -25,7 +26,14 @@ mongoose.connect(MONGODB_URI, {
 	useUnifiedTopology: true
 });
 
-app.use(cors());
+const corsOption = {
+	origin: (origin, callback) => callback(null, true),
+	exposedHeaders: ['Set-Cookie'],
+	credentials: true
+};
+
+app.use(cors(corsOption));
+app.use(cookieParser());
 app.use(passport.initialize());
 
 app.use('/api', apiRouter);
