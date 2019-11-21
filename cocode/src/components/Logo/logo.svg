@@ -1,25 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="66.614" height="60" viewBox="0 0 66.614 60">
-<defs>
-  <clipPath id="clip-path">
-    <rect id="사각형_2" width="66.614" height="60"/>
-  </clipPath>
-</defs>
-<g id="a" clip-path="url(#clip-path)">
-  <rect id="사각형_1" width="66.614" height="60" fill='none'/>
-  <g id="그룹_11" transform="translate(-9.956)">
-    <path id="패스_8" d="M26.457,0C41.068,0,52.913,12.374,52.913,27.638S41.068,55.276,26.457,55.276c-6.823,0-12.7-3.407-17.488-7.929C4.083,42.171,0,35.774,0,27.638,0,12.374,11.845,0,26.457,0Z" transform="translate(23.656)" fill="#6d4c41"/>
-    <g id="그룹_10" transform="translate(0 5.017)">
-      <path id="패스_9" d="M23.28,0C27.238,0,31.5.006,34.848,1.847c6.9,3.8,10.507,13.693,10.507,22.26,0,7.139-3.286,15.705-8.546,19.945-3.785,3.053-10.526,3.556-10.6,3.461C13.682,47.512,0,36.632,0,24.107S10.756,0,23.28,0Z" transform="matrix(0.719, -0.695, 0.695, 0.719, 0, 31.521)" fill="#8d6e63"/>
-      <ellipse id="타원_9" cx="15.591" cy="22.677" rx="15.591" ry="22.677" transform="translate(10.465 23.008) rotate(-45)" fill="#6d4c41"/>
-      <ellipse id="타원_10" cx="12.992" cy="20.079" rx="12.992" ry="20.079" transform="translate(14.474 22.502) rotate(-45)" fill="#fff"/>
-      <ellipse id="타원_11" cx="8.74" cy="15.827" rx="8.74" ry="15.827" transform="translate(20.959 22.225) rotate(-45)" fill="#cfd8dc"/>
-      <path id="패스_10" d="M1005.289,439.839l-3.36,3.916-3.307,8.46,4.1-1.781,4.025-1.659,1.54-7.99Z" transform="translate(-966.64 -401.94)" fill="#cfd8dc"/>
-      <path id="패스_11" d="M1026.483,328.494l-7.6,3.408-1.1,2.989,8.106-3.334Z" transform="translate(-985.802 -284.616)" fill="#5f4138"/>
-      <path id="패스_12" d="M1028.46,319.126l-6.9,3.88-1.475,3.978,7.551-3.383Z" transform="translate(-986.941 -279.674)" fill="#b0bec5"/>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="62" height="54" viewBox="0 0 66.614 60">
+  <g id="a" clip-path="url(#clip-path)">
+    <g id="그룹_11" transform="translate(-9.956)">
+      <path id="패스_8" d="M26.457,0C41.068,0,52.913,12.374,52.913,27.638S41.068,55.276,26.457,55.276c-6.823,0-12.7-3.407-17.488-7.929C4.083,42.171,0,35.774,0,27.638,0,12.374,11.845,0,26.457,0Z" transform="translate(23.656)" fill="#6d4c41"/>
+      <g id="그룹_10" transform="translate(0 5.017)">
+        <path id="패스_9" d="M23.28,0C27.238,0,31.5.006,34.848,1.847c6.9,3.8,10.507,13.693,10.507,22.26,0,7.139-3.286,15.705-8.546,19.945-3.785,3.053-10.526,3.556-10.6,3.461C13.682,47.512,0,36.632,0,24.107S10.756,0,23.28,0Z" transform="matrix(0.719, -0.695, 0.695, 0.719, 0, 31.521)" fill="#8d6e63"/>
+        <ellipse id="타원_9" cx="15.591" cy="22.677" rx="15.591" ry="22.677" transform="translate(10.465 23.008) rotate(-45)" fill="#6d4c41"/>
+        <ellipse id="타원_10" cx="12.992" cy="20.079" rx="12.992" ry="20.079" transform="translate(14.474 22.502) rotate(-45)" fill="#fff"/>
+        <ellipse id="타원_11" cx="8.74" cy="15.827" rx="8.74" ry="15.827" transform="translate(20.959 22.225) rotate(-45)" fill="#cfd8dc"/>
+        <path id="패스_10" d="M1005.289,439.839l-3.36,3.916-3.307,8.46,4.1-1.781,4.025-1.659,1.54-7.99Z" transform="translate(-966.64 -401.94)" fill="#cfd8dc"/>
+        <path id="패스_11" d="M1026.483,328.494l-7.6,3.408-1.1,2.989,8.106-3.334Z" transform="translate(-985.802 -284.616)" fill="#5f4138"/>
+        <path id="패스_12" d="M1028.46,319.126l-6.9,3.88-1.475,3.978,7.551-3.383Z" transform="translate(-986.941 -279.674)" fill="#b0bec5"/>
+      </g>
+      <ellipse id="타원_12" cx="3.071" cy="2.598" rx="3.071" ry="2.598" transform="translate(53.893 5.197)" fill="#5a3e35"/>
+      <ellipse id="타원_13" cx="3.071" cy="2.598" rx="3.071" ry="2.598" transform="translate(53.893 12.756)" fill="#5a3e35"/>
+      <ellipse id="타원_14" cx="3.071" cy="2.598" rx="3.071" ry="2.598" transform="translate(62.397 11.811)" fill="#5a3e35"/>
     </g>
-    <ellipse id="타원_12" cx="3.071" cy="2.598" rx="3.071" ry="2.598" transform="translate(53.893 5.197)" fill="#5a3e35"/>
-    <ellipse id="타원_13" cx="3.071" cy="2.598" rx="3.071" ry="2.598" transform="translate(53.893 12.756)" fill="#5a3e35"/>
-    <ellipse id="타원_14" cx="3.071" cy="2.598" rx="3.071" ry="2.598" transform="translate(62.397 11.811)" fill="#5a3e35"/>
   </g>
-</g>
 </svg>

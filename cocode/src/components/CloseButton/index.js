@@ -1,11 +1,12 @@
 import React from 'react';
+import * as Styled from './style';
 import close from './close.svg';
 
 function CloseButton({ onClick }) {
 	return (
-		<button onClick={onClick}>
+		<Styled.Button onClick={onClick}>
 			<img src={close} />
-		</button>
+		</Styled.Button>
 	);
 }
 
