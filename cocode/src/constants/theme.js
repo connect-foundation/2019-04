@@ -26,4 +26,10 @@ const TAB_CONTAINER_THEME = {
 	tabContainerTitleWeight: '600'
 };
 
-export { DEFAULT_THEME, BROWSER_THEME, TAB_CONTAINER_THEME };
+const TAB_BAR_THEME = {
+	tabBarBGColor: '#1d2022',
+	tabBarItemBGColor: '#A5A6A7',
+	tabBarSelectedItemBGColor: '#fff'
+};
+
+export { DEFAULT_THEME, BROWSER_THEME, TAB_BAR_THEME, TAB_CONTAINER_THEME };
