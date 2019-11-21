@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+const { ObjectId } = mongoose.Schema.Types;
 
 const FileSchema = new mongoose.Schema(
 	{
@@ -7,7 +8,13 @@ const FileSchema = new mongoose.Schema(
 		},
 		type: {
 			type: String
-		}
+		},
+		child: [
+			{
+				type: ObjectId,
+				ref: 'File'
+			}
+		]
 	},
 	{ timestamps: true }
 );
