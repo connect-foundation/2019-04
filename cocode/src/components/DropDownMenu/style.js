@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+const BUTTON_COLOR = '#2b2b2b';
+const BUTTON_COLOR_HOVER = '#4b4b4b';
+const BUTTON_BOUNDARY = '#383838';
+
 const DropDownMenu = styled.div`
 	& {
 		display: flex;
@@ -30,17 +34,16 @@ const DropDownItem = styled.button`
 		z-index: 1;
 
 		font-size: 1.5rem;
-		color: ${({ theme }) => theme.textColor};
 		vertical-align: center;
 		text-align: right;
 
-		background-color: #2b2b2b;
+		background-color: ${BUTTON_COLOR};
 
 		border: none;
-		border-top: solid #383838;
+		border-top: solid ${BUTTON_BOUNDARY};
 	}
 	&:hover {
-		background-color: #4b4b4b;
+		background-color: ${BUTTON_COLOR_HOVER};
 		cursor: pointer;
 	}
 `;
