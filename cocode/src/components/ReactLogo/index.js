@@ -4,10 +4,10 @@ import logo from './react.svg';
 
 function ReactLogo({ className }) {
     return (
-        <article className={className}>
+        <Styled.Logo className={className}>
             <Styled.Image src={logo} />
             <Styled.Blur src={logo} />
-        </article>
+        </Styled.Logo>
     );
 }
 

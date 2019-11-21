@@ -51,6 +51,10 @@ const GlobalStyle = createGlobalStyle`
         font-size: 16px;
     }
     
+    body {
+        overflow: overlay;
+    }
+    
     #root {
         height: 100%;
     }
