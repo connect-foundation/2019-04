@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const Main = styled.section`
     & {
-        height: 88.8vh;
+        height: 88vh;
         display: flex;
         margin: 0 8rem;
     }
@@ -35,7 +35,7 @@ const Title = styled.h1`
 
 const SubTitle = styled.h2`
     & {
-        font-size: 3rem;
+        font-size: 2.8rem;
         font-weight: 200;
     }
     
