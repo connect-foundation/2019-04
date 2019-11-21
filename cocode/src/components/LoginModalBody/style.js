@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+const Logo = styled.img`
+    padding-right: 0.8rem;
+`;
+
 const LoginModalBody = styled.div`
 	& {
 		display: flex;
@@ -24,10 +28,14 @@ const LoginModalBodyButton = styled.button`
 
 		font-size: 1.25rem;
 
-		color: white;
 		background-color: black;
+		opacity: 0.85;
 		border-radius: 0.5rem;
+	}
+	
+	&:hover {
+		opacity: 1;
 	}
 `;
 
-export { LoginModalBody, LoginModalBodyTitle, LoginModalBodyButton };
+export { Logo, LoginModalBody, LoginModalBodyTitle, LoginModalBodyButton };
