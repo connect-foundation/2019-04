@@ -9,7 +9,7 @@ const AboutUs = styled.section`
 		flex-direction: column;
 		justify-content: center;
 
-		padding: 5rem 10rem;
+		padding: 5rem 8rem;
 	}
 	
 	.AboutUs-item {
@@ -21,7 +21,7 @@ const AboutUsTitle = styled.h1`
 	& {
 		text-align: center;
 
-		font-size: 3rem;
+		font-size: 2.8rem;
 		font-weight: lighter;
 	}
 
@@ -51,11 +51,11 @@ const AboutUsProfileCard = styled.div`
 
 const AboutUsProfileImage = styled.img`
 	& {
-		height: 11rem;
-		width: 11rem;
+		height: 9.8rem;
+		width: 9.8rem;
 		
 		padding: 0.5rem;
-		margin-bottom: 1.5rem;
+		margin-bottom: 1.3rem;
 	}
 `;
 
@@ -63,7 +63,7 @@ const AboutUsProfileName = styled.h2`
 	& {
 		text-align: center;
 
-		font-size: 1.5rem;
+		font-size: 1.3rem;
 		font-weight: 100;
 	}
 `;
@@ -74,7 +74,7 @@ const AboutUsProfileLink = styled.a`
 		text-decoration: none;
 
 		color: ${({ theme }) => theme.textColor};
-		font-size: 1.5rem;
+		font-size: 1.3rem;
 		font-weight: 100;
 	}
 
