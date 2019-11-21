@@ -1,13 +1,27 @@
 import React from 'react';
+import * as Styled from './style';
+
+import Header from 'containers/Header';
+import TabBar from 'components/TabBar';
+import ProjectTab from 'containers/ProjectTab';
+import Editor from 'containers/Editor';
+import Browser from 'components/Browser';
+
+import { TAB_BAR_THEME, BROWSER_THEME } from 'constants/theme';
 
 function Project() {
 	return (
 		<>
-			<header>
-				<h1>Hello! Project!!</h1>
-			</header>
-			<section></section>
-			<footer></footer>
+			<Header />
+			<Styled.Main>
+				<TabBar theme={TAB_BAR_THEME} />
+				<ProjectTab />
+				<Editor />
+				<Browser
+					className="Project-main-stretch"
+					theme={BROWSER_THEME}
+				/>
+			</Styled.Main>
 		</>
 	);
 }
