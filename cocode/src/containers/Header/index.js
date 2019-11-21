@@ -11,7 +11,7 @@ function Header() {
 	const handleOpenSignInModal = () => setIsSignInModalOpen(true);
 	const handleCloseSignInModal = () => {
 		const root = document.getElementById('root');
-		root.style.overflow = 'inherit';
+		root.style.overflow = 'overlay';
 		setIsSignInModalOpen(false);
 	};
 
