@@ -1,0 +1,6 @@
+README.md
+.babelrc
+.prettierrc
+.env
+public/*
+database/seeds/contents.template.js
