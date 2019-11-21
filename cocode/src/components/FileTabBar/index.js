@@ -5,9 +5,7 @@ import FileTab from '../FileTab';
 const DEFAULT_OPENED_FILE_INDEX = 0;
 
 function FileTabBar() {
-    const [ clickedIndex, setClickedIndex ] = useState(DEFAULT_OPENED_FILE_INDEX);
-
-    const files = [
+	const openFileList = [
 		{
 			name: 'index.html',
 			type: 'html',
@@ -30,11 +28,16 @@ function FileTabBar() {
 		},
 	];
 
-    const handleSetClickedIndex = (index) => setClickedIndex(index);
+	const [ clickedIndex, setClickedIndex ] = useState(DEFAULT_OPENED_FILE_INDEX);
+	//TODO 현재 더미데이터 fileList를 넣은 값으로, 추후 props에서 넘겨온 openFileList가 초기값이 될 예정입니다.
+	const [ openFiles, setOpenFiles ] = useState(openFileList);
 
-    return (
+	const handleSetClickedIndex = (index) => setClickedIndex(index);
+	const handleCloseFile = (index) => setOpenFiles(openFiles.filter((file, i) => i !== index));
+
+	return (
 		<Styled.TabBar>
-			{files.map(({ name, icon, type }, index) => {
+			{openFiles.map(({ name, icon, type }, index) => {
 				return (
 					<FileTab
 						key={index}
@@ -44,6 +47,7 @@ function FileTabBar() {
 						type={type}
 						className={index === clickedIndex ? 'clicked' : ''}
 						onClick={handleSetClickedIndex}
+						onCloseClick={handleCloseFile}
 					/>
 				);
 			})}
