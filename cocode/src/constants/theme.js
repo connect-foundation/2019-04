@@ -13,4 +13,10 @@ const BROWSER_THEME = {
 	browserHeignt: '88.8vh'
 };
 
-export { DEFAULT_THEME, BROWSER_THEME };
+const TAB_BAR_THEME = {
+	tabBarBGColor: '#1d2022',
+	tabBarItemBGColor: '#A5A6A7',
+	tabBarSelectedItemBGColor: '#fff'
+};
+
+export { DEFAULT_THEME, BROWSER_THEME, TAB_BAR_THEME };
