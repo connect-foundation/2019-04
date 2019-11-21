@@ -9,7 +9,6 @@ export default {
 const Box = styled.div`
 	display: flex;
 	flex-direction: row;
-	/* flex: 1; */
 `;
 
 const Button = styled.button`
