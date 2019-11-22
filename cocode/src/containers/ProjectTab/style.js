@@ -3,8 +3,8 @@ import { TAB_CONTAINER_THEME } from 'constants/theme';
 
 const ProjectTab = styled.section`
 	& {
-		width: 100%;
-		height: 100vh;
+		/* temp width */
+		width: 15rem;
 
 		background-color: ${TAB_CONTAINER_THEME.tabContainerBGColor};
 	}

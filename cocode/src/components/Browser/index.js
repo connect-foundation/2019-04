@@ -35,13 +35,20 @@ function BrowserHeader({
 				defaultValue={addressInputURL}
 				onKeyUp={handleAddressInputKeyDown}
 				adressInputBGColor={theme.adressInputBGColor}
-				adressInputFontColor={theme.adressInputTextColor}
+				adressInputTextColor={theme.adressInputTextColor}
 			/>
 		</Styled.BrowserHeader>
 	);
 }
 
-function Browser({ onGoBackward, onGoForward, onReload, url, theme }) {
+function Browser({
+	className,
+	onGoBackward,
+	onGoForward,
+	onReload,
+	url,
+	theme
+}) {
 	const [addressInputURL, setAddressInput] = useState(
 		url ? url : DEFAULT_URL
 	);
@@ -53,7 +60,7 @@ function Browser({ onGoBackward, onGoForward, onReload, url, theme }) {
 	};
 
 	return (
-		<Styled.Browser height={theme.browserHeignt}>
+		<Styled.Browser className={className} height={theme.browserHeignt}>
 			<BrowserHeader
 				onGoBackward={onGoBackward}
 				onGoForward={onGoForward}
