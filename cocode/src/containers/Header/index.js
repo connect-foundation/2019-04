@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import * as Styled from './style';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 import { API_SERVER } from 'config';
@@ -36,7 +37,7 @@ function Header() {
 
 	return (
 		<Styled.Header>
-			<Logo />
+			<Link to="/"><Logo /></Link>
 			{ user ?
 				<UserProfile
 					username={user.username}

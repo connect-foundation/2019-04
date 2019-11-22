@@ -2,6 +2,7 @@ import '@babel/polyfill';
 import React from 'react';
 import { render, fireEvent, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 import Header from '.';
 
@@ -42,7 +43,7 @@ function prepareForReactPortal() {
 
 function openLoginModalTest() {
 	// given
-	const { getByText, getByRole } = render(<Header />);
+	const { getByText, getByRole } = render(<Router><Header /></Router>);
 	const signInButton = getByText(SIGN_IN_BUTTON_TEXT);
 
 	// when
