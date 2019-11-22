@@ -12,15 +12,8 @@ const Tab = styled.li`
         cursor: pointer;
     }
     
-    &:after {
-        content: 'X';
-        font-weight: 800;
-        margin-left: 0.8rem;
-        visibility: hidden;
-    }
-    
     &:hover {
-      &:after {
+      & > img {
         visibility: visible;
       }
     }
@@ -34,4 +27,14 @@ const Icon = styled.img`
     }
 `;
 
-export { Icon, Tab };
+const Close = styled.img`
+    & {
+        width: 0.8rem;
+        height: 0.8rem;
+        margin-top: 0.18rem;
+        margin-left: 0.5rem;
+        visibility: hidden;
+    }
+`;
+
+export { Icon, Tab, Close };
