@@ -6,10 +6,10 @@ const ProjectCard = styled.section`
 		flex-direction: row;
 		justify-content: space-around;
 
-		height: 9.5rem;
-		width: 24rem;
+		height: ${({ cardHeight }) => cardHeight};
+		width: ${({ cardWidth }) => cardWidth};
 
-		background-color: white;
+		background-color: ${({ cardBackgroundColor }) => cardBackgroundColor};
 		border-radius: 1rem;
 
 		padding: 0;
@@ -29,8 +29,9 @@ const ProjectArticle = styled.article`
 
 const ProjectTitle = styled.h1`
 	& {
-		color: ${({ theme }) => theme.backgroundColor};
-		font-size: 2rem;
+		color: ${({ cardTextColor }) => cardTextColor};
+		font-size: ${({ cardTitleFontSize }) => cardTitleFontSize};
+
 		margin: 0;
 		margin-left: 1.5rem;
 		padding: 0;
@@ -39,7 +40,8 @@ const ProjectTitle = styled.h1`
 
 const ProjectDescription = styled.p`
 	& {
-		font-size: 1.25rem;
+		font-size: ${({ cardDescriptFontSize }) => cardDescriptFontSize};
+
 		margin: 0;
 		margin-left: 1.5rem;
 		padding: 0;

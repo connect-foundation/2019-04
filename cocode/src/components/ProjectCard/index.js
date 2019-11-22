@@ -12,12 +12,12 @@ function MenuButton({ onClick }) {
 	);
 }
 
-function ProjectCard({ title, edited, menuItems }) {
+function ProjectCard({ title, edited, menuItems, theme }) {
 	return (
-		<Styled.ProjectCard>
+		<Styled.ProjectCard {...theme}>
 			<Styled.ProjectArticle>
-				<Styled.ProjectTitle>{title}</Styled.ProjectTitle>
-				<Styled.ProjectDescription>
+				<Styled.ProjectTitle {...theme}>{title}</Styled.ProjectTitle>
+				<Styled.ProjectDescription {...theme}>
 					{/* 임시 시간 출력 */}
 					{`${Date.now() - edited}`} ago...
 				</Styled.ProjectDescription>
