@@ -33,4 +33,19 @@ const TAB_BAR_THEME = {
 	tabBarSelectedItemBGColor: '#fff'
 };
 
-export { DEFAULT_THEME, BROWSER_THEME, TAB_BAR_THEME, TAB_CONTAINER_THEME };
+const PROJECT_CARD_THEME = {
+	cardHeight: '9.5rem',
+	cardWidth: '24rem',
+	cardBackgroundColor: '#FFFFFF',
+	cardTitleFontSize: '2rem',
+	cardDescriptFontSize: '1.25rem',
+	cardTextColor: '#161419'
+};
+
+export {
+	DEFAULT_THEME,
+	BROWSER_THEME,
+	TAB_BAR_THEME,
+	TAB_CONTAINER_THEME,
+	PROJECT_CARD_THEME
+};
