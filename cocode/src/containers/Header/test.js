@@ -1,3 +1,4 @@
+import '@babel/polyfill';
 import React from 'react';
 import { render, fireEvent, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
