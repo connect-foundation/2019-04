@@ -18,26 +18,27 @@ async function insertSeed(Model, seed) {
 		.catch(err => console.error(err));
 }
 
-const MONGODB_URI =
-	process.env.NODE_ENV === 'production'
-		? process.env.PROD_DATABASE_URI
-		: process.env.DEV_DATABASE_URI;
+if (process.env.NODE_ENV === 'production') process.exit(1);
+else {
 
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', async () => {
-	console.log('Connection Successful!');
+	const MONGODB_URI = process.env.DEV_DATABASE_URI;
 
-	await dropCollection(db, 'files');
-	await dropCollection(db, 'projects');
-	await dropCollection(db, 'users');
+	const db = mongoose.connection;
+	db.on('error', console.error.bind(console, 'connection error:'));
+	db.once('open', async () => {
+		console.log('Connection Successful!');
 
-	await insertSeed(File, fileSeed);
-	await insertSeed(Project, projectSeed);
-	await insertSeed(User, userSeed);
-});
+		await dropCollection(db, 'files');
+		await dropCollection(db, 'projects');
+		await dropCollection(db, 'users');
 
-mongoose.connect(MONGODB_URI, {
-	useNewUrlParser: true,
-	useUnifiedTopology: true
-});
+		await insertSeed(File, fileSeed);
+		await insertSeed(Project, projectSeed);
+		await insertSeed(User, userSeed);
+	});
+
+	mongoose.connect(MONGODB_URI, {
+		useNewUrlParser: true,
+		useUnifiedTopology: true
+	});
+}
