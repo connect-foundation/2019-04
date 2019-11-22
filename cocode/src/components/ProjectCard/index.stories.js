@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-
+import { PROJECT_CARD_THEME } from 'constants/theme';
 import ProjectCard from '.';
 
 const Contianer = styled.div`
@@ -40,7 +40,7 @@ const projectCard = () => {
 	};
 	return (
 		<Contianer>
-			<ProjectCard {...tempData}></ProjectCard>
+			<ProjectCard {...tempData} theme={PROJECT_CARD_THEME}></ProjectCard>
 		</Contianer>
 	);
 };
