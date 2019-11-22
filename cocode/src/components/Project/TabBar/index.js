@@ -1,7 +1,7 @@
 import React from 'react';
 import * as Styled from './style';
 
-import ProjectIcon from 'components/ProjectIcon';
+import ProjectIcon from 'components/Project/ProjectIcon';
 
 function TabBar({ theme }) {
 	return (

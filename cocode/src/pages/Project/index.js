@@ -1,11 +1,11 @@
 import React, { useReducer, useEffect } from 'react';
 import * as Styled from './style';
 
-import Header from 'containers/Header';
-import TabBar from 'components/TabBar';
-import ProjectTab from 'containers/ProjectTab';
-import Editor from 'containers/Editor';
-import BrowserV1 from 'components/BrowserV1';
+import Header from 'containers/Common/Header';
+import TabBar from 'components/Project/TabBar';
+import ProjectTab from 'containers/Project/ProjectTab';
+import Editor from 'containers/Project/Editor';
+import BrowserV1 from 'components/Project/BrowserV1';
 
 import ProjectReducer from 'reducers/ProjectReducer';
 import ProjectContext from 'contexts/ProjectContext';

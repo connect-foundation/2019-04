@@ -1,11 +1,11 @@
 import React from 'react';
-import GlobalStyle from './components/GlobalStyle';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
-import { Home, DashBoard, Project } from './pages';
+import GlobalStyle from 'components/Common/GlobalStyle';
+import { Home, DashBoard, Project } from 'pages';
 
-import { DEFAULT_THEME } from './constants/theme';
+import { DEFAULT_THEME } from 'constants/theme';
 
 function App() {
 	return (

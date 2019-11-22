@@ -1,7 +1,7 @@
 import React from 'react';
 import * as Styled from './style';
 
-import CloseButton from 'components/CloseButton';
+import CloseButton from 'components/Common/CloseButton';
 
 function Modal({ modalBody, onClose }) {
 	return (

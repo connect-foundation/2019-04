@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import * as Styled from './style';
 
-import FileTabBar from 'components/FileTabBar';
-import MonacoEditor from 'components/MonacoEditor';
+import FileTabBar from 'components/Project/FileTabBar';
+import MonacoEditor from 'components/Project/MonacoEditor';
 
 import ProjectContext from 'contexts/ProjectContext';
 import { updateCodeActionCreator } from 'actions/Project';

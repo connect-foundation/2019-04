@@ -9,31 +9,36 @@ function FileTabBar() {
 		{
 			name: 'index.html',
 			type: 'html',
-			icon: 'https://cdn.jsdelivr.net/gh/PKief/vscode-material-icon-theme@master/icons/html.svg'
+			icon:
+				'https://cdn.jsdelivr.net/gh/PKief/vscode-material-icon-theme@master/icons/html.svg'
 		},
 		{
 			name: 'index.js',
 			type: 'js',
-			icon: 'https://cdn.jsdelivr.net/gh/PKief/vscode-material-icon-theme@master/icons/javascript.svg'
+			icon:
+				'https://cdn.jsdelivr.net/gh/PKief/vscode-material-icon-theme@master/icons/javascript.svg'
 		},
 		{
 			name: 'app.js',
 			type: 'js',
-			icon: 'https://cdn.jsdelivr.net/gh/PKief/vscode-material-icon-theme@master/icons/javascript.svg'
+			icon:
+				'https://cdn.jsdelivr.net/gh/PKief/vscode-material-icon-theme@master/icons/javascript.svg'
 		},
 		{
 			name: 'app.css',
 			type: 'css',
-			icon: 'https://cdn.jsdelivr.net/gh/PKief/vscode-material-icon-theme@master/icons/css.svg'
-		},
+			icon:
+				'https://cdn.jsdelivr.net/gh/PKief/vscode-material-icon-theme@master/icons/css.svg'
+		}
 	];
 
-	const [ clickedIndex, setClickedIndex ] = useState(DEFAULT_OPENED_FILE_INDEX);
+	const [clickedIndex, setClickedIndex] = useState(DEFAULT_OPENED_FILE_INDEX);
 	//TODO 현재 더미데이터 fileList를 넣은 값으로, 추후 props에서 넘겨온 openFileList가 초기값이 될 예정입니다.
-	const [ openFiles, setOpenFiles ] = useState(openFileList);
+	const [openFiles, setOpenFiles] = useState(openFileList);
 
-	const handleSetClickedIndex = (index) => setClickedIndex(index);
-	const handleCloseFile = (index) => setOpenFiles(openFiles.filter((file, i) => i !== index));
+	const handleSetClickedIndex = index => setClickedIndex(index);
+	const handleCloseFile = index =>
+		setOpenFiles(openFiles.filter((file, i) => i !== index));
 
 	return (
 		<Styled.TabBar>
