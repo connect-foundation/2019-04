@@ -1,28 +1,42 @@
-import React from 'react';
+import React, { useReducer, useEffect } from 'react';
 import * as Styled from './style';
 
 import Header from 'containers/Header';
 import TabBar from 'components/TabBar';
 import ProjectTab from 'containers/ProjectTab';
 import Editor from 'containers/Editor';
-import Browser from 'components/Browser';
+import BrowserV1 from 'components/BrowserV1';
 
-import { TAB_BAR_THEME, BROWSER_THEME } from 'constants/theme';
+import ProjectReducer from 'reducers/ProjectReducer';
+import ProjectContext from 'contexts/ProjectContext';
+import { fetchProjectActionCreator } from 'actions/Project';
+
+import { TAB_BAR_THEME } from 'constants/theme';
 
 function Project() {
+	const [project, dispatchProject] = useReducer(ProjectReducer, {});
+
+	const handleFetchProject = () => {
+		const fetchProjectAction = fetchProjectActionCreator();
+		dispatchProject(fetchProjectAction);
+	};
+
+	useEffect(handleFetchProject, []);
+
 	return (
-		<>
+		<ProjectContext.Provider value={{ project, dispatchProject }}>
 			<Header />
 			<Styled.Main>
 				<TabBar theme={TAB_BAR_THEME} />
 				<ProjectTab />
 				<Editor />
-				<Browser
+				<BrowserV1
+					code={project.code}
+					id="coconut-root"
 					className="Project-main-stretch"
-					theme={BROWSER_THEME}
 				/>
 			</Styled.Main>
-		</>
+		</ProjectContext.Provider>
 	);
 }
 
