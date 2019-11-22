@@ -6,7 +6,7 @@ const Editor = styled.section`
 		flex-direction: column;
 
 		/* temp width */
-		width: 20rem;
+		width: 30rem;
 	}
 
 	.Stretch-width {
