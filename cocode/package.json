@@ -39,6 +39,7 @@
 	"homepage": "https://github.com/connect-foundation/2019-04#readme",
 	"dependencies": {
 		"@material-ui/core": "^4.6.0",
+		"@monaco-editor/react": "^2.3.0",
 		"axios": "^0.19.0",
 		"dotenv": "^8.2.0",
 		"file-loader": "^4.2.0",
