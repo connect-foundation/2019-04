@@ -1,6 +1,7 @@
 import React from 'react';
-import Grid from '@material-ui/core/Grid';
 import * as Styled from './style';
+
+import ScrollTopButton from 'components/ScrollTopButton';
 
 function AboutCocode() {
 	return (
@@ -12,6 +13,7 @@ function AboutCocode() {
 				that helps you create web applications based on
 				<font className="DescriptionPhrase-emphasis"> React</font>
 			</Styled.DescriptionPhrase>
+			<ScrollTopButton />
 		</Styled.AboutCocode>
 	);
 }

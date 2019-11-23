@@ -8,6 +8,7 @@ const AboutCocode = styled.section`
 		align-items: center;
 
 		height: 100vh;
+		padding: 5rem;
 	}
 `;
 
@@ -17,11 +18,17 @@ const DescriptionPhrase = styled.h1`
 
 		font-size: 2.8rem;
 		font-weight: lighter;
+		
+		flex: 1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 
 	.DescriptionPhrase-emphasis {
 		color: ${({ theme }) => theme.mainColor};
 		font-weight: 400;
+		display: contents;
 	}
 `;
 
