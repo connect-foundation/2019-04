@@ -2,6 +2,7 @@ import React from 'react';
 import * as Styled from './style';
 
 import ScrollTopButton from 'components/ScrollTopButton';
+import ScrollDownButton from 'components/ScrollDownButton';
 
 function AboutCocode() {
 	return (
@@ -14,6 +15,7 @@ function AboutCocode() {
 				<font className="DescriptionPhrase-emphasis"> React</font>
 			</Styled.DescriptionPhrase>
 			<ScrollTopButton />
+			<ScrollDownButton />
 		</Styled.AboutCocode>
 	);
 }

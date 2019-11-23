@@ -3,8 +3,11 @@ import styled from 'styled-components';
 const Main = styled.section`
     & {
         height: 88vh;
+        padding: 5rem 8rem;
         display: flex;
-        margin: 0 8rem;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
     
     .Logo-floatRight {
@@ -13,6 +16,14 @@ const Main = styled.section`
     
     .Logo-alignCenter {
         align-self: center;
+    }
+`;
+
+const Content = styled.div`
+    & {
+        width: 100%;
+        display: flex;
+        flex: 1;
     }
 `;
 
@@ -29,7 +40,7 @@ const Title = styled.h1`
     }
     
     .Title-emphasis {
-		color: ${({ theme }) => theme.mainColor};
+        color: ${({ theme }) => theme.mainColor};
     }
 `;
 
@@ -40,7 +51,7 @@ const SubTitle = styled.h2`
     }
     
     .SubTitle-emphasis {
-		color: ${({ theme }) => theme.mainColor};
+        color: ${({ theme }) => theme.mainColor};
     }
 `;
 
@@ -59,4 +70,4 @@ const Button = styled.button`
     }
 `;
 
-export { Main, Description, Title, SubTitle, Button };
+export { Main, Content, Description, Title, SubTitle, Button };
