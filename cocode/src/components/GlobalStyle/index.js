@@ -38,6 +38,7 @@ const GlobalStyle = createGlobalStyle`
         border: 0;
         outline: none;
         background: none;
+        scroll-behavior: smooth;
     }
     
     html {
@@ -52,7 +53,7 @@ const GlobalStyle = createGlobalStyle`
     }
     
     body {
-        overflow: overlay;
+        overflow: hidden;
     }
     
     #root {
