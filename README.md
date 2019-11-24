@@ -7,6 +7,10 @@
 ---
 
 <p align="middle">
+<!-- tag -->
+  <a href="https://github.com/connect-foundation/2019-04/releases" target="_blank">
+    <img src="https://img.shields.io/github/v/release/connect-foundation/2019-04">
+  </a>
 <!-- doc -->
   <a href="https://github.com/connect-foundation/2019-04/wiki" target="_blank">
     <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
