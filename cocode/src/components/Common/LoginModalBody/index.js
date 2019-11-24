@@ -6,10 +6,7 @@ import { API } from 'config';
 import Github from './github.svg';
 
 function LoginModalBody() {
-	const handleClickLoginButton = () => {
-		console.log(API.login);
-		window.location.href = API.login;
-	};
+	const handleClickLoginButton = () => (window.location.href = API.login);
 
 	return (
 		<Styled.LoginModalBody>
