@@ -3,7 +3,10 @@ const DEFAULT_THEME = {
 	mainOpaqueColor: '#2accf9b3',
 	backgroundColor: '#161419',
 	blackOpaqueColor: '#000000b3',
-	textColor: '#ffffff'
+	textColor: '#ffffff',
+
+	exceptHeaderHeignt: '88vh',
+	headerHeignt: '12vh'
 };
 
 const BROWSER_THEME = {
@@ -11,7 +14,7 @@ const BROWSER_THEME = {
 	adressInputBGColor: '#000',
 	adressInputTextColor: '#fff',
 
-	browserHeignt: '88.8vh'
+	browserHeignt: '88vh'
 };
 
 const TAB_CONTAINER_THEME = {
