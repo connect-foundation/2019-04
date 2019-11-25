@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const Main = styled.main`
-	padding: 3rem 7rem;
+	padding: 3rem;
 `;
 
 const Title = styled.h2`
@@ -24,7 +24,6 @@ const CardList = styled.section`
 		justify-content: flex-start;
 
 		width: 100vw;
-		list-style: none;
 		padding: 0;
 	}
 	& > * {

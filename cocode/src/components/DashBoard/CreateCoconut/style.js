@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import { PROJECT_CARD_THEME } from 'constants/theme';
 
 const Button = styled.button`
-	height: 8rem;
-	width: 21rem;
+	height: ${PROJECT_CARD_THEME.cardHeight};
+	width: ${PROJECT_CARD_THEME.cardWidth};
 
 	text-align: center;
 	font-size: ${PROJECT_CARD_THEME.buttonFontSize};
