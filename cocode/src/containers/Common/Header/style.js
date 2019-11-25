@@ -21,6 +21,10 @@ const HeaderCategory = styled.button`
 		font-size: 1.4rem;
 		font-weight: 100;
 	}
+
+	&:hover {
+		color: ${({ theme }) => theme.mainColor};
+	}
 `;
 
 const HeaderRightSideArea = styled.div`
@@ -36,7 +40,7 @@ const SignInButton = styled.button`
 	}
 
 	&:hover {
-		font-weight: 400;
+		color: ${({ theme }) => theme.mainColor};
 	}
 `;
 
