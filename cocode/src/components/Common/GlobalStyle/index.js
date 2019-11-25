@@ -38,6 +38,7 @@ const GlobalStyle = createGlobalStyle`
         border: 0;
         outline: none;
         background: none;
+        scroll-behavior: smooth;
     }
     
     html {
@@ -52,7 +53,7 @@ const GlobalStyle = createGlobalStyle`
     }
     
     body {
-        overflow: overlay;
+        overflow: hidden;
     }
     
     #root {
@@ -63,6 +64,17 @@ const GlobalStyle = createGlobalStyle`
         cursor: pointer;
         color: ${({ theme }) => theme.textColor};
     }
+
+    a,
+	a:visited,
+	a:active {
+		color: ${({ theme }) => theme.textColor};
+		cursor: pointer;
+	}
+
+	a:hover {
+		color: ${({ theme }) => theme.mainColor};
+	}
 `;
 
 export default GlobalStyle;

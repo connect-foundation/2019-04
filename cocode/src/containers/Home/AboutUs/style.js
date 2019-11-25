@@ -1,5 +1,13 @@
 import styled from 'styled-components';
 
+const Content = styled.div`
+	& {
+		display: flex;
+		flex: 1;
+		flex-direction: column;
+	}
+`;
+
 const AboutUs = styled.section`
 	& {
 		height: 100vh;
@@ -9,11 +17,11 @@ const AboutUs = styled.section`
 		flex-direction: column;
 		justify-content: center;
 
-		padding: 5rem 8rem;
+		padding: 5rem;
 	}
 	
 	.AboutUs-item {
-		padding: 3rem;
+		padding: 3rem 5rem;
 	}
 `;
 
@@ -84,6 +92,7 @@ const AboutUsProfileLink = styled.a`
 `;
 
 export {
+	Content,
 	AboutUs,
 	AboutUsTitle,
 	AboutUsProfiles,

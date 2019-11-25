@@ -2,6 +2,7 @@ import React from 'react';
 import * as Styled from './style';
 
 import profiles from './profiles';
+import ScrollTopButton from 'components/Home/ScrollTopButton';
 
 function AboutUsProfileCard({ name, nickName, src }) {
 	return (
@@ -28,14 +29,18 @@ function AboutUsProfileCard({ name, nickName, src }) {
 function AboutUs() {
 	return (
 		<Styled.AboutUs>
-			<Styled.AboutUsTitle className="AboutUs-item">
-				Who's making <font className="AboutUsTitle-main">cocode</font>?
-			</Styled.AboutUsTitle>
-			<Styled.AboutUsProfiles className="AboutUs-item">
-				{profiles.map((profile, index) => (
-					<AboutUsProfileCard {...profile} key={index} />
-				))}
-			</Styled.AboutUsProfiles>
+			<Styled.Content>
+				<Styled.AboutUsTitle className="AboutUs-item">
+					Who's making
+					<font className="AboutUsTitle-main"> cocode</font>?
+				</Styled.AboutUsTitle>
+				<Styled.AboutUsProfiles className="AboutUs-item">
+					{profiles.map((profile, index) => (
+						<AboutUsProfileCard {...profile} key={index} />
+					))}
+				</Styled.AboutUsProfiles>
+			</Styled.Content>
+			<ScrollTopButton />
 		</Styled.AboutUs>
 	);
 }

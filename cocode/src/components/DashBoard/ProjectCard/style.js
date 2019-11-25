@@ -1,15 +1,12 @@
 import styled from 'styled-components';
+import { PROJECT_CARD_THEME } from 'constants/theme';
 
 const ProjectCard = styled.section`
 	& {
-		display: flex;
-		flex-direction: row;
-		justify-content: space-around;
+		height: ${PROJECT_CARD_THEME.cardHeight};
+		width: ${PROJECT_CARD_THEME.cardWidth};
 
-		height: ${({ cardHeight }) => cardHeight};
-		width: ${({ cardWidth }) => cardWidth};
-
-		background-color: ${({ cardBackgroundColor }) => cardBackgroundColor};
+		background-color: ${PROJECT_CARD_THEME.cardBackgroundColor};
 		border-radius: 1rem;
 
 		padding: 0;
@@ -23,51 +20,51 @@ const ProjectArticle = styled.article`
 		flex-direction: column;
 		justify-content: space-around;
 
-		flex: 1;
+		margin-left: 2rem;
 	}
 `;
 
 const ProjectTitle = styled.h1`
 	& {
-		color: ${({ cardTextColor }) => cardTextColor};
-		font-size: ${({ cardTitleFontSize }) => cardTitleFontSize};
-
-		margin: 0;
-		margin-left: 1.5rem;
-		padding: 0;
+		color: ${({ theme }) => theme.backgroundColor};
+		font-size: ${PROJECT_CARD_THEME.cardTitleFontSize};
+		margin-top: 2rem;
+		margin-bottom: 2rem;
 	}
 `;
 
-const ProjectDescription = styled.p`
-	& {
-		font-size: ${({ cardDescriptFontSize }) => cardDescriptFontSize};
+const ProjectDescription = styled.div`
+	display: flex;
+	margin-right: 0.6rem;
 
-		margin: 0;
-		margin-left: 1.5rem;
-		padding: 0;
+	> * {
+		flex: none;
+	}
+
+	> div {
+		display: inline-block;
+		margin-left: auto;
 	}
 `;
 
-const ProejctMenuButton = styled.button`
+const ProjectTimeLabel = styled.span`
+	font-size: ${PROJECT_CARD_THEME.cardDescriptFontSize};
+	padding: 0;
+`;
+
+const ProjectMenuButton = styled.button`
 	& {
 		display: flex;
 		flex-direction: column;
-		justify-content: space-between;
+		justify-content: space-around;
 		align-items: center;
 
-		position: relative;
-		top: 70%;
-		right: 15%;
-
-		background-color: #00000000;
-
-		height: 2.3rem;
-		width: 1.3rem;
+		height: 2rem;
+		width: 2rem;
 
 		outline: none;
 		border: none;
-		margin: 0;
-		padding: 0.5rem;
+		padding: 0;
 	}
 	&:hover {
 		cursor: pointer;
@@ -75,13 +72,13 @@ const ProejctMenuButton = styled.button`
 `;
 
 const ProjectMenuButtonDot = styled.div`
-	& {
-		height: 0.3rem;
-		width: 0.3rem;
-		background-color: #7c7c7c;
+	display: inline;
+	flex-grow: 0;
+	height: 0.3rem;
+	width: 0.3rem;
+	background-color: #7c7c7c;
 
-		border-radius: 0.15rem;
-	}
+	border-radius: 50%;
 `;
 
 export {
@@ -89,6 +86,7 @@ export {
 	ProjectArticle,
 	ProjectTitle,
 	ProjectDescription,
-	ProejctMenuButton,
+	ProjectTimeLabel,
+	ProjectMenuButton,
 	ProjectMenuButtonDot
 };

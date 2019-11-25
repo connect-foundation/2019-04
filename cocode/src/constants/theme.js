@@ -3,7 +3,10 @@ const DEFAULT_THEME = {
 	mainOpaqueColor: '#2accf9b3',
 	backgroundColor: '#161419',
 	blackOpaqueColor: '#000000b3',
-	textColor: '#ffffff'
+	textColor: '#ffffff',
+
+	exceptHeaderHeignt: '88vh',
+	headerHeignt: '12vh'
 };
 
 const BROWSER_THEME = {
@@ -11,7 +14,7 @@ const BROWSER_THEME = {
 	adressInputBGColor: '#000',
 	adressInputTextColor: '#fff',
 
-	browserHeignt: '88.8vh'
+	browserHeignt: '88vh'
 };
 
 const TAB_CONTAINER_THEME = {
@@ -37,9 +40,10 @@ const PROJECT_CARD_THEME = {
 	cardHeight: '9.5rem',
 	cardWidth: '24rem',
 	cardBackgroundColor: '#FFFFFF',
-	cardTitleFontSize: '2rem',
+	cardTitleFontSize: '1.5rem',
 	cardDescriptFontSize: '1.25rem',
-	cardTextColor: '#161419'
+	cardTextColor: '#161419',
+	buttonBackgroundColor: '#232e36'
 };
 
 export {

@@ -14,11 +14,7 @@ import LoginModalBody from 'components/Common/LoginModalBody';
 function Header() {
 	const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
 	const handleOpenSignInModal = () => setIsSignInModalOpen(true);
-	const handleCloseSignInModal = () => {
-		const root = document.getElementById('root');
-		root.style.overflow = 'overlay';
-		setIsSignInModalOpen(false);
-	};
+	const handleCloseSignInModal = () => setIsSignInModalOpen(false);
 
 	const [user, setUser] = useState(null);
 
@@ -39,23 +35,31 @@ function Header() {
 			<Link to="/">
 				<Logo />
 			</Link>
-			{user ? (
-				<UserProfile username={user.username} avatar={user.avatar} />
-			) : (
-				<>
-					<Styled.SignInButton onClick={handleOpenSignInModal}>
-						Sign In
-					</Styled.SignInButton>
-					{isSignInModalOpen && (
-						<ModalPortal>
-							<Modal
-								modalBody={<LoginModalBody />}
-								onClose={handleCloseSignInModal}
-							/>
-						</ModalPortal>
-					)}
-				</>
-			)}
+			<Link to="/history">
+				<Styled.HeaderCategory>History</Styled.HeaderCategory>
+			</Link>
+			<Styled.HeaderRightSideArea>
+				{user ? (
+					<UserProfile
+						username={user.username}
+						avatar={user.avatar}
+					/>
+				) : (
+					<>
+						<Styled.SignInButton onClick={handleOpenSignInModal}>
+							Sign In
+						</Styled.SignInButton>
+						{isSignInModalOpen && (
+							<ModalPortal>
+								<Modal
+									modalBody={<LoginModalBody />}
+									onClose={handleCloseSignInModal}
+								/>
+							</ModalPortal>
+						)}
+					</>
+				)}
+			</Styled.HeaderRightSideArea>
 		</Styled.Header>
 	);
 }
