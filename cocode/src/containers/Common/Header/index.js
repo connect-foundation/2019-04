@@ -26,6 +26,18 @@ function Header() {
 		if (data) setUser(data.data);
 	};
 
+	const handleSignOut = () => setUser(null);
+
+	const profileDropDownMenuItems = [
+		{
+			value: 'dashboard'
+		},
+		{
+			value: 'sign out',
+			onClick: handleSignOut
+		}
+	];
+
 	useEffect(() => {
 		getJwtToken();
 	}, []);
@@ -43,6 +55,7 @@ function Header() {
 					<UserProfile
 						username={user.username}
 						avatar={user.avatar}
+						menuItems={profileDropDownMenuItems}
 					/>
 				) : (
 					<>
