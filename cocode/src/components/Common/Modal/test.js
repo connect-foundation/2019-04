@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { render, fireEvent, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
@@ -28,10 +28,33 @@ function MockModal() {
 	const handleOpenModal = () => setIsOpen(true);
 	const onClose = () => setIsOpen(true);
 
+	let rootElement = document.getElementById('root');
+
+	const openModal = () => {
+		if (!rootElement) {
+			rootElement = document.createElement('div');
+			rootElement.setAttribute('id', 'root');
+			rootElement.setAttribute('style', '{ overflow: hidden; }');
+			document.body.appendChild(rootElement);
+		}
+	};
+
+	const closeModal = () => {
+		if (!rootElement) {
+			rootElement = document.createElement('div');
+			rootElement.setAttribute('id', 'root');
+			rootElement.setAttribute('style', '{ overflow: initial; }');
+			document.body.appendChild(rootElement);
+		}
+		onClose();
+	};
+
+	useEffect(openModal, []);
+
 	return (
 		<div>
 			<button onClick={handleOpenModal}>{MODAL_OPEN_BUTTON_TEXT}</button>
-			{isOpen && <Modal modalBody={''} onClose={onClose} />}
+			{isOpen && <Modal modalBody={''} onClose={closeModal} />}
 		</div>
 	);
 }
