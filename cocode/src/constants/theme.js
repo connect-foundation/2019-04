@@ -40,9 +40,10 @@ const PROJECT_CARD_THEME = {
 	cardHeight: '9.5rem',
 	cardWidth: '24rem',
 	cardBackgroundColor: '#FFFFFF',
-	cardTitleFontSize: '2rem',
+	cardTitleFontSize: '1.5rem',
 	cardDescriptFontSize: '1.25rem',
-	cardTextColor: '#161419'
+	cardTextColor: '#161419',
+	buttonBackgroundColor: '#232e36'
 };
 
 export {
