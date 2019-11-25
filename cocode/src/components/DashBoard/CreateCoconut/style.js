@@ -2,12 +2,12 @@ import styled from 'styled-components';
 import { PROJECT_CARD_THEME } from 'constants/theme';
 
 const Button = styled.button`
-	height: ${PROJECT_CARD_THEME.cardHeight};
-	width: ${PROJECT_CARD_THEME.cardWidth};
+	height: 8rem;
+	width: 21rem;
 
 	text-align: center;
-	font-size: 2rem;
-	font-weight: 300;
+	font-size: ${PROJECT_CARD_THEME.buttonFontSize};
+	font-weight: ${PROJECT_CARD_THEME.buttonFontWight};
 
 	color: ${({ theme }) => theme.textColor};
 	background: ${PROJECT_CARD_THEME.buttonBackgroundColor};
