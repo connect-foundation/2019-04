@@ -3,6 +3,7 @@ import * as Styled from './style';
 import { Link } from 'react-router-dom';
 
 import ReactLogo from 'components/ReactLogo';
+import ScrollDownButton from 'components/ScrollDownButton';
 
 function Title() {
     return (
@@ -39,8 +40,11 @@ function Description() {
 function Main() {
     return (
         <Styled.Main>
-            <Description />
-            <ReactLogo className="Logo-floatRight Logo-alignCenter"/>
+            <Styled.Content>
+                <Description />
+                <ReactLogo className="Logo-floatRight Logo-alignCenter"/>
+            </Styled.Content>
+            <ScrollDownButton />
         </Styled.Main>
     );
 }

@@ -14,11 +14,7 @@ import LoginModalBody from 'components/LoginModalBody';
 function Header() {
 	const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
 	const handleOpenSignInModal = () => setIsSignInModalOpen(true);
-	const handleCloseSignInModal = () => {
-		const root = document.getElementById('root');
-		root.style.overflow = 'overlay';
-		setIsSignInModalOpen(false);
-	};
+	const handleCloseSignInModal = () => setIsSignInModalOpen(false);
 
 	const [user, setUser] = useState(null);
 
