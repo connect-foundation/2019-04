@@ -1,18 +1,17 @@
 import styled from 'styled-components';
-
-const BUTTON_BACKGROUND_COLOR = '#232e36';
+import { PROJECT_CARD_THEME } from 'constants/theme';
 
 const Button = styled.button`
-	height: 9.5rem;
-	width: 24rem;
-	
+	height: ${PROJECT_CARD_THEME.cardHeight};
+	width: ${PROJECT_CARD_THEME.cardWidth};
+
 	text-align: center;
 	font-size: 2rem;
 	font-weight: 300;
-	
+
 	color: ${({ theme }) => theme.textColor};
-	background: ${BUTTON_BACKGROUND_COLOR} ;
-	
+	background: ${PROJECT_CARD_THEME.buttonBackgroundColor};
+
 	border: 0.1rem dashed ${({ theme }) => theme.mainColor};
 	border-radius: 1rem;
 
