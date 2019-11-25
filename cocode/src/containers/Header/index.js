@@ -29,30 +29,40 @@ function Header() {
 		if (data) setUser(data.data);
 	};
 
-	useEffect(() => { getJwtToken(); }, []);
+	useEffect(() => {
+		getJwtToken();
+	}, []);
 
 	return (
 		<Styled.Header>
-			<Link to="/"><Logo /></Link>
-			{ user ?
-				<UserProfile
-					username={user.username}
-					avatar={user.avatar}
-				/> :
-				<>
-					<Styled.SignInButton onClick={handleOpenSignInModal}>
-						Sign In
-					</Styled.SignInButton>
-					{ isSignInModalOpen && (
-						<ModalPortal>
-							<Modal
-								modalBody={<LoginModalBody />}
-								onClose={handleCloseSignInModal}
-							/>
-						</ModalPortal>
-					)}
-				</>
-			}
+			<Link to="/">
+				<Logo />
+			</Link>
+			<Link to="/history">
+				<Styled.HeaderCategory>History</Styled.HeaderCategory>
+			</Link>
+			<Styled.HeaderRightSideArea>
+				{user ? (
+					<UserProfile
+						username={user.username}
+						avatar={user.avatar}
+					/>
+				) : (
+					<>
+						<Styled.SignInButton onClick={handleOpenSignInModal}>
+							Sign In
+						</Styled.SignInButton>
+						{isSignInModalOpen && (
+							<ModalPortal>
+								<Modal
+									modalBody={<LoginModalBody />}
+									onClose={handleCloseSignInModal}
+								/>
+							</ModalPortal>
+						)}
+					</>
+				)}
+			</Styled.HeaderRightSideArea>
 		</Styled.Header>
 	);
 }

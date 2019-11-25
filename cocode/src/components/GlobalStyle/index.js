@@ -64,6 +64,17 @@ const GlobalStyle = createGlobalStyle`
         cursor: pointer;
         color: ${({ theme }) => theme.textColor};
     }
+
+    a,
+	a:visited,
+	a:active {
+		color: ${({ theme }) => theme.textColor};
+		cursor: pointer;
+	}
+
+	a:hover {
+		color: ${({ theme }) => theme.mainColor};
+	}
 `;
 
 export default GlobalStyle;
