@@ -1,8 +1,8 @@
 import React, { useReducer, useEffect } from 'react';
 import * as Styled from './style';
 
-import MonacoEditor from 'components/MonacoEditor';
-import BrowserV1 from 'components/BrowserV1';
+import MonacoEditor from 'components/Project/MonacoEditor';
+import BrowserV1 from 'components/Project/BrowserV1';
 
 import ProjectReducer from 'reducers/ProjectReducer';
 

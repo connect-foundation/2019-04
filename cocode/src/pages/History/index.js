@@ -2,7 +2,7 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 
 import { Version1 } from 'pages';
-import Header from 'containers/Header';
+import Header from 'containers/Common/Header';
 import CocodeHistory from 'containers/History/CocodeHistory';
 
 function HistoryHome() {

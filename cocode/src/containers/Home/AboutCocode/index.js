@@ -1,8 +1,8 @@
 import React from 'react';
 import * as Styled from './style';
 
-import ScrollTopButton from 'components/ScrollTopButton';
-import ScrollDownButton from 'components/ScrollDownButton';
+import ScrollTopButton from 'components/Home/ScrollTopButton';
+import ScrollDownButton from 'components/Home/ScrollDownButton';
 
 function AboutCocode() {
 	return (

@@ -2,7 +2,7 @@ import React from 'react';
 import * as Styled from './style';
 
 import profiles from './profiles';
-import ScrollTopButton from 'components/ScrollTopButton';
+import ScrollTopButton from 'components/Home/ScrollTopButton';
 
 function AboutUsProfileCard({ name, nickName, src }) {
 	return (

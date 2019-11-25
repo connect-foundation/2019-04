@@ -3,13 +3,13 @@ import * as Styled from './style';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-import { API_SERVER } from 'config';
+import { API, DEFAULT_REQUEST_OPTION } from 'config';
 
-import Logo from 'components/Logo';
-import Modal from 'components/Modal';
-import UserProfile from 'components/UserProfile';
-import ModalPortal from 'components/ModalPortal';
-import LoginModalBody from 'components/LoginModalBody';
+import Logo from 'components/Common/Logo';
+import Modal from 'components/Common/Modal';
+import UserProfile from 'components/Common/UserProfile';
+import ModalPortal from 'components/Common/ModalPortal';
+import LoginModalBody from 'components/Common/LoginModalBody';
 
 function Header() {
 	const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
@@ -18,14 +18,11 @@ function Header() {
 
 	const [user, setUser] = useState(null);
 
-	const corsOption = {
-		withCredentials: true,
-		mode: 'cors',
-		credentials: 'include'
-	};
-
 	const getJwtToken = async () => {
-		const { data } = await axios.get(`${API_SERVER}/api/users`, corsOption);
+		const { data } = await axios.get(
+			API.getUserData,
+			DEFAULT_REQUEST_OPTION
+		);
 		if (data) setUser(data.data);
 	};
 
