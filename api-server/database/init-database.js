@@ -5,39 +5,38 @@ import { fileSeed, projectSeed, userSeed } from './seeds';
 
 dotenv.config();
 
-async function dropCollection(db, collection) {
-	return db
-		.dropCollection(collection)
-		.then(() => console.log(`SUCCESS drop ${collection} `))
+async function drop(connection) {
+	return connection
+		.dropDatabase()
+		.then(() => console.log('SUCCESS drop DATABASE! '))
 		.catch(err => console.error(err));
 }
 
 async function insertSeed(Model, seed) {
 	return Model.insertMany(seed)
-		.then(() => console.log('SUCCESS insert seedData'))
+		.then(() => console.log(`SUCCESS insert ${Model.modelName}`))
 		.catch(err => console.error(err));
 }
 
-const MONGODB_URI =
-	process.env.NODE_ENV === 'production'
-		? process.env.PROD_DATABASE_URI
-		: process.env.DEV_DATABASE_URI;
+if (process.env.NODE_ENV === 'production') process.exit(0);
+else {
+	const MONGODB_URI = process.env.DEV_DATABASE_URI;
+	const connection = mongoose.connection;
+	connection.on('error', console.error.bind(console, 'connection error:'));
+	connection.once('open', async () => {
+		console.log('Connection Successful!');
 
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', async () => {
-	console.log('Connection Successful!');
+		await drop(connection);
 
-	await dropCollection(db, 'files');
-	await dropCollection(db, 'projects');
-	await dropCollection(db, 'users');
+		await insertSeed(File, fileSeed);
+		await insertSeed(Project, projectSeed);
+		await insertSeed(User, userSeed);
 
-	await insertSeed(File, fileSeed);
-	await insertSeed(Project, projectSeed);
-	await insertSeed(User, userSeed);
-});
+		connection.close();
+	});
 
-mongoose.connect(MONGODB_URI, {
-	useNewUrlParser: true,
-	useUnifiedTopology: true
-});
+	mongoose.connect(MONGODB_URI, {
+		useNewUrlParser: true,
+		useUnifiedTopology: true
+	});
+}
