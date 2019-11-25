@@ -1,10 +1,14 @@
 import styled from 'styled-components';
 
+const Main = styled.main`
+	padding: 3rem 7rem;
+`;
+
 const Title = styled.h2`
 	color: ${({ theme }) => theme.textColor};
 	font-size: 2.5rem;
 	font-weight: 300;
-	padding-left: 1.5rem;
+	padding-left: 3.5rem;
 `;
 
 const CoconutCount = styled.span`
@@ -12,22 +16,20 @@ const CoconutCount = styled.span`
 	padding: 1rem;
 `;
 
-const CardList = styled.ul`
-	display: flex;
-	flex-flow: row wrap;
-	align-content: flex-start;
+const CardList = styled.section`
+	& {
+		display: flex;
+		flex-flow: row wrap;
+		align-content: flex-start;
+		justify-content: flex-start;
 
-	width: 95vw;
-	list-style: none;
-	padding: 0;
-
-	& > {
-		flex: 1;
+		width: 100vw;
+		list-style: none;
+		padding: 0;
+	}
+	& > * {
+		margin: 3.5rem;
 	}
 `;
 
-const CardItem = styled.li`
-	margin: 1.5rem;
-`;
-
-export { Title, CoconutCount, CardList, CardItem };
+export { Main, Title, CoconutCount, CardList };
