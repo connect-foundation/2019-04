@@ -1,6 +1,6 @@
 import React from 'react';
 import * as Styled from './style';
-import DropDownMenu from 'components/DropDownMenu';
+import DropDownMenu from 'components/Common/DropDownMenu';
 
 function MenuButton({ onClick }) {
 	return (

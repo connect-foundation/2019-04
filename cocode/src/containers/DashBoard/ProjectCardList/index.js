@@ -1,7 +1,7 @@
 import React from 'react';
 import * as Style from './style';
-import ProjectCard from 'components/ProjectCard';
-import CreateButton from 'components/CreateCoconut';
+import ProjectCard from 'components/DashBoard/ProjectCard';
+import CreateButton from 'components/DashBoard/CreateCoconut';
 import { PROJECT_CARD_THEME } from 'constants/theme';
 
 function ProjectCardList({ coconuts = [] }) {
