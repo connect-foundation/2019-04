@@ -24,10 +24,9 @@ const mockData = [
 		name: 'index.js'
 	}
 ];
-
-function ProjectTab() {
+function ExplorerTab() {
 	return (
-		<Styled.ProjectTab>
+		<Styled.ExplorerTab>
 			<Styled.Title>{TabTitle}</Styled.Title>
 			{mockData.map(({ type, src, depth, name }, index) => {
 				return (
@@ -37,8 +36,8 @@ function ProjectTab() {
 					</Styled.File>
 				);
 			})}
-		</Styled.ProjectTab>
+		</Styled.ExplorerTab>
 	);
 }
 
-export default ProjectTab;
+export default ExplorerTab;

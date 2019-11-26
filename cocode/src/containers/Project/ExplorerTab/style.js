@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { TAB_CONTAINER_THEME } from 'constants/theme';
 
-const ProjectTab = styled.section`
+const ExplorerTab = styled.section`
 	& {
 		/* temp width */
 		width: 15rem;
@@ -55,4 +55,4 @@ const File = styled.div`
 	}
 `;
 
-export { ProjectTab, Title, Icon, File };
+export { ExplorerTab, Title, Icon, File };

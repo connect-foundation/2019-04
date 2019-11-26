@@ -3,7 +3,7 @@ import * as Styled from './style';
 
 import Header from 'containers/Common/Header';
 import TabBar from 'components/Project/TabBar';
-import ProjectTab from 'containers/Project/ProjectTab';
+import ExplorerTab from 'containers/Project/ExplorerTab';
 import Editor from 'containers/Project/Editor';
 import BrowserV1 from 'components/Project/BrowserV1';
 
@@ -28,7 +28,7 @@ function Project() {
 			<Header />
 			<Styled.Main>
 				<TabBar theme={TAB_BAR_THEME} />
-				<ProjectTab />
+				<ExplorerTab />
 				<Editor />
 				<BrowserV1
 					code={project.code}
