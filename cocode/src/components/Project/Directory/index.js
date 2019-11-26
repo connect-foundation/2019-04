@@ -13,12 +13,11 @@ function Directory({ child, depth, handleClick }) {
 				const { type } = files[id];
 				const handleClickFile = () => handleClick(id);
 				return (
-					<>
+					<div key={id}>
 						<File
 							className={
 								selectedFileId === id && 'Is-selected-file'
 							}
-							key={id}
 							depth={depth}
 							handleClick={
 								type !== 'directory' && handleClickFile
@@ -32,7 +31,7 @@ function Directory({ child, depth, handleClick }) {
 								handleClick={handleClick}
 							/>
 						)}
-					</>
+					</div>
 				);
 			})}
 		</div>

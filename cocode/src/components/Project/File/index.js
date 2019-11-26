@@ -30,7 +30,11 @@ function File({ type, name, depth, handleClick, ...props }) {
 	const src = FILE_IMAGES[type];
 
 	return (
-		<Styled.File depth={depth} onClick={handleClick} {...props}>
+		<Styled.File
+			depth={depth}
+			onClick={handleClick ? handleClick : undefined}
+			{...props}
+		>
 			<Styled.Icon src={src} alt={`${name}_${type}`} />
 			<Styled.Name>{name}</Styled.Name>
 			<Styled.SideIcons className="Side-icons-visibility">

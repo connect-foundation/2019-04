@@ -20,7 +20,7 @@ const File = styled.article`
 	&:hover {
 		background-color: ${TAB_CONTAINER_THEME.tabContainerFileHoverBGColor};
 
-		text {
+		h1 {
 			color: ${TAB_CONTAINER_THEME.tabContainerFileHoverTextColor};
 		}
 
@@ -39,8 +39,9 @@ const Icon = styled.img`
 	}
 `;
 
-const Name = styled.text`
+const Name = styled.h1`
 	& {
+		font-weight: lighter;
 		font-size: ${TAB_CONTAINER_THEME.tabContainerFileTextSize};
 		color: ${TAB_CONTAINER_THEME.tabContainerFileTextColor};
 	}
