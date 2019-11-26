@@ -8,6 +8,7 @@ import {
 import Directory from 'components/Project/Directory';
 
 import ProjectContext from 'contexts/ProjectContext';
+import { selectFileActionCreator } from 'actions/Project';
 
 const TAB_TITLE = 'EXPLOLER';
 
@@ -24,14 +25,23 @@ function TabHeader() {
 }
 
 function ExplorerTab() {
-	const { project } = useContext(ProjectContext);
+	const { project, dispatchProject } = useContext(ProjectContext);
 	const { files, root } = project;
 	const rootFiles = files[root].child;
+
+	const handleSelectFile = selectedFileId => {
+		const selectFileAction = selectFileActionCreator({ selectedFileId });
+		dispatchProject(selectFileAction);
+	};
 
 	return (
 		<Styled.ExplorerTab>
 			<TabHeader />
-			<Directory child={rootFiles} depth={1} />
+			<Directory
+				child={rootFiles}
+				depth={1}
+				handleClick={handleSelectFile}
+			/>
 		</Styled.ExplorerTab>
 	);
 }

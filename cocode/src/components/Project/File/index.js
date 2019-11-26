@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import * as Styled from './style';
 
 import {
@@ -26,11 +26,11 @@ function isFolder(type) {
 	return type.substring(0, 9) === 'directory';
 }
 
-function File({ type, name, depth, ...props }) {
+function File({ type, name, depth, handleClick, ...props }) {
 	const src = FILE_IMAGES[type];
 
 	return (
-		<Styled.File depth={depth} {...props}>
+		<Styled.File depth={depth} onClick={handleClick} {...props}>
 			<Styled.Icon src={src} alt={`${name}_${type}`} />
 			<Styled.Name>{name}</Styled.Name>
 			<Styled.SideIcons className="Side-icons-visibility">

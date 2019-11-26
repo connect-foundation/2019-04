@@ -3,7 +3,7 @@ import File from '../File';
 
 import ProjectContext from 'contexts/ProjectContext';
 
-function Directory({ child, depth }) {
+function Directory({ child, depth, handleClick }) {
 	const { project } = useContext(ProjectContext);
 	const { files, selectedFileId } = project;
 
@@ -11,6 +11,7 @@ function Directory({ child, depth }) {
 		<div>
 			{child.map(id => {
 				const { type } = files[id];
+				const handleClickFile = () => handleClick(id);
 				return (
 					<>
 						<File
@@ -19,12 +20,16 @@ function Directory({ child, depth }) {
 							}
 							key={id}
 							depth={depth}
+							handleClick={
+								type !== 'directory' && handleClickFile
+							}
 							{...files[id]}
 						/>
 						{type === 'directory' && (
 							<Directory
 								child={files[id].child}
 								depth={depth + 1}
+								handleClick={handleClick}
 							/>
 						)}
 					</>
