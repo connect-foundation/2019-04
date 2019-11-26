@@ -31,9 +31,8 @@ const TAB_CONTAINER_THEME = {
 };
 
 const TAB_BAR_THEME = {
-	tabBarBGColor: '#1d2022',
-	tabBarItemBGColor: '#A5A6A7',
-	tabBarSelectedItemBGColor: '#fff'
+	tabBarBGColor: '#1E2022',
+	tabBarSelectedItemBGColor: '#cfcfcf'
 };
 
 const PROJECT_CARD_THEME = {
