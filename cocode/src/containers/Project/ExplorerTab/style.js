@@ -8,6 +8,10 @@ const ExplorerTab = styled.section`
 
 		background-color: ${TAB_CONTAINER_THEME.tabContainerBGColor};
 	}
+
+	.Is-selected-file {
+		background-color: ${TAB_CONTAINER_THEME.tabContainerFileHoverBGColor};
+	}
 `;
 
 const TabHeader = styled.header`
@@ -33,51 +37,6 @@ const Title = styled.h1`
 	}
 `;
 
-const Icon = styled.img`
-	& {
-		margin-right: 0.5rem;
-
-		width: ${TAB_CONTAINER_THEME.tabContainerFileTextSize};
-		height: ${TAB_CONTAINER_THEME.tabContainerFileTextSize};
-	}
-`;
-
-const File = styled.article`
-	& {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-
-		padding: 0.4rem;
-		padding-left: ${({ depth }) => `${depth}rem`};
-
-		cursor: pointer;
-	}
-
-	.Side-icons-visibility {
-		display: none;
-	}
-
-	&:hover {
-		background-color: ${TAB_CONTAINER_THEME.tabContainerFileHoverBGColor};
-
-		text {
-			color: ${TAB_CONTAINER_THEME.tabContainerFileHoverTextColor};
-		}
-
-		.Side-icons-visibility {
-			display: flex;
-		}
-	}
-`;
-
-const Name = styled.text`
-	& {
-		font-size: ${TAB_CONTAINER_THEME.tabContainerFileTextSize};
-		color: ${TAB_CONTAINER_THEME.tabContainerFileTextColor};
-	}
-`;
-
 const SideIcons = styled.span`
 	& {
 		margin-left: auto;
@@ -88,4 +47,4 @@ const SideIcons = styled.span`
 	}
 `;
 
-export { ExplorerTab, TabHeader, Title, Icon, File, Name, SideIcons };
+export { ExplorerTab, TabHeader, Title, SideIcons };

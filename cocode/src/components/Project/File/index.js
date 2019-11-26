@@ -8,33 +8,36 @@ import {
 	NewFileIcon
 } from 'components/Project/ExplorerTabIcons';
 
+const FILE_IMAGES = {
+	directory: 'https://codesandbox.io/static/media/folder.30a30d83.svg',
+	directoryOpen:
+		'https://codesandbox.io/static/media/folder-open.df474ba4.svg',
+	js:
+		'https://cdn.jsdelivr.net/gh/PKief/vscode-material-icon-theme@master/icons/javascript.svg',
+	css:
+		'https://cdn.jsdelivr.net/gh/PKief/vscode-material-icon-theme@master/icons/css.svg',
+	html:
+		'https://cdn.jsdelivr.net/gh/PKief/vscode-material-icon-theme@master/icons/html.svg',
+	npm:
+		'https://cdn.jsdelivr.net/gh/PKief/vscode-material-icon-theme@master/icons/npm.svg'
+};
+
 function isFolder(type) {
-	return type.substring(0, 6) === 'folder';
+	return type.substring(0, 9) === 'directory';
 }
 
-function File({
-	type,
-	src,
-	depth,
-	name,
-	handleEditName,
-	handleCreateNewFolder,
-	handleCreateNewFile,
-	handleDelete
-}) {
+function File({ type, name, depth, ...props }) {
+	const src = FILE_IMAGES[type];
+
 	return (
-		<Styled.File depth={depth}>
+		<Styled.File depth={depth} {...props}>
 			<Styled.Icon src={src} alt={`${name}_${type}`} />
 			<Styled.Name>{name}</Styled.Name>
 			<Styled.SideIcons className="Side-icons-visibility">
-				<EditIcon onClick={handleEditName} />
-				{isFolder(type) && (
-					<NewFolderIcon onClick={handleCreateNewFolder} />
-				)}
-				{isFolder(type) && (
-					<NewFileIcon onClick={handleCreateNewFile} />
-				)}
-				<DeleteIcon onClick={handleDelete} />
+				<EditIcon />
+				{isFolder(type) && <NewFolderIcon />}
+				{isFolder(type) && <NewFileIcon />}
+				<DeleteIcon />
 			</Styled.SideIcons>
 		</Styled.File>
 	);
