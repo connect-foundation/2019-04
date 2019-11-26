@@ -24,6 +24,7 @@ const mockData = [
 		name: 'index.js'
 	}
 ];
+
 function ExplorerTab() {
 	return (
 		<Styled.ExplorerTab>
@@ -32,7 +33,7 @@ function ExplorerTab() {
 				return (
 					<Styled.File key={index} depth={depth}>
 						<Styled.Icon src={src} alt={type} />
-						<font>{name}</font>
+						<Styled.Name>{name}</Styled.Name>
 					</Styled.File>
 				);
 			})}

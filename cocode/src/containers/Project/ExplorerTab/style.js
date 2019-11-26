@@ -39,20 +39,20 @@ const File = styled.div`
 		padding-left: ${({ depth }) => `${depth}rem`};
 
 		cursor: pointer;
-
-		font {
-			font-size: ${TAB_CONTAINER_THEME.tabContainerFileTextSize};
-			color: ${TAB_CONTAINER_THEME.tabContainerFileTextColor};
-		}
 	}
 
 	&:hover {
 		background-color: ${TAB_CONTAINER_THEME.tabContainerFileHoverBGColor};
 
-		font {
+		text {
 			color: ${TAB_CONTAINER_THEME.tabContainerFileHoverTextColor};
 		}
 	}
 `;
 
-export { ExplorerTab, Title, Icon, File };
+const Name = styled.text`
+	font-size: ${TAB_CONTAINER_THEME.tabContainerFileTextSize};
+	color: ${TAB_CONTAINER_THEME.tabContainerFileTextColor};
+`;
+
+export { ExplorerTab, Title, Icon, File, Name };
