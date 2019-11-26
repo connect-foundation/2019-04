@@ -50,6 +50,7 @@
 		"react-dom": "^16.11.0",
 		"react-router-dom": "^5.1.2",
 		"react-scripts": "^3.2.0",
+		"react-style-proptype": "^3.2.2",
 		"styled-components": "^4.4.1",
 		"webpack": "^4.41.2"
 	},
