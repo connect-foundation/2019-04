@@ -1,34 +1,37 @@
-import { UPDATE_CODE, FETCH_PROJECT } from 'actions/Project';
+// 참고: https://github.com/dal-lab/frontend-tdd-examples/blob/master/6-todo-redux/src/reducers.js
+import { UPDATE_CODE, FETCH_PROJECT } from 'actions/types';
+import ProjectDummyData from 'dummy/Project';
 
-const INITIAL_CODE = `const { useState } = React;
+const fetchProject = () => {
+	const files = ProjectDummyData.files.reduce((acc, cur) => {
+		acc[cur._id] = cur;
+		return acc;
+	}, {});
 
-function App() {
-	const [state, setState] = useState('Cocode');
-	
-	return(
-		<>
-			<h1>Hi! {state}</h1>
-		</>
-	)
-}
+	const fetchedProject = ProjectDummyData;
+	fetchedProject.files = files;
 
-ReactDOM.render(<App />, document.getElementById('coconut-root'));
-`;
+	return fetchedProject;
+};
+
+const updateCode = ({ selectedFileId, changedCode }) => {
+	const changedState = {};
+	changedState[selectedFileId] = {
+		...state.files[selectedFileId],
+		contents: changedCode
+	};
+
+	return { ...state, files: { ...state.files, ...changedState } };
+};
 
 function ProjectReducer(state, { type, payload }) {
-	switch (type) {
-		case UPDATE_CODE: {
-			return { ...state, code: payload };
-		}
-		case FETCH_PROJECT: {
-			// TODO: API server에 fetch 요청 보내서 가져오기
-			const fetchedProject = { code: INITIAL_CODE };
-			return fetchedProject;
-		}
-		default: {
-			throw new Error(`unexpected action.type: ${type}`);
-		}
-	}
+	const reducers = {
+		[FETCH_PROJECT]: fetchProject,
+		[UPDATE_CODE]: updateCode
+	};
+
+	const reducer = reducers[type];
+	return reducer ? reducer(payload) : state;
 }
 
 export default ProjectReducer;
