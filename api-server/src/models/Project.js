@@ -10,8 +10,7 @@ const ProjectSchema = new mongoose.Schema(
 			type: String
 		},
 		author: {
-			type: ObjectId,
-			ref: 'User'
+			type: String
 		},
 		rootDirectory: {
 			type: ObjectId,
