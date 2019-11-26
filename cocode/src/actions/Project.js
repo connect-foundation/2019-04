@@ -1,16 +1,11 @@
-const UPDATE_CODE = 'updateCode';
-function updateCodeActionCreator(payload) {
-	return { type: UPDATE_CODE, payload };
-}
+import { UPDATE_CODE, FETCH_PROJECT } from './types';
 
-const FETCH_PROJECT = 'fetchProject';
 function fetchProjectActionCreator() {
 	return { type: FETCH_PROJECT };
 }
 
-export {
-	UPDATE_CODE,
-	updateCodeActionCreator,
-	FETCH_PROJECT,
-	fetchProjectActionCreator
-};
+function updateCodeActionCreator(payload) {
+	return { type: UPDATE_CODE, payload };
+}
+
+export { updateCodeActionCreator, fetchProjectActionCreator };
