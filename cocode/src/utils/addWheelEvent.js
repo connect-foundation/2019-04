@@ -1,14 +1,14 @@
-let scroll = false;
+let isScrollable = false;
 
 function handleWheelScroll(e) {
-	if (scroll) return;
-	scroll = true;
+	if (isScrollable) return;
+	isScrollable = true;
 	if (e.deltaY < 0) window.scrollBy(0, -window.innerHeight);
 	else window.scrollBy(0, window.innerHeight);
-	wheelTimer = setTimeout(handleWheelAble, 1000);
+	setTimeout(handleWheelAble, 1000);
 }
 function handleWheelAble() {
-	scroll = false;
+	isScrollable = false;
 }
 
 function addWheelEvent() {
