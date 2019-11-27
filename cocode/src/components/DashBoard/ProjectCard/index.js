@@ -1,7 +1,9 @@
 import React from 'react';
 import * as Styled from './style';
 import DropDownMenu from 'components/Common/DropDownMenu';
+import moment from 'moment';
 
+//TODO onClick시 api 요청 이벤트 핸들러 추가
 const defaultMenuItems = [
 	{
 		value: 'open',
@@ -33,8 +35,7 @@ function ProjectCard({ name, updatedAt, menuItems = defaultMenuItems }) {
 			<Styled.ProjectTitle>{name}</Styled.ProjectTitle>
 			<Styled.ProjectDescription>
 				<Styled.ProjectTimeLabel>
-					{/*TODO 날짜 계산 유틸 구현*/}
-					Edited {`${updatedAt}`} ago
+					Edited {moment(updatedAt).fromNow()}
 				</Styled.ProjectTimeLabel>
 				<DropDownMenu menuItems={menuItems}>
 					<MenuButton />
