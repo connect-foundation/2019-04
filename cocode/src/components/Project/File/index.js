@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import * as Styled from './style';
 
 import {
@@ -7,6 +7,8 @@ import {
 	NewFolderIcon,
 	NewFileIcon
 } from 'components/Project/ExplorerTabIcons';
+
+import { selectAllTextAboutFocusedDom } from 'utils/domControl';
 
 const FILE_IMAGES = {
 	directory: 'https://codesandbox.io/static/media/folder.30a30d83.svg',
@@ -26,21 +28,50 @@ function isFolder(type) {
 	return type.substring(0, 9) === 'directory';
 }
 
-function File({ type, name, depth, handleClick, ...props }) {
+function File({ _id, type, name, depth, handleClick, ...props }) {
+	const [toggleEdit, setToggleEdit] = useState(false);
+	const nameEditReferenece = useRef(null);
+
 	const src = FILE_IMAGES[type];
+
+	// Event handlers
+	const handleEditFileNameStart = e => {
+		e.stopPropagation();
+
+		const nameEditNode = nameEditReferenece.current;
+		setToggleEdit(!toggleEdit);
+		nameEditNode.contentEditable = !toggleEdit;
+		nameEditNode.focus();
+	};
+
+	const handleEditFileNameEnd = () => {
+		setToggleEdit(!toggleEdit);
+		nameEditReferenece.current.contentEditable = !toggleEdit;
+	};
 
 	return (
 		<Styled.File
+			toggleEdit={toggleEdit}
 			depth={depth}
 			onClick={handleClick ? handleClick : undefined}
 			{...props}
 		>
 			<Styled.Icon src={src} alt={`${name}_${type}`} />
-			<Styled.Name>{name}</Styled.Name>
+			<Styled.NameEdit
+				ref={nameEditReferenece}
+				onFocus={selectAllTextAboutFocusedDom}
+				onBlur={handleEditFileNameEnd}
+			>
+				{name}
+			</Styled.NameEdit>
 			<Styled.SideIcons className="Side-icons-visibility">
-				<EditIcon />
-				{isFolder(type) && <NewFolderIcon />}
-				{isFolder(type) && <NewFileIcon />}
+				<EditIcon onClick={handleEditFileNameStart} />
+				{isFolder(type) && (
+					<>
+						<NewFolderIcon />
+						<NewFileIcon />
+					</>
+				)}
 				<DeleteIcon />
 			</Styled.SideIcons>
 		</Styled.File>
