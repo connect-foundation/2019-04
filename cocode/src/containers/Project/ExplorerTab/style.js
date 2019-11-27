@@ -6,9 +6,6 @@ import {
 
 const ExplorerTab = styled.section`
 	& {
-		/* temp width */
-		width: 15rem;
-
 		background-color: ${TAB_CONTAINER_THEME.tabContainerBGColor};
 	}
 

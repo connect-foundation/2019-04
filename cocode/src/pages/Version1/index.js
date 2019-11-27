@@ -3,6 +3,7 @@ import * as Styled from './style';
 
 import MonacoEditor from 'components/Project/MonacoEditor';
 import BrowserV1 from 'components/Project/BrowserV1';
+import { SplitPaneContainer } from 'components/Common/SplitPane';
 
 import ProjectReducer from 'reducers/ProjectReducer';
 
@@ -28,16 +29,18 @@ function Version1() {
 
 	return (
 		<Styled.Main>
-			<MonacoEditor
-				className="Stretch-item"
-				code={project.code}
-				onChange={handleChangeCode}
-			/>
-			<BrowserV1
-				className="Stretch-item"
-				code={project.code}
-				id="coconut-root"
-			/>
+			<SplitPaneContainer split="vertical" defaultSize="50vw">
+				<MonacoEditor
+					className="Stretch-item"
+					code={project.code}
+					onChange={handleChangeCode}
+				/>
+				<BrowserV1
+					className="Stretch-item"
+					code={project.code}
+					id="coconut-root"
+				/>
+			</SplitPaneContainer>
 		</Styled.Main>
 	);
 }
