@@ -20,13 +20,8 @@ const BROWSER_THEME = {
 const TAB_CONTAINER_THEME = {
 	tabContainerBGColor: '#0e0f10',
 	tabContainerTitleColor: '#7E7E7E',
-	tabContainerFileTextColor: '#878788',
-	tabContainerFileHoverTextColor: '#fff',
-	tabContainerFileHoverBGColor: '#2accf944',
 
 	tabContainerTitleSize: '1.25rem',
-	tabContainerFileTextSize: '1rem',
-
 	tabContainerTitleWeight: '600'
 };
 
@@ -46,8 +41,17 @@ const PROJECT_CARD_THEME = {
 };
 
 const EXPLORER_TAB_CONTAINER_THEME = {
+	explorerTabContainerFileTextColor: '#878788',
+	explorerTabContainerFileHoverTextColor: '#fff',
+	explorerTabContainerFileHoverBGColor: '#2accf944',
+	explorerTabContainerFileNameEditBGColor: '#000',
+	explorerTabContainerFileEditBGColor: 'rgba(55, 65, 64, 0.314)',
+	explorerTabContainerSelectedFileBGColor: '#2accf944',
+
 	explorerTabContainerIconHoverColor: '#fff',
-	explorerTabContainerIconColor: '#878788'
+	explorerTabContainerIconColor: '#878788',
+
+	explorerTabContainerFileTextSize: '1rem'
 };
 
 export {
