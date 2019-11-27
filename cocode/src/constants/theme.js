@@ -48,10 +48,16 @@ const PROJECT_CARD_THEME = {
 	buttonFontWight: '300'
 };
 
+const EXPLORER_TAB_CONTAINER_THEME = {
+	explorerTabContainerIconHoverColor: '#fff',
+	explorerTabContainerIconColor: '#878788'
+};
+
 export {
 	DEFAULT_THEME,
 	BROWSER_THEME,
 	TAB_BAR_THEME,
 	TAB_CONTAINER_THEME,
-	PROJECT_CARD_THEME
+	PROJECT_CARD_THEME,
+	EXPLORER_TAB_CONTAINER_THEME
 };
