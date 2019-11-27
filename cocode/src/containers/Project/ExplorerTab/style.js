@@ -39,6 +39,9 @@ const Title = styled.h1`
 
 const SideIcons = styled.span`
 	& {
+		display: flex;
+		flex-direction: row;
+
 		margin-left: auto;
 	}
 

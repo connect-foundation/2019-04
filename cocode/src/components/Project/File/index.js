@@ -9,6 +9,7 @@ import {
 } from 'components/Project/ExplorerTabIcons';
 
 import { selectAllTextAboutFocusedDom } from 'utils/domControl';
+import { KEY_CODE_ENTER } from 'constants/keyCode';
 
 const FILE_IMAGES = {
 	directory: 'https://codesandbox.io/static/media/folder.30a30d83.svg',
@@ -44,11 +45,6 @@ function File({
 	const src = FILE_IMAGES[type];
 
 	// Event handlers
-	const handleFileNameChange = e => {
-		const changedName = e.currentTarget.textContent;
-		setFileName(changedName);
-	};
-
 	const handleEditFileNameStart = e => {
 		e.stopPropagation();
 
@@ -58,10 +54,18 @@ function File({
 		nameEditNode.focus();
 	};
 
-	const handleEditFileNameEnd = () => {
+	const handleEditFileNameEnd = e => {
+		const changedName = e.currentTarget.textContent;
+		setFileName(changedName);
 		handleEditFimeName(fileName);
+
 		setToggleEdit(!toggleEdit);
 		nameEditReferenece.current.contentEditable = !toggleEdit;
+	};
+
+	const handleKeyDown = e => {
+		if (e.currentTarget.textContent === 10) e.stopPropagation();
+		if (e.keyCode === KEY_CODE_ENTER) handleEditFileNameEnd(e);
 	};
 
 	return (
@@ -74,9 +78,9 @@ function File({
 			<Styled.Icon src={src} alt={`${name}_${type}`} />
 			<Styled.NameEdit
 				ref={nameEditReferenece}
-				onInput={handleFileNameChange}
 				onFocus={selectAllTextAboutFocusedDom}
 				onBlur={handleEditFileNameEnd}
+				onKeyDown={handleKeyDown}
 			>
 				{fileName}
 			</Styled.NameEdit>

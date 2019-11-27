@@ -53,6 +53,9 @@ const NameEdit = styled.div`
 		font-weight: lighter;
 		font-size: ${EXPLORER_TAB_CONTAINER_THEME.explorerTabContainerFileTextSize};
 		color: ${EXPLORER_TAB_CONTAINER_THEME.explorerTabContainerFileTextColor};
+
+		overflow: hidden;
+		white-space: nowrap;
 	}
 
 	&[contentEditable='true'] {
@@ -62,6 +65,9 @@ const NameEdit = styled.div`
 
 const SideIcons = styled.span`
 	& {
+		display: flex;
+		flex-direction: row;
+
 		margin-left: auto;
 	}
 
