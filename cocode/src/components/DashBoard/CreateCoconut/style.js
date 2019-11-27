@@ -6,8 +6,8 @@ const Button = styled.button`
 	width: ${PROJECT_CARD_THEME.cardWidth};
 
 	text-align: center;
-	font-size: 2rem;
-	font-weight: 300;
+	font-size: ${PROJECT_CARD_THEME.buttonFontSize};
+	font-weight: ${PROJECT_CARD_THEME.buttonFontWight};
 
 	color: ${({ theme }) => theme.textColor};
 	background: ${PROJECT_CARD_THEME.buttonBackgroundColor};

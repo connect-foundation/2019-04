@@ -6,27 +6,22 @@ import { PROJECT_CARD_THEME } from 'constants/theme';
 
 function ProjectCardList({ coconuts = [] }) {
 	return (
-		<>
+		<Style.Main>
 			<Style.Title>
 				Coconuts
 				<Style.CoconutCount>{coconuts.length}</Style.CoconutCount>
 			</Style.Title>
 			<Style.CardList>
-				<Style.CardItem>
-					<CreateButton />
-				</Style.CardItem>
-
+				<CreateButton />
 				{coconuts.map((coconut, index) => (
-					<Style.CardItem>
-						<ProjectCard
-							{...coconut}
-							key={index}
-							theme={PROJECT_CARD_THEME}
-						/>
-					</Style.CardItem>
+					<ProjectCard
+						{...coconut}
+						key={index}
+						theme={PROJECT_CARD_THEME}
+					/>
 				))}
 			</Style.CardList>
-		</>
+		</Style.Main>
 	);
 }
 

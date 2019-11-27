@@ -36,13 +36,21 @@ const TAB_BAR_THEME = {
 };
 
 const PROJECT_CARD_THEME = {
-	cardHeight: '9.5rem',
-	cardWidth: '24rem',
+	cardHeight: '8rem',
+	cardWidth: '21rem',
 	cardBackgroundColor: '#FFFFFF',
 	cardTitleFontSize: '1.5rem',
 	cardDescriptFontSize: '1.25rem',
 	cardTextColor: '#161419',
-	buttonBackgroundColor: '#232e36'
+	buttonBackgroundColor: '#232e36',
+	buttonDotColor: '#7c7c7c',
+	buttonFontSize: '2rem',
+	buttonFontWight: '300'
+};
+
+const EXPLORER_TAB_CONTAINER_THEME = {
+	explorerTabContainerIconHoverColor: '#fff',
+	explorerTabContainerIconColor: '#878788'
 };
 
 const INFO_TAB_THEME = {
@@ -65,4 +73,5 @@ export {
 	TAB_CONTAINER_THEME,
 	PROJECT_CARD_THEME,
 	INFO_TAB_THEME
+	EXPLORER_TAB_CONTAINER_THEME
 };

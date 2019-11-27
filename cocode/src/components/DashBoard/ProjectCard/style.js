@@ -1,41 +1,34 @@
 import styled from 'styled-components';
 import { PROJECT_CARD_THEME } from 'constants/theme';
 
-const ProjectCard = styled.section`
-	& {
-		height: ${PROJECT_CARD_THEME.cardHeight};
-		width: ${PROJECT_CARD_THEME.cardWidth};
-
-		background-color: ${PROJECT_CARD_THEME.cardBackgroundColor};
-		border-radius: 1rem;
-
-		padding: 0;
-		margin: 0;
-	}
-`;
-
 const ProjectArticle = styled.article`
 	& {
 		display: flex;
 		flex-direction: column;
 		justify-content: space-around;
 
-		margin-left: 2rem;
+		height: ${PROJECT_CARD_THEME.cardHeight};
+		width: ${PROJECT_CARD_THEME.cardWidth};
+
+		padding: 2rem 1.2rem 1.6rem 1.8rem;
+
+		background-color: ${PROJECT_CARD_THEME.cardBackgroundColor};
+		border-radius: 1rem;
 	}
 `;
 
-const ProjectTitle = styled.h1`
+const ProjectTitle = styled.h2`
 	& {
+		margin-bottom: 1.5rem;
 		color: ${({ theme }) => theme.backgroundColor};
 		font-size: ${PROJECT_CARD_THEME.cardTitleFontSize};
-		margin-top: 2rem;
-		margin-bottom: 2rem;
 	}
 `;
 
 const ProjectDescription = styled.div`
 	display: flex;
-	margin-right: 0.6rem;
+	align-items: flex-end;
+	color: ${({ theme }) => theme.backgroundColor};
 
 	> * {
 		flex: none;
@@ -57,17 +50,10 @@ const ProjectMenuButton = styled.button`
 		display: flex;
 		flex-direction: column;
 		justify-content: space-around;
-		align-items: center;
+		align-items: flex-end;
 
-		height: 2rem;
-		width: 2rem;
-
-		outline: none;
-		border: none;
-		padding: 0;
-	}
-	&:hover {
-		cursor: pointer;
+		height: 1.5rem;
+		width: 1.5rem;
 	}
 `;
 
@@ -76,13 +62,12 @@ const ProjectMenuButtonDot = styled.div`
 	flex-grow: 0;
 	height: 0.3rem;
 	width: 0.3rem;
-	background-color: #7c7c7c;
+	background-color: ${PROJECT_CARD_THEME.buttonDotColor};
 
 	border-radius: 50%;
 `;
 
 export {
-	ProjectCard,
 	ProjectArticle,
 	ProjectTitle,
 	ProjectDescription,

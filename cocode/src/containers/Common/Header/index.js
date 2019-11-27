@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 import { API, DEFAULT_REQUEST_OPTION } from 'config';
+import deleteCookie from 'utils/deleteCookie';
 
 import Logo from 'components/Common/Logo';
 import Modal from 'components/Common/Modal';
@@ -26,7 +27,11 @@ function Header() {
 		if (data) setUser(data.data);
 	};
 
-	const handleSignOut = () => setUser(null);
+	const handleSignOut = () => {
+		const confirm = window.confirm('로그아웃 하시겠습니까?');
+		if (!confirm) return;
+		deleteCookie('jwt');
+	};
 
 	const profileDropDownMenuItems = [
 		{

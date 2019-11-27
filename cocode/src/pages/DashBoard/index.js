@@ -1,13 +1,12 @@
 import React from 'react';
+import ProjectCardList from 'containers/DashBoard/ProjectCardList';
+import Header from 'containers/Common/Header';
 
 function DashBoard() {
 	return (
 		<>
-			<header>
-				<h1>Hello! DashBoard!!</h1>
-			</header>
-			<section></section>
-			<footer></footer>
+			<Header />
+			<ProjectCardList coconuts={coconut} />
 		</>
 	);
 }
