@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { JWT_SECRET } from '../../config';
+import { Project } from '../../models';
 
 async function sendUserData(req, res) {
 	try {
@@ -11,4 +12,10 @@ async function sendUserData(req, res) {
 	}
 }
 
-export { sendUserData };
+async function getProjectsByUsername(req, res) {
+	Project.find({ author: req.params.username })
+		.then(projects => res.status(200).json(projects))
+		.catch(res.status(500).json({}));
+}
+
+export { sendUserData, getProjectsByUsername };
