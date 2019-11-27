@@ -11,6 +11,8 @@ const File = styled.article`
 		padding-left: ${({ depth }) => `${depth}rem`};
 
 		cursor: pointer;
+
+		background-color: ${TAB_CONTAINER_THEME.tabContainerBGColor};
 	}
 
 	.Side-icons-visibility {
