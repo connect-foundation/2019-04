@@ -53,11 +53,25 @@ const EXPLORER_TAB_CONTAINER_THEME = {
 	explorerTabContainerIconColor: '#878788'
 };
 
+const INFO_TAB_THEME = {
+	infoPadding: '0.7rem 1rem',
+	infoDeleteButtonBGColor: '#880000',
+	infoDeleteButtonBGCOlorHover: '#ee0000',
+	infoModifySVGSize: '1rem',
+	infoModifySVGFilter: 'invert(0.455)',
+	infoModifySVGFilterHover: 'invert(0.9)',
+	infoProjectNameFontSize: '1.5rem',
+	infoProjectDescriptionFontSize: '1.35rem',
+	infoProjectDescriptionFontStyle: 'italic',
+	infoProjectAuthorFontSize: '1.2rem'
+};
+
 export {
 	DEFAULT_THEME,
 	BROWSER_THEME,
 	TAB_BAR_THEME,
 	TAB_CONTAINER_THEME,
 	PROJECT_CARD_THEME,
+	INFO_TAB_THEME
 	EXPLORER_TAB_CONTAINER_THEME
 };
