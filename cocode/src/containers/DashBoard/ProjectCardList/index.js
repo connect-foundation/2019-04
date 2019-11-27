@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import * as Style from './style';
 import ProjectCard from 'components/DashBoard/ProjectCard';
 import CreateButton from 'components/DashBoard/CreateCoconut';
@@ -12,7 +13,9 @@ function ProjectCardList({ coconuts = [] }) {
 				<Style.CoconutCount>{coconuts.length}</Style.CoconutCount>
 			</Style.Title>
 			<Style.CardList>
-				<CreateButton />
+				<Link to="/project">
+					<CreateButton />
+				</Link>
 				{coconuts.map((coconut, index) => (
 					<ProjectCard
 						{...coconut}
