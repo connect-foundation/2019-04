@@ -1,5 +1,11 @@
 // 참고: https://github.com/dal-lab/frontend-tdd-examples/blob/master/6-todo-redux/src/reducers.js
-import { UPDATE_CODE, FETCH_PROJECT, SELECT_FILE } from 'actions/types';
+import {
+	UPDATE_CODE,
+	FETCH_PROJECT,
+	SELECT_FILE,
+	UPDATE_FILE_NAME
+} from 'actions/types';
+
 import ProjectDummyData from 'dummy/Project';
 
 const fetchProject = () => {
@@ -28,11 +34,22 @@ const selectFile = (state, { selectedFileId }) => {
 	return { ...state, selectedFileId };
 };
 
+const updateFileName = (state, { selectedFileId, changedName }) => {
+	const changedState = {};
+	changedState[selectedFileId] = {
+		...state.files[selectedFileId],
+		name: changedName
+	};
+
+	return { ...state, files: { ...state.files, ...changedState } };
+};
+
 function ProjectReducer(state, { type, payload }) {
 	const reducers = {
 		[FETCH_PROJECT]: fetchProject,
 		[UPDATE_CODE]: updateCode,
-		[SELECT_FILE]: selectFile
+		[SELECT_FILE]: selectFile,
+		[UPDATE_FILE_NAME]: updateFileName
 	};
 
 	const reducer = reducers[type];

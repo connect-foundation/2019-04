@@ -1,5 +1,8 @@
 import styled from 'styled-components';
-import { TAB_CONTAINER_THEME } from 'constants/theme';
+import {
+	TAB_CONTAINER_THEME,
+	EXPLORER_TAB_CONTAINER_THEME
+} from 'constants/theme';
 
 const ExplorerTab = styled.section`
 	& {
@@ -7,7 +10,7 @@ const ExplorerTab = styled.section`
 	}
 
 	.Is-selected-file {
-		background-color: ${TAB_CONTAINER_THEME.tabContainerFileHoverBGColor};
+		background-color: ${EXPLORER_TAB_CONTAINER_THEME.explorerTabContainerSelectedFileBGColor};
 	}
 `;
 
@@ -36,6 +39,9 @@ const Title = styled.h1`
 
 const SideIcons = styled.span`
 	& {
+		display: flex;
+		flex-direction: row;
+
 		margin-left: auto;
 	}
 

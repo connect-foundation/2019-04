@@ -8,7 +8,10 @@ import {
 import Directory from 'components/Project/Directory';
 
 import ProjectContext from 'contexts/ProjectContext';
-import { selectFileActionCreator } from 'actions/Project';
+import {
+	selectFileActionCreator,
+	updateFileNameActionCreator
+} from 'actions/Project';
 
 const TAB_TITLE = 'EXPLOLER';
 
@@ -17,8 +20,8 @@ function TabHeader() {
 		<Styled.TabHeader>
 			<Styled.Title>{TAB_TITLE}</Styled.Title>
 			<Styled.SideIcons className="Tab-header-Side-icons">
-				<NewFolderIcon></NewFolderIcon>
-				<NewFileIcon></NewFileIcon>
+				<NewFolderIcon />
+				<NewFileIcon />
 			</Styled.SideIcons>
 		</Styled.TabHeader>
 	);
@@ -34,6 +37,14 @@ function ExplorerTab() {
 		dispatchProject(selectFileAction);
 	};
 
+	const handleEditFileName = (selectedFileId, changedName) => {
+		const updateFileNameAction = updateFileNameActionCreator({
+			selectedFileId,
+			changedName
+		});
+		dispatchProject(updateFileNameAction);
+	};
+
 	return (
 		<Styled.ExplorerTab>
 			<TabHeader />
@@ -41,6 +52,7 @@ function ExplorerTab() {
 				child={rootFiles}
 				depth={1}
 				handleClick={handleSelectFile}
+				handleEditFileName={handleEditFileName}
 			/>
 		</Styled.ExplorerTab>
 	);

@@ -3,7 +3,7 @@ import File from '../File';
 
 import ProjectContext from 'contexts/ProjectContext';
 
-function Directory({ child, depth, handleClick }) {
+function Directory({ child, depth, ...props }) {
 	const { project } = useContext(ProjectContext);
 	const { files, selectedFileId } = project;
 
@@ -11,7 +11,10 @@ function Directory({ child, depth, handleClick }) {
 		<div>
 			{child.map(id => {
 				const { type } = files[id];
-				const handleClickFile = () => handleClick(id);
+				const handleClickFile = () => props.handleClick(id);
+				const handleEditFimeName = changedName =>
+					props.handleEditFileName(id, changedName);
+
 				return (
 					<div key={id}>
 						<File
@@ -22,13 +25,14 @@ function Directory({ child, depth, handleClick }) {
 							handleClick={
 								type !== 'directory' && handleClickFile
 							}
+							handleEditFimeName={handleEditFimeName}
 							{...files[id]}
 						/>
 						{type === 'directory' && (
 							<Directory
 								child={files[id].child}
 								depth={depth + 1}
-								handleClick={handleClick}
+								{...props}
 							/>
 						)}
 					</div>
