@@ -28,13 +28,27 @@ function isFolder(type) {
 	return type.substring(0, 9) === 'directory';
 }
 
-function File({ _id, type, name, depth, handleClick, ...props }) {
+function File({
+	_id,
+	type,
+	name,
+	depth,
+	handleClick,
+	handleEditFimeName,
+	...props
+}) {
+	const [fileName, setFileName] = useState(name);
 	const [toggleEdit, setToggleEdit] = useState(false);
 	const nameEditReferenece = useRef(null);
 
 	const src = FILE_IMAGES[type];
 
 	// Event handlers
+	const handleFileNameChange = e => {
+		const changedName = e.currentTarget.textContent;
+		setFileName(changedName);
+	};
+
 	const handleEditFileNameStart = e => {
 		e.stopPropagation();
 
@@ -45,6 +59,7 @@ function File({ _id, type, name, depth, handleClick, ...props }) {
 	};
 
 	const handleEditFileNameEnd = () => {
+		handleEditFimeName(fileName);
 		setToggleEdit(!toggleEdit);
 		nameEditReferenece.current.contentEditable = !toggleEdit;
 	};
@@ -59,10 +74,11 @@ function File({ _id, type, name, depth, handleClick, ...props }) {
 			<Styled.Icon src={src} alt={`${name}_${type}`} />
 			<Styled.NameEdit
 				ref={nameEditReferenece}
+				onInput={handleFileNameChange}
 				onFocus={selectAllTextAboutFocusedDom}
 				onBlur={handleEditFileNameEnd}
 			>
-				{name}
+				{fileName}
 			</Styled.NameEdit>
 			<Styled.SideIcons className="Side-icons-visibility">
 				<EditIcon onClick={handleEditFileNameStart} />
