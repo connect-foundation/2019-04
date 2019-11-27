@@ -48,10 +48,21 @@ const PROJECT_CARD_THEME = {
 	buttonFontWight: '300'
 };
 
+const DEPENDENCY_TAB_THEME = {
+	dependencyTextColor: '#ffffff',
+	dependencyTabCloseSize: '0.7rem',
+	dependencyTabIconSize: '1rem',
+	dependencyTabIconColor: '#808080',
+	dependencyTabIconHoverColor: '#ffffff',
+	dependencyTabSelectBGColor: '#1c2022',
+	dependencyTabInputBGColor: '#1c2022',
+};
+
 export {
 	DEFAULT_THEME,
 	BROWSER_THEME,
 	TAB_BAR_THEME,
 	TAB_CONTAINER_THEME,
-	PROJECT_CARD_THEME
+	PROJECT_CARD_THEME,
+	DEPENDENCY_TAB_THEME
 };
