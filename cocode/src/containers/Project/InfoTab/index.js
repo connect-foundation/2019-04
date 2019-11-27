@@ -5,6 +5,8 @@ import { KEY_CODE_ENTER } from 'constants/keyCode';
 
 import Modify from './modify.svg';
 
+const INFO_TAB_TITLE = 'COCONUT INFO';
+
 function Info({ title, context }) {
 	const input = useRef();
 	const [isEditable, setIsEditable] = useState(false);
@@ -67,7 +69,7 @@ function Info({ title, context }) {
 function InfoTab({ name, description, author }) {
 	return (
 		<Styled.InfoTab>
-			<Styled.Title>COCONUT INFO</Styled.Title>
+			<Styled.Title>{INFO_TAB_TITLE}</Styled.Title>
 			<Info title="name" context={name} />
 			<Info title="description" context={description} />
 			<Info title="author" context={author} />

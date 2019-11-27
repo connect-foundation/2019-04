@@ -91,7 +91,7 @@ const Button = styled.button`
 	& {
 		margin: 0.7rem 1rem;
 		padding: 0.7rem 2.2rem;
-		border-radius: 10px;
+		border-radius: 0.7rem;
 		background-color: ${INFO_TAB_THEME.infoDeleteButtonBGColor};
 		font-size: 1rem;
 		font-weight: 400;
