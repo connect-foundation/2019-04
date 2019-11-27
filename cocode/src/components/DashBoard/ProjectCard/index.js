@@ -2,6 +2,21 @@ import React from 'react';
 import * as Styled from './style';
 import DropDownMenu from 'components/Common/DropDownMenu';
 
+const defaultMenuItems = [
+	{
+		value: 'open',
+		onClick: () => alert('open')
+	},
+	{
+		value: 'rename',
+		onClick: () => alert('rename')
+	},
+	{
+		value: 'remove',
+		onClick: () => alert('remove')
+	}
+];
+
 function MenuButton({ onClick }) {
 	return (
 		<Styled.ProjectMenuButton onClick={onClick}>
@@ -12,15 +27,14 @@ function MenuButton({ onClick }) {
 	);
 }
 
-function ProjectCard({ title, edited, menuItems }) {
+function ProjectCard({ name, updatedAt, menuItems = defaultMenuItems }) {
 	return (
 		<Styled.ProjectArticle>
-			{/*TODO 22자 이상시 말줄임표 유틸 구현*/}
-			<Styled.ProjectTitle>{title}</Styled.ProjectTitle>
+			<Styled.ProjectTitle>{name}</Styled.ProjectTitle>
 			<Styled.ProjectDescription>
 				<Styled.ProjectTimeLabel>
-					{/*TODO 날짜 계산 유틸 구*/}
-					Edited {`${Date.now() - edited}`} ago
+					{/*TODO 날짜 계산 유틸 구현*/}
+					Edited {`${updatedAt}`} ago
 				</Styled.ProjectTimeLabel>
 				<DropDownMenu menuItems={menuItems}>
 					<MenuButton />

@@ -19,9 +19,12 @@ const ProjectArticle = styled.article`
 
 const ProjectTitle = styled.h2`
 	& {
-		margin-bottom: 1.5rem;
+		margin-bottom: 1rem;
 		color: ${({ theme }) => theme.backgroundColor};
 		font-size: ${PROJECT_CARD_THEME.cardTitleFontSize};
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 `;
 
