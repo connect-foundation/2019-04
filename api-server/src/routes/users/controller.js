@@ -14,8 +14,8 @@ async function sendUserData(req, res) {
 
 async function getProjectsByUsername(req, res) {
 	Project.find({ author: req.params.username })
-		.then(projects => res.status(200).json(projects))
-		.catch(res.status(500).json({}));
+		.then(projects => res.status(200).send(projects))
+		.catch(() => res.status(500).send({}));
 }
 
 export { sendUserData, getProjectsByUsername };
