@@ -3,3 +3,4 @@ README.md
 .prettierrc
 .env
 public/*
+database/seeds/contents.template.js
