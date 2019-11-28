@@ -7,16 +7,15 @@ import {
 	UPDATE_FILE_NAME
 } from 'actions/types';
 
-import ProjectDummyData from 'dummy/Project';
 import { getFileExtension } from 'utils';
 
-const fetchProject = () => {
-	const files = ProjectDummyData.files.reduce((acc, cur) => {
+const fetchProject = (_, { project }) => {
+	const files = project.files.reduce((acc, cur) => {
 		acc[cur._id] = cur;
 		return acc;
 	}, {});
 
-	const fetchedProject = ProjectDummyData;
+	const fetchedProject = project;
 	fetchedProject.files = files;
 	fetchedProject.selectedFileId = fetchedProject.entry;
 	fetchedProject.selectedFileList = [fetchedProject.entry];

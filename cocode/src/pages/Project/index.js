@@ -14,13 +14,17 @@ import { fetchProjectActionCreator } from 'actions/Project';
 
 import { TAB_BAR_THEME } from 'constants/theme';
 
+import projectDummyData from 'dummy/Project';
+
 function Project() {
 	// temp state : custom hook 만들면 대체할 예정
 	const [isFetched, setIsFetched] = useState(false);
 	const [project, dispatchProject] = useReducer(ProjectReducer, {});
 
 	const handleFetchProject = () => {
-		const fetchProjectAction = fetchProjectActionCreator();
+		const fetchProjectAction = fetchProjectActionCreator({
+			project: projectDummyData
+		});
 		dispatchProject(fetchProjectAction);
 		setIsFetched(true);
 	};

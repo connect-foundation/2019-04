@@ -6,8 +6,8 @@ import {
 	CREATE_FILE
 } from './types';
 
-function fetchProjectActionCreator() {
-	return { type: FETCH_PROJECT };
+function fetchProjectActionCreator(payload) {
+	return { type: FETCH_PROJECT, payload };
 }
 
 function updateCodeActionCreator(payload) {

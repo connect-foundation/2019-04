@@ -7,6 +7,8 @@ import { SplitPaneContainer } from 'components/Common/SplitPane';
 
 import ProjectReducer from 'reducers/ProjectReducer';
 
+import projectDummyData from 'dummy/Project';
+
 import {
 	fetchProjectActionCreator,
 	updateCodeActionCreator
@@ -16,7 +18,9 @@ function Version1() {
 	const [project, dispatchProject] = useReducer(ProjectReducer, {});
 
 	const handleFetchProject = () => {
-		const fetchProjectAction = fetchProjectActionCreator();
+		const fetchProjectAction = fetchProjectActionCreator({
+			project: projectDummyData
+		});
 		dispatchProject(fetchProjectAction);
 	};
 
