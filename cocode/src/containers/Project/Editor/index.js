@@ -9,10 +9,14 @@ import { updateCodeActionCreator } from 'actions/Project';
 
 function Editor() {
 	const { project, dispatchProject } = useContext(ProjectContext);
-	const { code } = project;
+	const { files, entry, selectedFileId } = project;
+	const entryCode = files[entry].contents;
 
 	const handleChangeCode = (_, changedCode) => {
-		const updateCodeAction = updateCodeActionCreator(changedCode);
+		const updateCodeAction = updateCodeActionCreator({
+			selectedFileId,
+			changedCode
+		});
 		dispatchProject(updateCodeAction);
 	};
 
@@ -20,7 +24,7 @@ function Editor() {
 		<Styled.Editor>
 			<FileTabBar />
 			<MonacoEditor
-				code={code}
+				code={entryCode}
 				onChange={handleChangeCode}
 				className="Stretch-width"
 			/>

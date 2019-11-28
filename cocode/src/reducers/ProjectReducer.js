@@ -1,34 +1,59 @@
-import { UPDATE_CODE, FETCH_PROJECT } from 'actions/Project';
+// 참고: https://github.com/dal-lab/frontend-tdd-examples/blob/master/6-todo-redux/src/reducers.js
+import {
+	UPDATE_CODE,
+	FETCH_PROJECT,
+	SELECT_FILE,
+	UPDATE_FILE_NAME
+} from 'actions/types';
 
-const INITIAL_CODE = `const { useState } = React;
+import ProjectDummyData from 'dummy/Project';
 
-function App() {
-	const [state, setState] = useState('Cocode');
-	
-	return(
-		<>
-			<h1>Hi! {state}</h1>
-		</>
-	)
-}
+const fetchProject = () => {
+	const files = ProjectDummyData.files.reduce((acc, cur) => {
+		acc[cur._id] = cur;
+		return acc;
+	}, {});
 
-ReactDOM.render(<App />, document.getElementById('coconut-root'));
-`;
+	const fetchedProject = ProjectDummyData;
+	fetchedProject.files = files;
+
+	return fetchedProject;
+};
+
+const updateCode = (state, { selectedFileId, changedCode }) => {
+	const changedState = {};
+	changedState[selectedFileId] = {
+		...state.files[selectedFileId],
+		contents: changedCode
+	};
+
+	return { ...state, files: { ...state.files, ...changedState } };
+};
+
+const selectFile = (state, { selectedFileId }) => {
+	return { ...state, selectedFileId };
+};
+
+const updateFileName = (state, { selectedFileId, changedName }) => {
+	const changedState = {};
+	changedState[selectedFileId] = {
+		...state.files[selectedFileId],
+		name: changedName
+	};
+
+	return { ...state, files: { ...state.files, ...changedState } };
+};
 
 function ProjectReducer(state, { type, payload }) {
-	switch (type) {
-		case UPDATE_CODE: {
-			return { ...state, code: payload };
-		}
-		case FETCH_PROJECT: {
-			// TODO: API server에 fetch 요청 보내서 가져오기
-			const fetchedProject = { code: INITIAL_CODE };
-			return fetchedProject;
-		}
-		default: {
-			throw new Error(`unexpected action.type: ${type}`);
-		}
-	}
+	const reducers = {
+		[FETCH_PROJECT]: fetchProject,
+		[UPDATE_CODE]: updateCode,
+		[SELECT_FILE]: selectFile,
+		[UPDATE_FILE_NAME]: updateFileName
+	};
+
+	const reducer = reducers[type];
+	return reducer ? reducer(state, payload) : state;
 }
 
 export default ProjectReducer;
