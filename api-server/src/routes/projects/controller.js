@@ -24,4 +24,13 @@ async function modifyProject(req, res) {
 		.catch(() => res.sendStatus(500));
 }
 
-export { modifyProject, preloadProject };
+async function deleteProject(req, res, next) {
+	const project = req.project;
+
+	project
+		.remove()
+		.then(() => res.sendStatus(204))
+		.catch(() => res.sendStatus(500));
+}
+
+export { modifyProject, preloadProject, deleteProject };

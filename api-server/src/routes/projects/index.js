@@ -1,8 +1,9 @@
 import express from 'express';
-import { modifyProject, preloadProject } from './controller';
+import { preloadProject, modifyProject, deleteProject } from './controller';
 const router = express.Router();
 
 router.param('projectId', preloadProject);
 router.patch('/:projectId', modifyProject);
+router.delete('/:projectId', deleteProject);
 
 export default router;
