@@ -50,10 +50,14 @@ const DEPENDENCY_TAB_THEME = {
 	dependencyTabIconColor: '#808080',
 	dependencyTabIconHoverColor: '#ffffff',
 	dependencyTabSelectBGColor: '#1c2022',
-	dependencyTabInputBGColor: '#1c2022',
+	dependencyTabInputBGColor: '#1c2022'
 };
 
 const EXPLORER_TAB_CONTAINER_THEME = {
+	explorerTabContainerBGColor: '#000',
+	explorerTabContainerBodyBGColor: '#000',
+
+	explorerTabContainerFileBGColor: 'transparent',
 	explorerTabContainerFileTextColor: '#878788',
 	explorerTabContainerFileHoverTextColor: '#fff',
 	explorerTabContainerFileHoverBGColor: '#2accf944',
@@ -64,7 +68,8 @@ const EXPLORER_TAB_CONTAINER_THEME = {
 	explorerTabContainerIconHoverColor: '#fff',
 	explorerTabContainerIconColor: '#878788',
 
-	explorerTabContainerFileTextSize: '1rem'
+	explorerTabContainerFileTextSize: '1rem',
+	explorerTabContainerFileTextWeight: 'lighter'
 };
 
 const INFO_TAB_THEME = {
@@ -88,5 +93,5 @@ export {
 	PROJECT_CARD_THEME,
 	DEPENDENCY_TAB_THEME,
 	INFO_TAB_THEME,
-	EXPLORER_TAB_CONTAINER_THEME,
+	EXPLORER_TAB_CONTAINER_THEME
 };

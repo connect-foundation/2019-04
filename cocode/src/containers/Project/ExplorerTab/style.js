@@ -14,6 +14,13 @@ const ExplorerTab = styled.section`
 	}
 `;
 
+const TabBody = styled.div`
+	& {
+		height: 100%;
+		background-color: ${EXPLORER_TAB_CONTAINER_THEME.explorerTabContainerBodyBGColor};
+	}
+`;
+
 const TabHeader = styled.header`
 	& {
 		display: flex;
@@ -47,7 +54,9 @@ const SideIcons = styled.span`
 
 	& > svg {
 		margin: 0 0.2rem;
+
+		cursor: pointer;
 	}
 `;
 
-export { ExplorerTab, TabHeader, Title, SideIcons };
+export { ExplorerTab, TabHeader, TabBody, Title, SideIcons };

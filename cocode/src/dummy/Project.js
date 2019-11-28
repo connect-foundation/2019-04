@@ -159,8 +159,7 @@ const project = {
 			contents: getTemplate('package'),
 			_id: '5dd553be4561ae2bae9cb462'
 		}
-	],
-	selectedFileId: '5dd553be4561ae2bae9cb45d'
+	]
 };
 
 export default project;

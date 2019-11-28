@@ -10,12 +10,14 @@ const File = styled.article`
 		padding: 0.4rem;
 		padding-left: ${({ depth }) => `${depth}rem`};
 
+		font-weight: ${EXPLORER_TAB_CONTAINER_THEME.explorerTabContainerFileTextWeight};
+
 		cursor: pointer;
 
 		background-color: ${({ toggleEdit }) =>
 			toggleEdit
 				? EXPLORER_TAB_CONTAINER_THEME.explorerTabContainerFileEditBGColor
-				: 'black'};
+				: EXPLORER_TAB_CONTAINER_THEME.explorerTabContainerFileBGColor};
 	}
 
 	.Side-icons-visibility {
@@ -50,7 +52,6 @@ const NameEdit = styled.div`
 
 		padding-left: 0.25rem;
 
-		font-weight: lighter;
 		font-size: ${EXPLORER_TAB_CONTAINER_THEME.explorerTabContainerFileTextSize};
 		color: ${EXPLORER_TAB_CONTAINER_THEME.explorerTabContainerFileTextColor};
 

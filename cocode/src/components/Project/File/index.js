@@ -8,33 +8,22 @@ import {
 	NewFileIcon
 } from 'components/Project/ExplorerTabIcons';
 
-import { selectAllTextAboutFocusedDom } from 'utils/domControl';
+import {
+	selectAllTextAboutFocusedDom,
+	changeDivEditable
+} from 'utils/domControl';
+
+import FileImagesSrc from 'constants/fileImagesSrc';
 import { KEY_CODE_ENTER } from 'constants/keyCode';
 
-const FILE_IMAGES = {
-	directory: 'https://codesandbox.io/static/media/folder.30a30d83.svg',
-	directoryOpen:
-		'https://codesandbox.io/static/media/folder-open.df474ba4.svg',
-	js:
-		'https://cdn.jsdelivr.net/gh/PKief/vscode-material-icon-theme@master/icons/javascript.svg',
-	css:
-		'https://cdn.jsdelivr.net/gh/PKief/vscode-material-icon-theme@master/icons/css.svg',
-	html:
-		'https://cdn.jsdelivr.net/gh/PKief/vscode-material-icon-theme@master/icons/html.svg',
-	npm:
-		'https://cdn.jsdelivr.net/gh/PKief/vscode-material-icon-theme@master/icons/npm.svg'
-};
-
-function isFolder(type) {
-	return type.substring(0, 9) === 'directory';
-}
-
 function File({
+	isDirectory,
 	_id,
 	type,
 	name,
 	depth,
-	handleClick,
+	handleSelectFile,
+	handleCreateFile,
 	handleEditFimeName,
 	...props
 }) {
@@ -42,16 +31,14 @@ function File({
 	const [toggleEdit, setToggleEdit] = useState(false);
 	const nameEditReferenece = useRef(null);
 
-	const src = FILE_IMAGES[type];
+	const src = FileImagesSrc[type];
 
 	// Event handlers
-	const handleEditFileNameStart = e => {
-		e.stopPropagation();
+	const handleClick = () => handleSelectFile(_id);
 
-		const nameEditNode = nameEditReferenece.current;
-		setToggleEdit(!toggleEdit);
-		nameEditNode.contentEditable = !toggleEdit;
-		nameEditNode.focus();
+	const handleEditFileNameStart = () => {
+		changeDivEditable(nameEditReferenece.current, true);
+		setToggleEdit(true);
 	};
 
 	const handleEditFileNameEnd = e => {
@@ -59,12 +46,11 @@ function File({
 		setFileName(changedName);
 		handleEditFimeName(fileName);
 
-		setToggleEdit(!toggleEdit);
-		nameEditReferenece.current.contentEditable = !toggleEdit;
+		setToggleEdit(false);
+		nameEditReferenece.current.contentEditable = false;
 	};
 
 	const handleKeyDown = e => {
-		if (e.currentTarget.textContent === 10) e.stopPropagation();
 		if (e.keyCode === KEY_CODE_ENTER) handleEditFileNameEnd(e);
 	};
 
@@ -72,7 +58,7 @@ function File({
 		<Styled.File
 			toggleEdit={toggleEdit}
 			depth={depth}
-			onClick={handleClick ? handleClick : undefined}
+			onClick={handleSelectFile ? handleClick : undefined}
 			{...props}
 		>
 			<Styled.Icon src={src} alt={`${name}_${type}`} />
@@ -86,10 +72,17 @@ function File({
 			</Styled.NameEdit>
 			<Styled.SideIcons className="Side-icons-visibility">
 				<EditIcon onClick={handleEditFileNameStart} />
-				{isFolder(type) && (
+				{isDirectory && (
 					<>
-						<NewFolderIcon />
-						<NewFileIcon />
+						<NewFolderIcon
+							onClick={handleCreateFile.bind(
+								undefined,
+								'directory'
+							)}
+						/>
+						<NewFileIcon
+							onClick={handleCreateFile.bind(undefined, 'file')}
+						/>
 					</>
 				)}
 				<DeleteIcon />
