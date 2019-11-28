@@ -100,24 +100,23 @@ const fetchProject = (_, { project }) => {
 		files: convertedFilesObject,
 		selectedFilePath: entryPath,
 		selectedFileList: [entryPath],
-		editingCode: ''
+		editingCode: convertedFilesObject[entryPath].contents
 	};
 
 	return fetchedProject;
 };
 
 const updateCode = (state, { selectedFilePath, changedCode }) => {
-	const changedState = Object.assign(
-		{ [selectedFilePath]: {} },
-		{
+	return {
+		...state,
+		files: {
+			...state.files,
 			[selectedFilePath]: {
 				...state.files[selectedFilePath],
 				contents: changedCode
 			}
 		}
-	);
-
-	return { ...state, files: { ...state.files, ...changedState } };
+	};
 };
 
 const selectFile = (state, { selectedFilePath }) => {
@@ -192,8 +191,6 @@ const updateFileName = (state, { selectedFilePath, changedName }) => {
 		...state.files[selectedFilePath],
 		name: changedName
 	});
-
-	console.log(state);
 
 	return {
 		...state,
