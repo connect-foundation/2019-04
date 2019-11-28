@@ -4,7 +4,7 @@ function selectAllTextAboutFocusedDom() {
 
 function changeDivEditable(node, status) {
 	node.contentEditable = status;
-	node.focus();
+	if (status) node.focus();
 }
 
 export { selectAllTextAboutFocusedDom, changeDivEditable };
