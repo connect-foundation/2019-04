@@ -10,7 +10,7 @@ import { changeDivEditable } from 'utils/domControl';
 import FileImagesSrc from 'constants/fileImagesSrc';
 import { KEY_CODE_ENTER } from 'constants/keyCode';
 
-function NewFile({ depth, type, parentDirectoryId, handleEndCreateFile }) {
+function NewFile({ depth, type, parentPath, handleEndCreateFile }) {
 	const {
 		project: { files },
 		dispatchProject
@@ -20,10 +20,8 @@ function NewFile({ depth, type, parentDirectoryId, handleEndCreateFile }) {
 
 	const writeEnd = e => {
 		const name = e.currentTarget.textContent;
-
-		const isDuplicated = Object.values(files)
-			.map(file => file.name)
-			.some(fileName => fileName === name);
+		const filePath = `${parentPath}${parentPath === '/' ? '' : '/'}${name}`;
+		const isDuplicated = Object.keys(files).some(path => path === filePath);
 		if (isDuplicated) {
 			e.preventDefault();
 			return;
@@ -31,7 +29,7 @@ function NewFile({ depth, type, parentDirectoryId, handleEndCreateFile }) {
 
 		const createFileAction = createFileActionCreator({
 			name,
-			parentDirectoryId,
+			parentPath,
 			type
 		});
 

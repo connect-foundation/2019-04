@@ -9,8 +9,8 @@ import { updateCodeActionCreator } from 'actions/Project';
 
 function Editor() {
 	const { project, dispatchProject } = useContext(ProjectContext);
-	const { files, entry, selectedFileId } = project;
-	const entryCode = files[entry].contents;
+	const { files, entryPath, selectedFileId } = project;
+	const entryCode = files[entryPath].contents;
 
 	const handleChangeCode = (_, changedCode) => {
 		const updateCodeAction = updateCodeActionCreator({

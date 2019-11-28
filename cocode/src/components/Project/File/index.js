@@ -18,7 +18,7 @@ import { KEY_CODE_ENTER } from 'constants/keyCode';
 
 function File({
 	isDirectory,
-	_id,
+	path,
 	type,
 	name,
 	depth,
@@ -34,7 +34,7 @@ function File({
 	const src = FileImagesSrc[type];
 
 	// Event handlers
-	const handleClick = () => handleSelectFile(_id);
+	const handleClick = () => handleSelectFile(path);
 
 	const handleEditFileNameStart = () => {
 		changeDivEditable(nameEditReferenece.current, true);
@@ -44,7 +44,7 @@ function File({
 	const handleEditFileNameEnd = e => {
 		const changedName = e.currentTarget.textContent;
 		setFileName(changedName);
-		handleEditFimeName(fileName);
+		handleEditFimeName(changedName);
 
 		setToggleEdit(false);
 		nameEditReferenece.current.contentEditable = false;
@@ -71,7 +71,7 @@ function File({
 				{fileName}
 			</Styled.NameEdit>
 			<Styled.SideIcons className="Side-icons-visibility">
-				<EditIcon onClick={handleEditFileNameStart} />
+				{/* <EditIcon onClick={handleEditFileNameStart} /> */}
 				{isDirectory && (
 					<>
 						<NewFolderIcon
