@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import * as Styled from './style';
 
 import {
@@ -8,39 +8,83 @@ import {
 	NewFileIcon
 } from 'components/Project/ExplorerTabIcons';
 
-const FILE_IMAGES = {
-	directory: 'https://codesandbox.io/static/media/folder.30a30d83.svg',
-	directoryOpen:
-		'https://codesandbox.io/static/media/folder-open.df474ba4.svg',
-	js:
-		'https://cdn.jsdelivr.net/gh/PKief/vscode-material-icon-theme@master/icons/javascript.svg',
-	css:
-		'https://cdn.jsdelivr.net/gh/PKief/vscode-material-icon-theme@master/icons/css.svg',
-	html:
-		'https://cdn.jsdelivr.net/gh/PKief/vscode-material-icon-theme@master/icons/html.svg',
-	npm:
-		'https://cdn.jsdelivr.net/gh/PKief/vscode-material-icon-theme@master/icons/npm.svg'
-};
+import {
+	selectAllTextAboutFocusedDom,
+	changeDivEditable
+} from 'utils/domControl';
 
-function isFolder(type) {
-	return type.substring(0, 9) === 'directory';
-}
+import FileImagesSrc from 'constants/fileImagesSrc';
+import { KEY_CODE_ENTER } from 'constants/keyCode';
 
-function File({ type, name, depth, handleClick, ...props }) {
-	const src = FILE_IMAGES[type];
+function File({
+	isDirectory,
+	_id,
+	type,
+	name,
+	depth,
+	handleSelectFile,
+	handleCreateFile,
+	handleEditFimeName,
+	...props
+}) {
+	const [fileName, setFileName] = useState(name);
+	const [toggleEdit, setToggleEdit] = useState(false);
+	const nameEditReferenece = useRef(null);
+
+	const src = FileImagesSrc[type];
+
+	// Event handlers
+	const handleClick = () => handleSelectFile(_id);
+
+	const handleEditFileNameStart = () => {
+		changeDivEditable(nameEditReferenece.current, true);
+		setToggleEdit(true);
+	};
+
+	const handleEditFileNameEnd = e => {
+		const changedName = e.currentTarget.textContent;
+		setFileName(changedName);
+		handleEditFimeName(fileName);
+
+		setToggleEdit(false);
+		nameEditReferenece.current.contentEditable = false;
+	};
+
+	const handleKeyDown = e => {
+		if (e.keyCode === KEY_CODE_ENTER) handleEditFileNameEnd(e);
+	};
 
 	return (
 		<Styled.File
+			toggleEdit={toggleEdit}
 			depth={depth}
-			onClick={handleClick ? handleClick : undefined}
+			onClick={handleSelectFile ? handleClick : undefined}
 			{...props}
 		>
 			<Styled.Icon src={src} alt={`${name}_${type}`} />
-			<Styled.Name>{name}</Styled.Name>
+			<Styled.NameEdit
+				ref={nameEditReferenece}
+				onFocus={selectAllTextAboutFocusedDom}
+				onBlur={handleEditFileNameEnd}
+				onKeyDown={handleKeyDown}
+			>
+				{fileName}
+			</Styled.NameEdit>
 			<Styled.SideIcons className="Side-icons-visibility">
-				<EditIcon />
-				{isFolder(type) && <NewFolderIcon />}
-				{isFolder(type) && <NewFileIcon />}
+				<EditIcon onClick={handleEditFileNameStart} />
+				{isDirectory && (
+					<>
+						<NewFolderIcon
+							onClick={handleCreateFile.bind(
+								undefined,
+								'directory'
+							)}
+						/>
+						<NewFileIcon
+							onClick={handleCreateFile.bind(undefined, 'file')}
+						/>
+					</>
+				)}
 				<DeleteIcon />
 			</Styled.SideIcons>
 		</Styled.File>
