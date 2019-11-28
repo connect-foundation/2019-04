@@ -9,6 +9,12 @@ const DEFAULT_THEME = {
 	headerHeignt: '12vh'
 };
 
+const DROPDOWN_THEME = {
+	dropdownButtonColor: '#2b2b2b',
+	dropdownButtonHoverColor: '#4b4b4b',
+	dropdownButtonBorderColor: '#383838',
+};
+
 const BROWSER_THEME = {
 	browserHeaderBGColor: '#1d2022',
 	adressInputBGColor: '#000',
@@ -87,6 +93,7 @@ const INFO_TAB_THEME = {
 
 export {
 	DEFAULT_THEME,
+	DROPDOWN_THEME,
 	BROWSER_THEME,
 	TAB_BAR_THEME,
 	TAB_CONTAINER_THEME,
