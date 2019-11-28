@@ -4,9 +4,9 @@ import {
 	EXPLORER_TAB_CONTAINER_THEME
 } from 'constants/theme';
 
-const ExplorerTab = styled.section`
+const TabBody = styled.div`
 	& {
-		background-color: ${TAB_CONTAINER_THEME.tabContainerBGColor};
+		height: 100%;
 	}
 
 	.Is-selected-file {
@@ -14,17 +14,11 @@ const ExplorerTab = styled.section`
 	}
 `;
 
-const TabBody = styled.div`
-	& {
-		height: 100%;
-		background-color: ${EXPLORER_TAB_CONTAINER_THEME.explorerTabContainerBodyBGColor};
-	}
-`;
-
 const TabHeader = styled.header`
 	& {
 		display: flex;
 		flex-direction: row;
+		background-color: ${TAB_CONTAINER_THEME.tabContainerHeaderBGColor};
 	}
 
 	.Tab-header-Side-icons {
@@ -59,4 +53,4 @@ const SideIcons = styled.span`
 	}
 `;
 
-export { ExplorerTab, TabHeader, TabBody, Title, SideIcons };
+export { TabHeader, TabBody, Title, SideIcons };
