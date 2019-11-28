@@ -5,9 +5,9 @@ async function sendUserData(req, res) {
 	try {
 		const token = req.cookies.jwt;
 		const user = await jwt.verify(token, JWT_SECRET);
-		res.status(200).send({ data: user });
+		res.status(200).send(user);
 	} catch (e) {
-		res.status(401);
+		res.status(401).send();
 	}
 }
 
