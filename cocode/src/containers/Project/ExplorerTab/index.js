@@ -60,7 +60,7 @@ function ExplorerTab() {
 	};
 
 	return (
-		<Styled.ExplorerTab>
+		<>
 			<TabHeader handleCreateFile={handleCreateFile} />
 			{isNewFileCreating && (
 				<NewFile
@@ -79,7 +79,7 @@ function ExplorerTab() {
 					handleEditFileName={handleEditFileName}
 				/>
 			</Styled.TabBody>
-		</Styled.ExplorerTab>
+		</>
 	);
 }
 

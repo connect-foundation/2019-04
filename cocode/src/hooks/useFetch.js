@@ -1,5 +1,4 @@
 import { useState, useEffect, useReducer } from 'react';
-import APIReducer from 'reducers/APIReducer';
 import axios from 'axios';
 
 import {
@@ -7,9 +6,16 @@ import {
 	fetchSuccessActionCreator,
 	fetchFailActionCreator
 } from 'actions/API';
+import APIReducer from 'reducers/APIReducer';
+import { DEFAULT_REQUEST_OPTION } from 'config';
 
 function useFetch({ method, url, data = {} }) {
-	const [request, setRequest] = useState({ method, url, data });
+	const [request, setRequest] = useState({
+		method,
+		url,
+		data,
+		...DEFAULT_REQUEST_OPTION
+	});
 	const [state, dispatchFetchState] = useReducer(APIReducer, {
 		data: false,
 		loading: false,

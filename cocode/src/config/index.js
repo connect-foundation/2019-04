@@ -11,7 +11,9 @@ const DEFAULT_REQUEST_OPTION = {
 
 const API = {
 	getUserData: `${API_SERVER}/users`,
-	login: `${API_SERVER}/users/login`
+	login: `${API_SERVER}/users/login`,
+	users: `${API_SERVER}/users`,
+	projects: `${API_SERVER}/projects`
 };
 
 export { DEFAULT_REQUEST_OPTION, API };

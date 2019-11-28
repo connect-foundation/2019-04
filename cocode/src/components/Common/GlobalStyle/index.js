@@ -3,30 +3,30 @@ import { createGlobalStyle } from 'styled-components';
 const GlobalStyle = createGlobalStyle`
     ::-webkit-scrollbar {
         width: 10px;
-        height: 5px
+        height: 5px;
     }
     
     ::-webkit-scrollbar-track {
-        background-color: transparent
+        background-color: transparent;
     }
     
     ::-webkit-scrollbar-thumb {
         background-color: #2d2d2d;
-        border-radius: 5px
+        border-radius: 5px;
     }
     
     ::-webkit-scrollbar-thumb:hover {
-        background: #4A4A4A
+        background: #4A4A4A;
     }
     
     ::-webkit-scrollbar-button:horizontal:decrement,
     ::-webkit-scrollbar-button:horizontal:increment {
         width: 0px;
-        height: 0px
+        height: 0px;
     }
     
     ::-webkit-scrollbar-corner {
-        background-color: transparent
+        background-color: transparent;
     }
     
     * {
@@ -65,15 +65,17 @@ const GlobalStyle = createGlobalStyle`
         color: ${({ theme }) => theme.textColor};
     }
 
-    a,
-	a:visited,
-	a:active {
+    a, a:visited, a:active {
 		color: ${({ theme }) => theme.textColor};
 		cursor: pointer;
 	}
 
 	a:hover {
 		color: ${({ theme }) => theme.mainColor};
+	}
+	
+	img {
+		-webkit-user-drag: none;
 	}
 `;
 

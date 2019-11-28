@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import * as Styled from './style';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 
-import { API, DEFAULT_REQUEST_OPTION } from 'config';
 import deleteCookie from 'utils/deleteCookie';
 
 import Logo from 'components/Common/Logo';
@@ -12,21 +10,15 @@ import UserProfile from 'components/Common/UserProfile';
 import ModalPortal from 'components/Common/ModalPortal';
 import LoginModalBody from 'components/Common/LoginModalBody';
 
+import UserContext from 'contexts/UserContext';
+
 function Header() {
+	const { user } = useContext(UserContext);
 	const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
+
 	const handleOpenSignInModal = () => setIsSignInModalOpen(true);
 	const handleCloseSignInModal = () => setIsSignInModalOpen(false);
-
-	const [user, setUser] = useState(null);
-
-	const getJwtToken = async () => {
-		const { data } = await axios.get(
-			API.getUserData,
-			DEFAULT_REQUEST_OPTION
-		);
-		if (data) setUser(data.data);
-	};
-
+	const handleClickDashBoard = () => window.location.href = '../dashboard';
 	const handleSignOut = () => {
 		const confirm = window.confirm('로그아웃 하시겠습니까?');
 		if (!confirm) return;
@@ -35,17 +27,14 @@ function Header() {
 
 	const profileDropDownMenuItems = [
 		{
-			value: 'dashboard'
+			value: 'dashboard',
+			onClick: handleClickDashBoard
 		},
 		{
 			value: 'sign out',
 			onClick: handleSignOut
 		}
 	];
-
-	useEffect(() => {
-		getJwtToken();
-	}, []);
 
 	return (
 		<Styled.Header>
