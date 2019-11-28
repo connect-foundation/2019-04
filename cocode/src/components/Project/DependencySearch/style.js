@@ -5,8 +5,8 @@ const SearchBar = styled.input.attrs(() => ({
 	type: 'text',
 	placeholder: 'Search on enter npm dependency',
 }))`
-    width: 100%;
-    margin-bottom: 0.5rem;
+    width: -webkit-fill-available;
+    margin: 0.5rem 1rem;
     padding: 0.8rem;
     background-color: ${DEPENDENCY_TAB_THEME.dependencyTabInputBGColor};
     font-size: 0.8rem;
