@@ -45,6 +45,7 @@ const PROJECT_CARD_THEME = {
 
 const EXPLORER_TAB_CONTAINER_THEME = {
 	explorerTabContainerBGColor: '#000',
+	explorerTabContainerBodyBGColor: '#000',
 
 	explorerTabContainerFileBGColor: 'transparent',
 	explorerTabContainerFileTextColor: '#878788',
