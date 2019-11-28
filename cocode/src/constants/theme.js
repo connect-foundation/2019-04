@@ -19,6 +19,8 @@ const BROWSER_THEME = {
 
 const TAB_CONTAINER_THEME = {
 	tabContainerBGColor: '#0e0f10',
+	tabContainerHeaderBGColor: '#1e202280',
+	tabContainerBodyBGColor: '#000000',
 	tabContainerTitleColor: '#7E7E7E',
 
 	tabContainerTitleSize: '1.25rem',
@@ -50,6 +52,7 @@ const DEPENDENCY_TAB_THEME = {
 	dependencyTabIconColor: '#808080',
 	dependencyTabIconHoverColor: '#ffffff',
 	dependencyTabSelectBGColor: '#1c2022',
+	dependencyTabItemHoverColor: '#2accf944',
 	dependencyTabInputBGColor: '#1c2022'
 };
 
@@ -74,8 +77,8 @@ const EXPLORER_TAB_CONTAINER_THEME = {
 
 const INFO_TAB_THEME = {
 	infoPadding: '0.7rem 1rem',
-	infoDeleteButtonBGColor: '#880000',
-	infoDeleteButtonBGCOlorHover: '#ee0000',
+	infoDeleteButtonBGColor: '#880000ba',
+	infoDeleteButtonBGColorHover: '#880000',
 	infoModifySVGSize: '1rem',
 	infoModifySVGFilter: 'invert(0.455)',
 	infoModifySVGFilterHover: 'invert(0.9)',
