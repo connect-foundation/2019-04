@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import * as Style from './style';
 import ProjectCard from 'components/DashBoard/ProjectCard';
 import CreateButton from 'components/DashBoard/CreateCoconut';
 import { PROJECT_CARD_THEME } from 'constants/theme';
+import { DashBoardContext } from 'contexts';
 
-function ProjectCardList({ coconuts = [] }) {
+function ProjectCardList() {
+	const { coconuts } = useContext(DashBoardContext);
 	return (
 		<Style.Main>
 			<Style.Title>
