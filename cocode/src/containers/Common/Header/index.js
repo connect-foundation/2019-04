@@ -18,6 +18,7 @@ function Header() {
 
 	const handleOpenSignInModal = () => setIsSignInModalOpen(true);
 	const handleCloseSignInModal = () => setIsSignInModalOpen(false);
+	const handleClickDashBoard = () => window.location.href = '../dashboard';
 	const handleSignOut = () => {
 		const confirm = window.confirm('로그아웃 하시겠습니까?');
 		if (!confirm) return;
@@ -26,7 +27,8 @@ function Header() {
 
 	const profileDropDownMenuItems = [
 		{
-			value: 'dashboard'
+			value: 'dashboard',
+			onClick: handleClickDashBoard
 		},
 		{
 			value: 'sign out',
