@@ -1,15 +1,26 @@
 import styled from 'styled-components';
-import { TAB_CONTAINER_THEME, INFO_TAB_THEME } from 'constants/theme';
+import {
+	TAB_CONTAINER_THEME,
+	INFO_TAB_THEME,
+} from 'constants/theme';
 
-const InfoTab = styled.section`
+const TabHeader = styled.header`
 	& {
-		/* temp width */
-		width: 15rem;
 		display: flex;
-		flex-direction: column;
-		justify-items: center;
+		flex-direction: row;
+		background-color: ${TAB_CONTAINER_THEME.tabContainerHeaderBGColor};
+	}
 
-		background-color: ${TAB_CONTAINER_THEME.tabContainerBGColor};
+	.Tab-header-Side-icons {
+		margin: auto 0;
+		margin-left: auto;
+		margin-right: 1rem;
+	}
+`;
+
+const TabBody = styled.div`
+	& {
+		height: 100%;
 	}
 `;
 
@@ -89,6 +100,7 @@ const Icon = styled.img`
 
 const Button = styled.button`
 	& {
+		width: -webkit-fill-available;
 		margin: 0.7rem 1rem;
 		padding: 0.7rem 2.2rem;
 		border-radius: 0.7rem;
@@ -102,4 +114,4 @@ const Button = styled.button`
 	}
 `;
 
-export { InfoTab, Title, Info, InfoTitleTab, Icon, Button };
+export { TabHeader, TabBody, Title, Info, InfoTitleTab, Icon, Button };
