@@ -9,13 +9,13 @@ function Dependency({ title, children }) {
     const handleClickToggle = () => setToggle(!toggle);
 
     return (
-        <Styled.Dependency>
+        <article>
             <Styled.Header>
                 <Styled.Title>{title}</Styled.Title>
                 <MoreLessButton onClick={handleClickToggle} toggle={toggle}/>
             </Styled.Header>
             <Styled.Body toggle={toggle}>{children}</Styled.Body>
-        </Styled.Dependency>
+        </article>
     );
 }
 

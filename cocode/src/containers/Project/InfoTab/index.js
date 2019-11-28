@@ -68,13 +68,17 @@ function Info({ title, context }) {
 
 function InfoTab({ name, description, author }) {
 	return (
-		<Styled.InfoTab>
-			<Styled.Title>{INFO_TAB_TITLE}</Styled.Title>
-			<Info title="name" context={name} />
-			<Info title="description" context={description} />
-			<Info title="author" context={author} />
-			<Styled.Button>Delete Coconut</Styled.Button>
-		</Styled.InfoTab>
+		<>
+			<Styled.TabHeader>
+				<Styled.Title>{INFO_TAB_TITLE}</Styled.Title>
+			</Styled.TabHeader>
+			<Styled.TabBody>
+				<Info title="name" context={name} />
+				<Info title="description" context={description} />
+				<Info title="author" context={author} />
+				<Styled.Button>Delete Coconut</Styled.Button>
+			</Styled.TabBody>
+		</>
 	);
 }
 

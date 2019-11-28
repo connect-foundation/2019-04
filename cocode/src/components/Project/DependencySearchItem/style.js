@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { TAB_CONTAINER_THEME } from 'constants/theme';
+import { DEPENDENCY_TAB_THEME } from 'constants/theme';
 
 const Item = styled.li`
     & {
@@ -9,7 +9,7 @@ const Item = styled.li`
     }
     
     &:hover {
-        background-color: ${TAB_CONTAINER_THEME.tabContainerFileHoverBGColor};
+        background: ${DEPENDENCY_TAB_THEME.dependencyTabItemHoverColor};
     }
 `;
 
