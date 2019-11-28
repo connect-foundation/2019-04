@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import morgan from 'morgan';
 
 import { PORT, DATABASE_URI } from './config';
 
@@ -25,6 +26,7 @@ const corsOption = {
 	credentials: true
 };
 
+app.use(morgan('dev'));
 app.use(cors(corsOption));
 app.use(cookieParser());
 app.use(passport.initialize());
