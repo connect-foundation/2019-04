@@ -12,6 +12,10 @@ function Directory({ child, depth, handleSelectFile, ...props }) {
 	const [isNewFileCreating, setIsNewFileCreating] = useState(false);
 	const [createFileType, setCreateFileType] = useState(null);
 
+	// Variables
+	const directoryList = child.map(fileIdToFile).filter(isDirectory);
+	const fileList = child.map(fileIdToFile).filter(isFile);
+
 	// Evnet handler
 	const handleEditFimeName = changedName =>
 		props.handleEditFileName(props.id, changedName);
@@ -24,8 +28,8 @@ function Directory({ child, depth, handleSelectFile, ...props }) {
 	// Functions
 	const isNotRoot = depth => depth !== 1;
 	const fileIdToFile = id => files[id];
-	const isDirectory = ({ type }) => type.substring(0, 9) === 'directory';
-	const isFile = ({ type }) => type.substring(0, 9) !== 'directory';
+	const isDirectory = ({ type }) => type === 'directory';
+	const isFile = ({ type }) => type !== 'directory';
 	const isSelected = id => selectedFileId === id;
 
 	return (
@@ -41,21 +45,18 @@ function Directory({ child, depth, handleSelectFile, ...props }) {
 				/>
 			)}
 			{/* 이 Directory에 속한 Directory 목록 */
-			child
-				.map(fileIdToFile)
-				.filter(isDirectory)
-				.map(({ _id }) => {
-					return (
-						<Directory
-							key={'directory' + _id}
-							id={_id}
-							child={files[_id].child}
-							depth={depth + 1}
-							handleSelectFile={handleSelectFile}
-							handleEditFileName={props.handleEditFileName}
-						/>
-					);
-				})}
+			directoryList.map(({ _id }) => {
+				return (
+					<Directory
+						key={'directory' + _id}
+						id={_id}
+						child={files[_id].child}
+						depth={depth + 1}
+						handleSelectFile={handleSelectFile}
+						handleEditFileName={props.handleEditFileName}
+					/>
+				);
+			})}
 			{/* 새파일 생성 버튼 클릭시 나오는 컴포넌트 */
 			isNewFileCreating && (
 				<NewFile
@@ -66,26 +67,23 @@ function Directory({ child, depth, handleSelectFile, ...props }) {
 				/>
 			)}
 			{/* 이 Directory에 속한 File들 */
-			child
-				.map(fileIdToFile)
-				.filter(isFile)
-				.map(({ _id }) => {
-					const handleEditFimeName = changedName =>
-						props.handleEditFileName(_id, changedName);
+			fileList.map(({ _id }) => {
+				const handleEditFimeName = changedName =>
+					props.handleEditFileName(_id, changedName);
 
-					return (
-						<File
-							key={'file' + _id}
-							isDirectory={false}
-							className={isSelected(_id) && 'Is-selected-file'}
-							depth={depth}
-							handleEditFimeName={handleEditFimeName}
-							handleSelectFile={handleSelectFile}
-							handleCreateFile={handleCreateFile}
-							{...files[_id]}
-						/>
-					);
-				})}
+				return (
+					<File
+						key={'file' + _id}
+						isDirectory={false}
+						className={isSelected(_id) && 'Is-selected-file'}
+						depth={depth}
+						handleEditFimeName={handleEditFimeName}
+						handleSelectFile={handleSelectFile}
+						handleCreateFile={handleCreateFile}
+						{...files[_id]}
+					/>
+				);
+			})}
 		</div>
 	);
 }

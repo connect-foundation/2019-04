@@ -46,21 +46,19 @@ const Icon = styled.img`
 
 const FileNameInput = styled.div`
 	& {
-		& {
-			flex-grow: 2;
-			padding-left: 0.25rem;
+		flex-grow: 2;
+		padding-left: 0.25rem;
 
-			font-weight: lighter;
-			font-size: ${EXPLORER_TAB_CONTAINER_THEME.explorerTabContainerFileTextSize};
-			color: ${EXPLORER_TAB_CONTAINER_THEME.explorerTabContainerFileTextColor};
+		font-weight: lighter;
+		font-size: ${EXPLORER_TAB_CONTAINER_THEME.explorerTabContainerFileTextSize};
+		color: ${EXPLORER_TAB_CONTAINER_THEME.explorerTabContainerFileTextColor};
 
-			overflow: hidden;
-			white-space: nowrap;
-		}
+		overflow: hidden;
+		white-space: nowrap;
+	}
 
-		&[contentEditable='true'] {
-			background-color: ${EXPLORER_TAB_CONTAINER_THEME.explorerTabContainerFileNameEditBGColor};
-		}
+	&[contentEditable='true'] {
+		background-color: ${EXPLORER_TAB_CONTAINER_THEME.explorerTabContainerFileNameEditBGColor};
 	}
 `;
 
