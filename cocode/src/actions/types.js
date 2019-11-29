@@ -7,6 +7,8 @@ const API_FAIL = 'API_FAILURE';
 const UPDATE_CODE = 'updateCode';
 const FETCH_PROJECT = 'fetchProject';
 const SELECT_FILE = 'selectFile';
+const CREATE_FILE = 'createFile';
+const UPDATE_FILE_NAME = 'updateFileName';
 
 export {
 	API_LOADING,
@@ -14,5 +16,7 @@ export {
 	API_FAIL,
 	UPDATE_CODE,
 	FETCH_PROJECT,
-	SELECT_FILE
+	SELECT_FILE,
+	UPDATE_FILE_NAME,
+	CREATE_FILE
 };

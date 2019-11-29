@@ -1,10 +1,19 @@
 import '@babel/polyfill';
-import React from 'react';
-import { render, fireEvent, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
+import React, { useState } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { render, fireEvent, cleanup } from '@testing-library/react';
 
 import Header from '.';
+
+import UserContext from 'contexts/UserContext';
+
+function UserContextProvider({ children }) {
+	const [user] = useState(null);
+	return (
+		<UserContext.Provider value={{ user }}>{children}</UserContext.Provider>
+	);
+}
 
 /*
 
@@ -43,7 +52,13 @@ function prepareForReactPortal() {
 
 function openLoginModalTest() {
 	// given
-	const { getByText, getByRole } = render(<Router><Header /></Router>);
+	const { getByText, getByRole } = render(
+		<UserContextProvider>
+			<Router>
+				<Header />
+			</Router>
+		</UserContextProvider>
+	);
 	const signInButton = getByText(SIGN_IN_BUTTON_TEXT);
 
 	// when

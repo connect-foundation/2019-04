@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import * as Styled from './style';
+
+import ProjectContext from 'contexts/ProjectContext';
 
 import TabIcon from 'components/Project/TabIcon';
 
@@ -9,8 +11,9 @@ import Dependency from './dependency.svg';
 import Live from './live.svg';
 
 function TabBar({ theme }) {
-	const [clickedIndex, setClickedIndex] = useState(0);
-	const handleSetClickedIndex = index => setClickedIndex(index);
+	const { clickedTabIndex, setClickedTabIndex } = useContext(ProjectContext);
+
+	const handleSetClickedIndex = index => setClickedTabIndex(index);
 
 	const tabIcons = [
 		{
@@ -42,7 +45,7 @@ function TabBar({ theme }) {
 						name={name}
 						icon={icon}
 						onClick={handleSetClickedIndex}
-						clicked={index === clickedIndex}
+						clicked={index === clickedTabIndex}
 					/>
 				);
 			})}

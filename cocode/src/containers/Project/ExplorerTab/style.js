@@ -1,13 +1,16 @@
 import styled from 'styled-components';
-import { TAB_CONTAINER_THEME } from 'constants/theme';
+import {
+	TAB_CONTAINER_THEME,
+	EXPLORER_TAB_CONTAINER_THEME
+} from 'constants/theme';
 
-const ExplorerTab = styled.section`
+const TabBody = styled.div`
 	& {
-		background-color: ${TAB_CONTAINER_THEME.tabContainerBGColor};
+		height: 100%;
 	}
 
 	.Is-selected-file {
-		background-color: ${TAB_CONTAINER_THEME.tabContainerFileHoverBGColor};
+		background-color: ${EXPLORER_TAB_CONTAINER_THEME.explorerTabContainerSelectedFileBGColor};
 	}
 `;
 
@@ -15,6 +18,7 @@ const TabHeader = styled.header`
 	& {
 		display: flex;
 		flex-direction: row;
+		background-color: ${TAB_CONTAINER_THEME.tabContainerHeaderBGColor};
 	}
 
 	.Tab-header-Side-icons {
@@ -36,12 +40,17 @@ const Title = styled.h1`
 
 const SideIcons = styled.span`
 	& {
+		display: flex;
+		flex-direction: row;
+
 		margin-left: auto;
 	}
 
 	& > svg {
 		margin: 0 0.2rem;
+
+		cursor: pointer;
 	}
 `;
 
-export { ExplorerTab, TabHeader, Title, SideIcons };
+export { TabHeader, TabBody, Title, SideIcons };

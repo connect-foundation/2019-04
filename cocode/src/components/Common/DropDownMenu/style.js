@@ -1,49 +1,47 @@
 import styled from 'styled-components';
-
-const BUTTON_COLOR = '#2b2b2b';
-const BUTTON_COLOR_HOVER = '#4b4b4b';
-const BUTTON_BOUNDARY = '#383838';
+import { DROPDOWN_THEME } from 'constants/theme';
 
 const DropDownMenu = styled.div`
 	& {
+		position: relative;
 		display: flex;
 		justify-content: flex-end;
 
-		position: relative;
 	}
 `;
 
 const DropDownList = styled.ul`
 	& {
+		position: absolute;
 		display: flex;
 		flex-direction: column;
 
-		position: absolute;
-
 		top: 100%;
-		padding: 0;
+		
 		margin: 0;
+		padding: 0;
 	}
 `;
 
 const DropDownItem = styled.button`
 	& {
 		height: 2.5rem;
-		width: 8rem;
+		width: 7rem;
 		padding: 0.25rem 1rem;
 		z-index: 1;
 
-		font-size: 1.5rem;
+		font-size: 1rem;
+		font-weight: 300;
 		vertical-align: center;
 		text-align: right;
 
-		background-color: ${BUTTON_COLOR};
+		background-color: ${DROPDOWN_THEME.dropdownButtonColor};
 
 		border: none;
-		border-top: solid ${BUTTON_BOUNDARY};
+		border-top: 1px solid ${DROPDOWN_THEME.dropdownButtonBorderColor};
 	}
 	&:hover {
-		background-color: ${BUTTON_COLOR_HOVER};
+		background-color: ${DROPDOWN_THEME.dropdownButtonHoverColor};
 		cursor: pointer;
 	}
 `;
