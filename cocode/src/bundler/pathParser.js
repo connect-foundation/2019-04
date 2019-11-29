@@ -29,7 +29,6 @@ function pathParser(path, fileSystem = exports) {
 
 function pathInitializer(path) {
 	// node_modules 의존성 검사 필요
-
 	const splitedPath = path.split('/').filter(val => val !== '');
 
 	const initialPath = pathStack[pathStack.length - 1]
