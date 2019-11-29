@@ -1,7 +1,11 @@
-function getFileExtension(fileName) {
+function fileHasNoExtension(fileName) {
 	const fileNameSplited = fileName.split('.');
-	if (fileNameSplited.length === 1) return 'file';
-	return fileNameSplited[fileNameSplited.length - 1];
+	return fileNameSplited.length === 1;
+}
+
+function getFileExtension(fileName) {
+	if (fileHasNoExtension(fileName)) return 'file';
+	return fileName.split('.').pop();
 }
 
 export { getFileExtension };

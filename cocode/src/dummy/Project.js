@@ -101,7 +101,27 @@ const template = {
 		'	)\n' +
 		'}\n' +
 		'\n' +
-		'ReactDOM.render(<App />, document.getElementById("coconut-root"));\n'
+		'ReactDOM.render(<App />, document.getElementById("coconut-root"));\n',
+	Apple:
+		'function Apple() {\n' +
+		'	return(\n' +
+		'		<>\n' +
+		'			<h1>Apple!</h1>\n' +
+		'		</>\n' +
+		'	)\n' +
+		'}\n' +
+		'\n' +
+		'export default Apple;\n',
+	Banana:
+		'function Banana() {\n' +
+		'	return(\n' +
+		'		<>\n' +
+		'			<h1>Banana!</h1>\n' +
+		'		</>\n' +
+		'	)\n' +
+		'}\n' +
+		'\n' +
+		'export default Banana;\n'
 };
 
 function getTemplate(file) {
@@ -118,16 +138,20 @@ const project = {
 			name: 'root',
 			type: 'directory',
 			child: [
-				'5dd553be4561ae2bae9cb45f',
-				'5dd553be4561ae2bae9cb461',
-				'5dd553be4561ae2bae9cb462'
+				'5dd553be4561ae2bae9cb45f'
+				// '5dd553be4561ae2bae9cb461',
+				// '5dd553be4561ae2bae9cb462'
 			]
 		},
 		{
 			_id: '5dd553be4561ae2bae9cb45f',
 			name: 'src',
 			type: 'directory',
-			child: ['5dd553be4561ae2bae9cb45d', '5dd553be4561ae2bae9cb45e']
+			child: [
+				'5dd553be4561ae2bae9cb45d',
+				'5dd553be4561ae2bae9cb45e',
+				'5dd553be4561ae2bae9cb461'
+			]
 		},
 		{
 			name: 'index.js',
@@ -136,29 +160,35 @@ const project = {
 			_id: '5dd553be4561ae2bae9cb45d'
 		},
 		{
-			name: 'style.css',
-			type: 'css',
-			contents: getTemplate('css'),
+			name: 'index.js',
+			type: 'js',
+			contents: getTemplate('version1'),
+			_id: '5dd553be4561ae2bae9cb45d'
+		},
+		{
+			name: 'Apple.js',
+			type: 'js',
+			contents: getTemplate('Apple'),
 			_id: '5dd553be4561ae2bae9cb45e'
 		},
 		{
 			_id: '5dd553be4561ae2bae9cb461',
-			name: 'public',
+			name: 'Component',
 			type: 'directory',
 			child: ['5dd553be4561ae2bae9cb460']
 		},
 		{
-			name: 'index.html',
-			type: 'html',
-			contents: getTemplate('html'),
+			name: 'Banana.js',
+			type: 'js',
+			contents: getTemplate('Banana'),
 			_id: '5dd553be4561ae2bae9cb460'
-		},
-		{
-			name: 'package.json',
-			type: 'npm',
-			contents: getTemplate('package'),
-			_id: '5dd553be4561ae2bae9cb462'
 		}
+		// {
+		// 	name: 'package.json',
+		// 	type: 'npm',
+		// 	contents: getTemplate('package'),
+		// 	_id: '5dd553be4561ae2bae9cb462'
+		// }
 	]
 };
 
