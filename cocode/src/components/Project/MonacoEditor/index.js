@@ -1,18 +1,36 @@
-import React from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { ControlledEditor } from '@monaco-editor/react';
 import * as Styled from './style';
 
-function MonacoEditor({ code, onChange, ...props }) {
+import ProjectContext from 'contexts/ProjectContext';
+import { updateCodeActionCreator } from 'actions/Project';
+
+function MonacoEditor({ ...props }) {
+	const { project, dispatchProject } = useContext(ProjectContext);
+	const [code, setCode] = useState('');
+
+	const handleOnChange = (_, changedCode) => {
+		setCode(changedCode);
+		const updateCodeAction = updateCodeActionCreator({
+			changedCode: changedCode
+		});
+		dispatchProject(updateCodeAction);
+	};
+
+	useEffect(() => {
+		setCode(project.editingCode);
+	}, [project.selectedFilePath]);
+
 	return (
 		<Styled.MonacoEditor {...props}>
 			<ControlledEditor
-				value={code ? code : '// 🥥 welcome to cocode 🥥 //\n'}
+				value={code}
 				language="javascript"
 				theme="vs-dark"
 				options={{
 					fontSize: '16px'
 				}}
-				onChange={onChange}
+				onChange={handleOnChange}
 			/>
 		</Styled.MonacoEditor>
 	);

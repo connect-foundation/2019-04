@@ -106,13 +106,13 @@ const fetchProject = (_, { project }) => {
 	return fetchedProject;
 };
 
-const updateCode = (state, { selectedFilePath, changedCode }) => {
+const updateCode = (state, { changedCode }) => {
 	return {
 		...state,
 		files: {
 			...state.files,
-			[selectedFilePath]: {
-				...state.files[selectedFilePath],
+			[state.selectedFilePath]: {
+				...state.files[state.selectedFilePath],
 				contents: changedCode
 			}
 		}
@@ -120,7 +120,11 @@ const updateCode = (state, { selectedFilePath, changedCode }) => {
 };
 
 const selectFile = (state, { selectedFilePath }) => {
-	return { ...state, selectedFilePath };
+	return {
+		...state,
+		selectedFilePath,
+		editingCode: state.files[selectedFilePath].contents
+	};
 };
 
 const createFile = (state, { name, parentPath, type }) => {
@@ -152,11 +156,9 @@ const createFile = (state, { name, parentPath, type }) => {
 	);
 	if (newFileType === 'directory') newFile[newFilePath]['childPaths'] = [];
 
-	// 변경되는 state: selectedFileId, selectedFileList, 부모 디렉토리의 child
+	// 변경되는 state: 부모 디렉토리의 child
 	return {
 		...state,
-		selectedFilePath: newFilePath,
-		selectedFileList: [newFilePath, ...state.selectedFileList],
 		files: {
 			...state.files,
 			...newFile,
