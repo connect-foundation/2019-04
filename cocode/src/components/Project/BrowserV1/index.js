@@ -2,28 +2,13 @@ import React, { useState, useEffect, useContext } from 'react';
 import * as Styled from './style';
 
 import ProjectContext from 'contexts/ProjectContext';
-// import { updateCodeActionCreator } from 'actions/Project';
 import * as bundler from 'bundler';
-
-// import * as babel from '@babel/core';
-// import reactPreset from '@babel/preset-react';
 
 function BrowserV1({ code, ...props }) {
 	const { project, dispatchProject } = useContext(ProjectContext);
 	const { files, entry, selectedFileId } = project;
 	const [fileSystem, setFileSystem] = useState({});
-	// const buildCode = () => {
-	// 	try {
-	// 		const parsedCode = babel.transform(code, {
-	// 			presets: [reactPreset]
-	// 		});
-	// 		eval(parsedCode.code);
-	// 	} catch (e) {
-	// 		console.log(e);
-	// 	}
-	// };
 
-	// useEffect(buildCode, [files]);
 	useEffect(() => {
 		const fileTemp = {};
 		Object.keys(bundler.exports).forEach(key => {
@@ -49,7 +34,6 @@ function BrowserV1({ code, ...props }) {
 	}, [files]);
 
 	useEffect(() => {
-		console.log(fileSystem);
 		try {
 			bundler.init();
 			bundler.require('/root/src/index');
