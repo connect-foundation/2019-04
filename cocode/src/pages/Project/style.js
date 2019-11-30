@@ -5,7 +5,7 @@ const Main = styled.main`
 		display: flex;
 		flex-direction: row;
 
-		height: 88.8vh;
+		height: 88vh;
 
 		.Project-main-stretch {
 			flex-grow: 2;
