@@ -60,7 +60,7 @@ function Browser({
 	};
 
 	return (
-		<Styled.Browser className={className} height={theme.browserHeignt}>
+		<Styled.Browser className={className} height={theme.browserHeight}>
 			<BrowserHeader
 				onGoBackward={onGoBackward}
 				onGoForward={onGoForward}
