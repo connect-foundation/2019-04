@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import * as Styled from './style';
 import FileTab from '../FileTab';
 
@@ -8,19 +8,36 @@ import ProjectContext from 'contexts/ProjectContext';
 
 const DEFAULT_OPENED_FILE_INDEX = 0;
 
-// TODO: 현재 하나의 파일만 바뀌어주는 것만 구현되어 있음. 추후에 파일 리스트에서 하도록 변경 필요.
 function FileTabBar() {
 	const { project } = useContext(ProjectContext);
 	const { files, selectedFilePath } = project;
 
 	const [clickedIndex, setClickedIndex] = useState(DEFAULT_OPENED_FILE_INDEX);
-	//TODO 현재 더미데이터 fileList를 넣은 값으로, 추후 props에서 넘겨온 openFileList가 초기값이 될 예정입니다.
-	const [openFiles, setOpenFiles] = useState([selectedFilePath]);
+	const [openFiles, setOpenFiles] = useState([]);
+
+	const isExistFile = idx => idx !== -1;
+	const FiledIndex = openFile =>
+		openFile.path === files[selectedFilePath].path;
 
 	const handleSetClickedIndex = index => setClickedIndex(index);
 	const handleCloseFile = index =>
 		setOpenFiles(openFiles.filter((file, i) => i !== index));
 
+	const addOpenedFile = () => {
+		const currentIdx = openFiles.findIndex(FiledIndex);
+		const newOpenedFiles = isExistFile(currentIdx)
+			? openFiles
+			: openFiles.concat(files[selectedFilePath]);
+		const clickedIdx = isExistFile(currentIdx)
+			? currentIdx
+			: openFiles.length;
+		setOpenFiles(newOpenedFiles);
+		setClickedIndex(clickedIdx);
+	};
+
+	useEffect(addOpenedFile, [files[selectedFilePath].path]);
+
+	// TODO icon 컨텍스트에서 관리하는 것으로 수정 필요
 	const icon = FileImagesSrc[files[selectedFilePath].type];
 	return (
 		<Styled.TabBar>
