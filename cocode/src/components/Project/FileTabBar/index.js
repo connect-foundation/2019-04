@@ -5,11 +5,12 @@ import FileTab from '../FileTab';
 import FileImagesSrc from 'constants/fileImagesSrc';
 
 import ProjectContext from 'contexts/ProjectContext';
+import { selectFileActionCreator } from 'actions/Project';
 
 const DEFAULT_OPENED_FILE_INDEX = 0;
 
 function FileTabBar() {
-	const { project } = useContext(ProjectContext);
+	const { project, dispatchProject } = useContext(ProjectContext);
 	const { files, selectedFilePath } = project;
 
 	const [clickedIndex, setClickedIndex] = useState(DEFAULT_OPENED_FILE_INDEX);
@@ -35,7 +36,17 @@ function FileTabBar() {
 		setClickedIndex(clickedIdx);
 	};
 
+	const setOpenedFile = () => {
+		if (openFiles[clickedIndex]) {
+			const selectFileAction = selectFileActionCreator({
+				selectedFilePath: openFiles[clickedIndex].path
+			});
+			dispatchProject(selectFileAction);
+		}
+	};
+
 	useEffect(addOpenedFile, [files[selectedFilePath].path]);
+	useEffect(setOpenedFile, [clickedIndex]);
 
 	// TODO icon 컨텍스트에서 관리하는 것으로 수정 필요
 	const icon = FileImagesSrc[files[selectedFilePath].type];
