@@ -88,6 +88,8 @@ const INFO_TAB_THEME = {
 	infoModifySVGSize: '1rem',
 	infoModifySVGFilter: 'invert(0.455)',
 	infoModifySVGFilterHover: 'invert(0.9)',
+	infoFocusBGColor: '#161719',
+	infoProjectFontSize: '1rem',
 	infoProjectNameFontSize: '1.5rem',
 	infoProjectDescriptionFontSize: '1.35rem',
 	infoProjectDescriptionFontStyle: 'italic',
