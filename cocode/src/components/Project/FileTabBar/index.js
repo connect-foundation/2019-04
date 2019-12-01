@@ -22,7 +22,8 @@ function FileTabBar() {
 
 	const handleSetClickedIndex = index => setClickedIndex(index);
 	const handleCloseFile = (e, index) => {
-		if (index === openFiles.length - 1 && index) setClickedIndex(index - 1);
+		if (index === openFiles.length - 1 && index && clickedIndex === index)
+			setClickedIndex(index - 1);
 		if (openFiles.length !== 1)
 			setOpenFiles(openFiles.filter((file, i) => i !== index));
 		e.stopPropagation();
