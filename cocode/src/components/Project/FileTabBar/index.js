@@ -24,15 +24,20 @@ function FileTabBar() {
 	const icon = FileImagesSrc[files[selectedFilePath].type];
 	return (
 		<Styled.TabBar>
-			<FileTab
-				index={DEFAULT_OPENED_FILE_INDEX}
-				FileName={files[selectedFilePath].name}
-				icon={icon}
-				type={files[selectedFilePath].type}
-				className={'clicked'}
-				onClick={handleSetClickedIndex}
-				onCloseClick={handleCloseFile}
-			/>
+			{openFiles.map((openFile, index) => {
+				return (
+					<FileTab
+						key={'openFile' + index}
+						index={index}
+						FileName={openFile.name}
+						icon={icon}
+						type={openFile.type}
+						clicked={clickedIndex === index}
+						onClick={handleSetClickedIndex}
+						onCloseClick={handleCloseFile}
+					/>
+				);
+			})}
 		</Styled.TabBar>
 	);
 }

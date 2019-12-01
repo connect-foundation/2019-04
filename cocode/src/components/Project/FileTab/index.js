@@ -7,7 +7,7 @@ function FileTab({
 	FileName,
 	icon,
 	type,
-	className,
+	clicked,
 	onClick,
 	onCloseClick
 }) {
@@ -15,10 +15,15 @@ function FileTab({
 	const handleCloseClick = () => onCloseClick(index);
 
 	return (
-		<Styled.Tab onClick={handleTabClick} className={className}>
+		<Styled.Tab onClick={handleTabClick} clicked={clicked}>
 			<Styled.Icon src={icon} alt={type} />
 			{FileName}
-			<Styled.Close src={Close} alt="close" onClick={handleCloseClick} />
+			<Styled.Close
+				src={Close}
+				alt="close"
+				clicked={clicked}
+				onClick={handleCloseClick}
+			/>
 		</Styled.Tab>
 	);
 }
