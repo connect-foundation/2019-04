@@ -21,8 +21,12 @@ function FileTabBar() {
 		openFile.path === files[selectedFilePath].path;
 
 	const handleSetClickedIndex = index => setClickedIndex(index);
-	const handleCloseFile = index =>
-		setOpenFiles(openFiles.filter((file, i) => i !== index));
+	const handleCloseFile = (e, index) => {
+		if (index === openFiles.length - 1 && index) setClickedIndex(index - 1);
+		if (openFiles.length !== 1)
+			setOpenFiles(openFiles.filter((file, i) => i !== index));
+		e.stopPropagation();
+	};
 
 	const addOpenedFile = () => {
 		const currentIdx = openFiles.findIndex(FiledIndex);
@@ -42,11 +46,13 @@ function FileTabBar() {
 				selectedFilePath: openFiles[clickedIndex].path
 			});
 			dispatchProject(selectFileAction);
+		} else if (openFiles[clickedIndex - 1]) {
+			setClickedIndex(clickedIndex - 1);
 		}
 	};
 
 	useEffect(addOpenedFile, [files[selectedFilePath].path]);
-	useEffect(setOpenedFile, [clickedIndex]);
+	useEffect(setOpenedFile, [clickedIndex, openFiles]);
 
 	// TODO icon 컨텍스트에서 관리하는 것으로 수정 필요
 	const icon = FileImagesSrc[files[selectedFilePath].type];

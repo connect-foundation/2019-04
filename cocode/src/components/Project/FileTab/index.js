@@ -12,7 +12,7 @@ function FileTab({
 	onCloseClick
 }) {
 	const handleTabClick = () => onClick(index);
-	const handleCloseClick = () => onCloseClick(index);
+	const handleCloseClick = (e) => onCloseClick(e, index);
 
 	return (
 		<Styled.Tab onClick={handleTabClick} clicked={clicked}>
