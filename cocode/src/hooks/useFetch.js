@@ -1,21 +1,18 @@
 import { useState, useEffect, useReducer } from 'react';
 import axios from 'axios';
-
+import { DEFAULT_REQUEST_OPTION } from 'config';
+import APIReducer from 'reducers/APIReducer';
 import {
 	fetchLoadActionCreator,
 	fetchSuccessActionCreator,
 	fetchFailActionCreator
 } from 'actions/API';
-import APIReducer from 'reducers/APIReducer';
-import { DEFAULT_REQUEST_OPTION } from 'config';
+
+
+const API = axios.create(DEFAULT_REQUEST_OPTION);
 
 function useFetch({ method, url, data = {} }) {
-	const [request, setRequest] = useState({
-		method,
-		url,
-		data,
-		...DEFAULT_REQUEST_OPTION
-	});
+	const [request, setRequest] = useState({ method, url, data });
 	const [state, dispatchFetchState] = useReducer(APIReducer, {
 		data: false,
 		loading: false,
@@ -24,13 +21,13 @@ function useFetch({ method, url, data = {} }) {
 
 	const requestToServer = () => {
 		dispatchFetchState(fetchLoadActionCreator);
-		axios(request)
-			.then(res => dispatchFetchState(fetchSuccessActionCreator(res)))
-			.catch(error => dispatchFetchState(fetchFailActionCreator(error)));
+		API(request)
+		.then(res => dispatchFetchState(fetchSuccessActionCreator(res)))
+		.catch(error => dispatchFetchState(fetchFailActionCreator(error)));
 	};
 
 	useEffect(() => {
-		requestToServer();
+		if (request.url) requestToServer();
 	}, [request]);
 
 	return [state, setRequest];
