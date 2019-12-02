@@ -44,7 +44,7 @@ const ProjectDescription = styled.div`
 `;
 
 const ProjectTimeLabel = styled.span`
-	font-size: ${PROJECT_CARD_THEME.cardDescriptFontSize};
+	font-size: ${PROJECT_CARD_THEME.cardDescriptionFontSize};
 	padding: 0;
 `;
 

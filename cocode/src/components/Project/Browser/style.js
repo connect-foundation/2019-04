@@ -32,8 +32,8 @@ const AddressInput = styled.input`
 
 		padding: 0.5rem 1rem;
 
-		background: ${({ adressInputBGColor }) => adressInputBGColor};
-		color: ${({ adressInputTextColor }) => adressInputTextColor};
+		background: ${({ addressInputBGColor }) => addressInputBGColor};
+		color: ${({ addressInputTextColor }) => addressInputTextColor};
 		font-size: 1rem;
 	}
 `;
