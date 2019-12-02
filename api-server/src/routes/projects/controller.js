@@ -20,11 +20,11 @@ async function modifyProject(req, res) {
 
 	project
 		.save()
-		.then(() => res.sendStatus(200))
+		.then(coconut => res.status(200).send(coconut))
 		.catch(() => res.sendStatus(500));
 }
 
-async function deleteProject(req, res, next) {
+async function deleteProject(req, res) {
 	const project = req.project;
 
 	project
