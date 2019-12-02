@@ -8,7 +8,6 @@ import {
 	fetchFailActionCreator
 } from 'actions/API';
 
-
 const API = axios.create(DEFAULT_REQUEST_OPTION);
 
 function useFetch({ method, url, data = {} }) {
@@ -22,8 +21,8 @@ function useFetch({ method, url, data = {} }) {
 	const requestToServer = () => {
 		dispatchFetchState(fetchLoadActionCreator);
 		API(request)
-		.then(res => dispatchFetchState(fetchSuccessActionCreator(res)))
-		.catch(error => dispatchFetchState(fetchFailActionCreator(error)));
+			.then(res => dispatchFetchState(fetchSuccessActionCreator(res)))
+			.catch(error => dispatchFetchState(fetchFailActionCreator(error)));
 	};
 
 	useEffect(() => {
