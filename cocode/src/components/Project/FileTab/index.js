@@ -4,7 +4,7 @@ import Close from './close.svg';
 
 function FileTab({
 	index,
-	FileName,
+	fileName,
 	icon,
 	type,
 	clicked,
@@ -17,7 +17,7 @@ function FileTab({
 	return (
 		<Styled.Tab onClick={handleTabClick} clicked={clicked}>
 			<Styled.Icon src={icon} alt={type} />
-			{FileName}
+			{fileName}
 			<Styled.Close
 				src={Close}
 				alt="close"

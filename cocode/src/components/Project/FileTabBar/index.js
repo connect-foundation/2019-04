@@ -63,14 +63,14 @@ function FileTabBar() {
 
 	return (
 		<Styled.TabBar>
-			{openFiles.map((openFile, index) => {
+			{openFiles.map(({ name, type }, index) => {
 				return (
 					<FileTab
 						key={'openFile' + index}
 						index={index}
-						FileName={openFile.name}
-						icon={FileImagesSrc[openFile.type]}
-						type={openFile.type}
+						fileName={name}
+						icon={FileImagesSrc[type]}
+						type={type}
 						clicked={clickedIndex === index}
 						onClick={handleSetClickedIndex}
 						onCloseClick={handleCloseFile}
