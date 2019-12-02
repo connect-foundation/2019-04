@@ -16,6 +16,9 @@ import {
 import FileImagesSrc from 'constants/fileImagesSrc';
 import { KEY_CODE_ENTER } from 'constants/keyCode';
 
+// Constants
+const ACCEPT_DELETE_NOTIFICATION = '이 파일을 지우시겠습니까?';
+
 function File({
 	isDirectory,
 	_id,
@@ -25,6 +28,7 @@ function File({
 	handleSelectFile,
 	handleCreateFile,
 	handleEditFileName,
+	handleDeleteFile,
 	...props
 }) {
 	const [fileName, setFileName] = useState(name);
@@ -46,6 +50,14 @@ function File({
 
 		setToggleEdit(false);
 		nameEditReferenece.current.contentEditable = false;
+	};
+
+	const handleDeleteFileButtonClick = e => {
+		const acceptDeleteThisFile = confirm(ACCEPT_DELETE_NOTIFICATION);
+		if (!acceptDeleteThisFile) return;
+
+		e.stopPropagation();
+		handleDeleteFile(_id);
 	};
 
 	const handleKeyDown = e => {
@@ -83,7 +95,7 @@ function File({
 						/>
 					</>
 				)}
-				<DeleteIcon />
+				<DeleteIcon onClick={handleDeleteFileButtonClick} />
 			</Styled.SideIcons>
 		</Styled.File>
 	);

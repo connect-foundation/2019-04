@@ -5,7 +5,15 @@ import NewFile from 'components/Project/NewFile';
 
 import ProjectContext from 'contexts/ProjectContext';
 
-function Directory({ id, path, childIds, depth, handleSelectFile, ...props }) {
+function Directory({
+	id,
+	path,
+	childIds,
+	depth,
+	handleSelectFile,
+	handleDeleteFile,
+	...props
+}) {
 	const {
 		project: { files, selectedFileId }
 	} = useContext(ProjectContext);
@@ -46,6 +54,7 @@ function Directory({ id, path, childIds, depth, handleSelectFile, ...props }) {
 					id={id}
 					handleCreateFile={handleCreateFile}
 					handleEditFileName={handleEditFileName}
+					handleDeleteFile={handleDeleteFile}
 					{...files[id]}
 				/>
 			)}
@@ -59,6 +68,7 @@ function Directory({ id, path, childIds, depth, handleSelectFile, ...props }) {
 						depth={depth + 1}
 						handleSelectFile={handleSelectFile}
 						handleEditFileName={props.handleEditFileName}
+						handleDeleteFile={handleDeleteFile}
 					/>
 				);
 			})}
@@ -87,6 +97,7 @@ function Directory({ id, path, childIds, depth, handleSelectFile, ...props }) {
 						handleEditFileName={handleEditFileName}
 						handleSelectFile={handleSelectFile}
 						handleCreateFile={handleCreateFile}
+						handleDeleteFile={handleDeleteFile}
 						{...files[_id]}
 					/>
 				);
