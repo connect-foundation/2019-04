@@ -19,13 +19,9 @@ function NewFile({ depth, type, parentId, handleEndCreateFile }) {
 	const fileNameInputReferenece = useRef(null);
 
 	const isDuplicatedFileName = fileName => {
-		if (
-			files[parentId].child
-				.map(id => files[id].name)
-				.some(name => name === fileName)
-		)
-			return true;
-		return false;
+		return files[parentId].child
+			.map(id => files[id].name)
+			.some(name => name === fileName);
 	};
 
 	const writeEnd = e => {
