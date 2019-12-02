@@ -10,6 +10,10 @@ const SELECT_FILE = 'selectFile';
 const CREATE_FILE = 'createFile';
 const UPDATE_FILE_NAME = 'updateFileName';
 
+//DashBoard
+const UPDATE_COCONUT_NAME = 'updateCoconutName';
+const DELETE_COCONUT = 'deleteCoconut';
+
 export {
 	API_LOADING,
 	API_SUCCESS,
@@ -18,5 +22,7 @@ export {
 	FETCH_PROJECT,
 	SELECT_FILE,
 	UPDATE_FILE_NAME,
-	CREATE_FILE
+	CREATE_FILE,
+	UPDATE_COCONUT_NAME,
+	DELETE_COCONUT,
 };
