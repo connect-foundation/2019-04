@@ -11,6 +11,7 @@ const CREATE_FILE = 'createFile';
 const UPDATE_FILE_NAME = 'updateFileName';
 
 //DashBoard
+const FETCH_COCONUT = 'fetchCoconut';
 const UPDATE_COCONUT_NAME = 'updateCoconutName';
 const DELETE_COCONUT = 'deleteCoconut';
 
@@ -23,6 +24,7 @@ export {
 	SELECT_FILE,
 	UPDATE_FILE_NAME,
 	CREATE_FILE,
+	FETCH_COCONUT,
 	UPDATE_COCONUT_NAME,
 	DELETE_COCONUT,
 };
