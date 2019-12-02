@@ -10,10 +10,13 @@ const envKeys = Object.keys(env).reduce((prev, next) => {
 
 module.exports = {
 	devtool: 'cheap-module-eval-source-map',
-	entry: __dirname + '/src/index.js',
+	entry: ['@babel/polyfill', __dirname + '/src/index.js'],
 	output: {
 		path: __dirname + '/public',
 		filename: 'bundle.js'
+	},
+	node: {
+		fs: 'empty'
 	},
 	module: {
 		rules: [
