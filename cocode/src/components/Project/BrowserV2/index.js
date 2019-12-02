@@ -5,6 +5,13 @@ import * as bundler from 'bundler';
 
 import ProjectContext from 'contexts/ProjectContext';
 
+function idToPath(files, id) {
+	const path = `/${files[id].name}`;
+	const parentId = files[id].parentId;
+
+	return parentId ? `${idToPath(files, parentId)}${path}` : path;
+}
+
 function BrowserV2({ ...props }) {
 	const { project } = useContext(ProjectContext);
 	const { files } = project;
@@ -16,30 +23,33 @@ function BrowserV2({ ...props }) {
 			delete bundler.exports[key];
 		});
 
-		function fileParser(path) {
-			if (files[path].type !== 'directory') {
+		function fileParser(path, id) {
+			if (files[id].type !== 'directory') {
 				fileTemp[path] = {
-					contents: files[path].contents
+					contents: files[id].contents
 				};
 				bundler.exports[path] = {
-					contents: files[path].contents
+					contents: files[id].contents
 				};
-			} else if (files[path].childPaths) {
-				files[path].childPaths.forEach(path => {
-					fileParser(path);
+			} else if (files[id].child) {
+				files[id].child.forEach(id => {
+					const path = idToPath(files, id);
+					fileParser(path, id);
 				});
 			}
 		}
-		if (project) fileParser(project.rootPath);
+
+		const rootPath = idToPath(files, project.root);
+		if (project) fileParser(rootPath, project.root);
 
 		setFileSystem(fileTemp);
 	}, [files]);
 
 	useEffect(() => {
 		try {
-			const entry = project.entryPath.split('.')[0];
+			const entryPath = idToPath(files, project.entry).split('.')[0];
 			bundler.init();
-			bundler.require(entry);
+			bundler.require(entryPath);
 		} catch (error) {
 			console.log(error);
 		}

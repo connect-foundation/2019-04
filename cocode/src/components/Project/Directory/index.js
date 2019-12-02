@@ -5,32 +5,31 @@ import NewFile from 'components/Project/NewFile';
 
 import ProjectContext from 'contexts/ProjectContext';
 
-function Directory({ path, childPaths, depth, handleSelectFile, ...props }) {
+function Directory({ id, path, childIds, depth, handleSelectFile, ...props }) {
 	const {
-		project: { files, selectedFilePath }
+		project: { files, selectedFileId }
 	} = useContext(ProjectContext);
 	const [isNewFileCreating, setIsNewFileCreating] = useState(false);
 	const [createFileType, setCreateFileType] = useState(null);
 
 	// Functions
 	const isNotRoot = depth => depth !== 1;
-	const filePathToFile = path => files[path];
+	const fileIdToFile = id => files[id];
 	const isDirectory = ({ type }) => type === 'directory';
 	const isFile = ({ type }) => type !== 'directory';
-	const isSelected = path => selectedFilePath === path;
+	const isSelected = id => selectedFileId === id;
 
 	// Variables
-	const directoryList = childPaths
-		? childPaths.map(filePathToFile).filter(isDirectory)
+	const directoryList = childIds
+		? childIds.map(fileIdToFile).filter(isDirectory)
 		: [];
-	const fileList = childPaths
-		? childPaths.map(filePathToFile).filter(isFile)
-		: [];
+	const fileList = childIds ? childIds.map(fileIdToFile).filter(isFile) : [];
 
 	// Evnet handler
-	const handleEditFimeName = changedName => {
-		props.handleEditFileName(path, changedName);
+	const handleEditFileName = changedName => {
+		props.handleEditFileName(id, changedName);
 	};
+
 	const handleCreateFile = type => {
 		setCreateFileType(type);
 		setIsNewFileCreating(true);
@@ -44,19 +43,19 @@ function Directory({ path, childPaths, depth, handleSelectFile, ...props }) {
 				<File
 					isDirectory={true}
 					depth={depth - 1}
-					path={path}
+					id={id}
 					handleCreateFile={handleCreateFile}
-					handleEditFimeName={handleEditFimeName}
-					{...files[path]}
+					handleEditFileName={handleEditFileName}
+					{...files[id]}
 				/>
 			)}
 			{/* 이 Directory에 속한 Directory 목록 */
-			directoryList.map(({ path }) => {
+			directoryList.map(({ _id }) => {
 				return (
 					<Directory
-						key={'directory_' + path}
-						path={path}
-						childPaths={files[path].childPaths}
+						key={'directory_' + _id}
+						id={_id}
+						childIds={files[_id].child}
 						depth={depth + 1}
 						handleSelectFile={handleSelectFile}
 						handleEditFileName={props.handleEditFileName}
@@ -68,27 +67,27 @@ function Directory({ path, childPaths, depth, handleSelectFile, ...props }) {
 				<NewFile
 					depth={depth}
 					type={createFileType}
-					parentPath={path}
+					parentId={id}
 					handleEndCreateFile={handleEndCreateFile}
 				/>
 			)}
 			{/* 이 Directory에 속한 File들 */
-			fileList.map(({ path }) => {
-				const handleEditFimeName = changedName => {
-					props.handleEditFileName(path, changedName);
+			fileList.map(({ _id }) => {
+				const handleEditFileName = changedName => {
+					props.handleEditFileName(_id, changedName);
 				};
 
 				return (
 					<File
-						key={'file' + path}
-						path={path}
+						key={'file' + _id}
+						id={_id}
 						isDirectory={false}
-						className={isSelected(path) && 'Is-selected-file'}
+						className={isSelected(_id) && 'Is-selected-file'}
 						depth={depth}
-						handleEditFimeName={handleEditFimeName}
+						handleEditFileName={handleEditFileName}
 						handleSelectFile={handleSelectFile}
 						handleCreateFile={handleCreateFile}
-						{...files[path]}
+						{...files[_id]}
 					/>
 				);
 			})}

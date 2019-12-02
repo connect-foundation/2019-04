@@ -10,153 +10,90 @@ import {
 import { getFileExtension } from 'utils';
 import FileImagesSrc from 'constants/fileImagesSrc';
 
-// Constants
-const ROOT_PATH = '/';
-const PATH_DIVIDER = '/';
-
-function convertFilesObjectKeyToPath({
-	prePath,
-	filesObject,
-	fileIdsInDirectory
-}) {
-	return fileIdsInDirectory.reduce((convertedFiles, id) => {
-		const file = filesObject[id];
-		const filePath = prePath
-			? `${prePath}${PATH_DIVIDER}${file.name}`
-			: `${ROOT_PATH}${file.name}`;
-		file['parentPath'] = prePath ? prePath : ROOT_PATH;
-		file['path'] = filePath;
-
-		if (file.child) {
-			const childPaths = file.child.map(
-				childId =>
-					`${filePath}${PATH_DIVIDER}${filesObject[childId].name}`
-			);
-
-			Object.defineProperty(file, 'childPaths', {
-				value: childPaths,
-				writable: true
-			});
-		}
-
-		const child = file.child
-			? {
-					...convertFilesObjectKeyToPath({
-						prePath: filePath,
-						filesObject,
-						fileIdsInDirectory: file.child
-					})
-			  }
-			: {};
-		const thisFile = { [filePath]: file };
-
-		return { ...convertedFiles, ...thisFile, ...child };
-	}, {});
-}
-
-function getEntryPath(fileObject, entryId) {
-	const entryFile = Object.values(fileObject).find(
-		({ _id }) => _id === entryId
-	);
-	let result = entryFile.name;
-	let parentPath = entryFile.parentPath;
-	while (true) {
-		result = `/${fileObject[parentPath].name}/${result}`;
-		parentPath = fileObject[parentPath].parentPath;
-		if (parentPath !== undefined) break;
-	}
-
-	return result;
-}
-
-// Reducers
+// fetchProject
 const fetchProject = (_, { project }) => {
-	const childIdsInRoot = project.files.find(({ _id }) => _id === project.root)
-		.child;
 	const filesObject = project.files.reduce((acc, cur) => {
 		acc[cur._id] = cur;
 		return acc;
 	}, {});
 
-	const convertedFilesObject = convertFilesObjectKeyToPath({
+	const rootDirectoryId = project.root;
+	const convertedFilesObject = addParentIdToFiles(
 		filesObject,
-		fileIdsInDirectory: childIdsInRoot
-	});
+		rootDirectoryId
+	);
 	Object.assign(convertedFilesObject, {
-		[ROOT_PATH]: {
-			...filesObject[project.root],
-			childPaths: filesObject[project.root].child.map(
-				childId => `${ROOT_PATH}${filesObject[childId].name}`
-			)
-		}
+		[rootDirectoryId]: { ...filesObject[rootDirectoryId] }
 	});
 
-	const entryPath = getEntryPath(convertedFilesObject, project.entry);
-
+	const entryId = project.entry;
 	const fetchedProject = {
 		...project,
-		rootPath: ROOT_PATH,
-		entryPath,
 		files: convertedFilesObject,
-		selectedFilePath: entryPath,
-		selectedFileList: [entryPath],
-		editingCode: convertedFilesObject[entryPath].contents
+		selectedFileId: entryId,
+		editingCode: convertedFilesObject[entryId].contents
 	};
 
 	return fetchedProject;
 };
+
+function addParentIdToFiles(filesObject, directoryId) {
+	const result =
+		directoryId === filesObject.root
+			? { [directoryId]: { ...filesObject[directoryId] } }
+			: {};
+
+	return filesObject[directoryId].child.reduce((files, id) => {
+		const file = filesObject[id];
+		file['parentId'] = directoryId;
+
+		const child = file.child
+			? { ...addParentIdToFiles(filesObject, id) }
+			: {};
+		const thisFile = { [id]: file };
+
+		return { ...files, ...thisFile, ...child };
+	}, result);
+}
 
 const updateCode = (state, { changedCode }) => {
 	return {
 		...state,
 		files: {
 			...state.files,
-			[state.selectedFilePath]: {
-				...state.files[state.selectedFilePath],
+			[state.selectedFileId]: {
+				...state.files[state.selectedFileId],
 				contents: changedCode
 			}
 		}
 	};
 };
 
-const selectFile = (state, { selectedFilePath }) => {
+const selectFile = (state, { selectedFileId }) => {
 	return {
 		...state,
-		selectedFilePath,
-		editingCode: selectedFilePath
-			? state.files[selectedFilePath].contents
+		selectedFileId,
+		editingCode: selectedFileId
+			? state.files[selectedFileId].contents
 			: undefined
 	};
 };
 
-const createFile = (state, { name, parentPath, type }) => {
-	const newFilePath =
-		parentPath === ROOT_PATH
-			? `${parentPath}${name}`
-			: `${parentPath}/${name}`;
+const createFile = (state, { name, parentId, type }) => {
+	const newFileId = name; // TODO: ObjectId생성 모듈로 생성한 것
 	const newFileType =
-		type === 'directory'
-			? type
-			: (() => {
-					let ext = getFileExtension(name);
-					if (!FileImagesSrc[ext]) ext = 'file';
-					return ext;
-			  })();
+		type === 'directory' ? type : convertFileExtension(name);
 
-	const newFile = Object.assign(
-		{ [newFilePath]: {} },
-		{
-			[newFilePath]: {
-				_id: 'newFile',
-				name,
-				type: newFileType,
-				contents: '',
-				path: newFilePath,
-				parentPath
-			}
+	const newFile = {
+		[newFileId]: {
+			_id: newFileId,
+			name,
+			type: newFileType,
+			contents: '',
+			parentId
 		}
-	);
-	if (newFileType === 'directory') newFile[newFilePath]['childPaths'] = [];
+	};
+	if (newFileType === 'directory') newFile[newFileId]['child'] = [];
 
 	// 변경되는 state: 부모 디렉토리의 child
 	return {
@@ -164,44 +101,28 @@ const createFile = (state, { name, parentPath, type }) => {
 		files: {
 			...state.files,
 			...newFile,
-			[parentPath]: {
-				...state.files[parentPath],
-				childPaths: [...state.files[parentPath].childPaths, newFilePath]
+			[parentId]: {
+				...state.files[parentId],
+				child: [...state.files[parentId].child, newFileId]
 			}
 		}
 	};
 };
 
-// TODO
-function cloneObject(obj) {
-	let clone = {};
-	for (var i in obj) {
-		if (typeof obj[i] === 'object' && obj[i] !== null)
-			clone[i] = cloneObject(obj[i]);
-		else clone[i] = obj[i];
-	}
-	return clone;
+function convertFileExtension(name) {
+	let ext = getFileExtension(name);
+	if (!FileImagesSrc[ext]) ext = 'file';
+	return ext;
 }
 
-// TODO: 이름 바뀌면 바뀌어야 할 state -> 부모의 child, childPath / 기존 file은 어떻게? / ...
-const updateFileName = (state, { selectedFilePath, changedName }) => {
-	const newPath =
-		selectedFilePath
-			.split('/')
-			.slice(0, -1)
-			.join('/') + `/${changedName}`;
-
-	const clone = cloneObject({
-		...state.files[selectedFilePath],
-		name: changedName
-	});
-
+const updateFileName = (state, { selectedFileId, changedName }) => {
 	return {
 		...state,
 		files: {
 			...state.files,
-			[newPath]: {
-				...clone
+			[selectedFileId]: {
+				...state.files[selectedFileId],
+				name: changedName
 			}
 		}
 	};

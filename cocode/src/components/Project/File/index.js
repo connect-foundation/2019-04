@@ -18,33 +18,31 @@ import { KEY_CODE_ENTER } from 'constants/keyCode';
 
 function File({
 	isDirectory,
-	path,
+	_id,
 	type,
 	name,
 	depth,
 	handleSelectFile,
 	handleCreateFile,
-	handleEditFimeName,
+	handleEditFileName,
 	...props
 }) {
 	const [fileName, setFileName] = useState(name);
 	const [toggleEdit, setToggleEdit] = useState(false);
 	const nameEditReferenece = useRef(null);
 
-	const src = FileImagesSrc[type];
-
 	// Event handlers
-	const handleClick = () => handleSelectFile(path);
+	const handleClick = () => handleSelectFile(_id);
 
 	const handleEditFileNameStart = () => {
 		changeDivEditable(nameEditReferenece.current, true);
 		setToggleEdit(true);
 	};
 
-	const handleEditFileNameEnd = e => {
-		const changedName = e.currentTarget.textContent;
+	const handleEditFileNameEnd = ({ currentTarget }) => {
+		const changedName = currentTarget.textContent;
 		setFileName(changedName);
-		handleEditFimeName(changedName);
+		handleEditFileName(changedName);
 
 		setToggleEdit(false);
 		nameEditReferenece.current.contentEditable = false;
@@ -61,7 +59,7 @@ function File({
 			onClick={handleSelectFile ? handleClick : undefined}
 			{...props}
 		>
-			<Styled.Icon src={src} alt={`${name}_${type}`} />
+			<Styled.Icon src={FileImagesSrc[type]} alt={`${name}_${type}`} />
 			<Styled.NameEdit
 				ref={nameEditReferenece}
 				onFocus={selectAllTextAboutFocusedDom}
@@ -71,7 +69,7 @@ function File({
 				{fileName}
 			</Styled.NameEdit>
 			<Styled.SideIcons className="Side-icons-visibility">
-				{/* <EditIcon onClick={handleEditFileNameStart} /> */}
+				<EditIcon onClick={handleEditFileNameStart} />
 				{isDirectory && (
 					<>
 						<NewFolderIcon

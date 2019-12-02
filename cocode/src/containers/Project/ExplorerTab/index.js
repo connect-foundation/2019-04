@@ -37,23 +37,24 @@ function ExplorerTab() {
 	const [createFileType, setCreateFileType] = useState(null);
 
 	const { project, dispatchProject } = useContext(ProjectContext);
-	const { files, root, rootPath } = project;
-	const childPathsInRoot = files[rootPath].childPaths;
+	const { files, root } = project;
+	const childIdsInRoot = files[root].child;
 
 	const handleCreateFile = type => {
 		setCreateFileType(type);
 		setIsNewFileCreating(true);
 	};
+
 	const handleEndCreateFile = () => setIsNewFileCreating(false);
 
-	const handleSelectFile = selectedFilePath => {
-		const selectFileAction = selectFileActionCreator({ selectedFilePath });
+	const handleSelectFile = selectedFileId => {
+		const selectFileAction = selectFileActionCreator({ selectedFileId });
 		dispatchProject(selectFileAction);
 	};
 
-	const handleEditFileName = (selectedFilePath, changedName) => {
+	const handleEditFileName = (selectedFileId, changedName) => {
 		const updateFileNameAction = updateFileNameActionCreator({
-			selectedFilePath,
+			selectedFileId,
 			changedName
 		});
 		dispatchProject(updateFileNameAction);
@@ -66,14 +67,14 @@ function ExplorerTab() {
 				<NewFile
 					depth={1}
 					type={createFileType}
-					parentPath={rootPath}
+					parentId={root}
 					handleEndCreateFile={handleEndCreateFile}
 				/>
 			)}
 			<Styled.TabBody>
 				<Directory
-					path={rootPath}
-					childPaths={childPathsInRoot}
+					id={root}
+					childIds={childIdsInRoot}
 					depth={1}
 					handleSelectFile={handleSelectFile}
 					handleEditFileName={handleEditFileName}
