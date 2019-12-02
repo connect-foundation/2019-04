@@ -9,6 +9,7 @@ const FETCH_PROJECT = 'fetchProject';
 const SELECT_FILE = 'selectFile';
 const CREATE_FILE = 'createFile';
 const UPDATE_FILE_NAME = 'updateFileName';
+const DELETE_FILE = 'deleteFile';
 
 export {
 	API_LOADING,
@@ -18,5 +19,6 @@ export {
 	FETCH_PROJECT,
 	SELECT_FILE,
 	UPDATE_FILE_NAME,
-	CREATE_FILE
+	CREATE_FILE,
+	DELETE_FILE
 };
