@@ -22,7 +22,10 @@ function MonacoEditor({ ...props }) {
 	}, [project.selectedFilePath]);
 
 	return (
-		<Styled.MonacoEditor {...props}>
+		<Styled.MonacoEditor
+			{...props}
+			isFilesEmpty={!project.selectedFilePath}
+		>
 			<ControlledEditor
 				value={code}
 				language="javascript"

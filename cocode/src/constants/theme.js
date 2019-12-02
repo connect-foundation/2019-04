@@ -94,6 +94,18 @@ const INFO_TAB_THEME = {
 	infoProjectAuthorFontSize: '1.2rem'
 };
 
+const FILE_TAB_THEME = {
+	fileTabDefaultBGColor: '#111518',
+	fileTabClickedBGColor: '#1E2022',
+	fileTabFontSize: '0.8rem',
+	fileTabCloseButtonSize: '0.8rem'
+};
+
+const MONACO_THEME = {
+	editorMainColor: '#1E2022',
+	editorCurrentLineColor: '#2a2f32',
+};
+
 export {
 	DEFAULT_THEME,
 	DROPDOWN_THEME,
@@ -103,5 +115,7 @@ export {
 	PROJECT_CARD_THEME,
 	DEPENDENCY_TAB_THEME,
 	INFO_TAB_THEME,
-	EXPLORER_TAB_CONTAINER_THEME
+	EXPLORER_TAB_CONTAINER_THEME,
+	FILE_TAB_THEME,
+	MONACO_THEME
 };
