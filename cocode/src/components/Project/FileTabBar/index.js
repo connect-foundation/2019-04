@@ -24,12 +24,18 @@ function FileTabBar() {
 	const handleCloseFile = (e, index) => {
 		if (index === openFiles.length - 1 && index && clickedIndex === index)
 			setClickedIndex(index - 1);
-		if (openFiles.length !== 1)
-			setOpenFiles(openFiles.filter((file, i) => i !== index));
+		if (openFiles.length === 1) {
+			const selectFileAction = selectFileActionCreator({
+				selectedFilePath: undefined
+			});
+			dispatchProject(selectFileAction);
+		}
+		setOpenFiles(openFiles.filter((file, i) => i !== index));
 		e.stopPropagation();
 	};
 
 	const addOpenedFile = () => {
+		if (!selectedFilePath) return;
 		const currentIdx = openFiles.findIndex(FiledIndex);
 		const newOpenedFiles = isExistFile(currentIdx)
 			? openFiles
@@ -52,11 +58,9 @@ function FileTabBar() {
 		}
 	};
 
-	useEffect(addOpenedFile, [files[selectedFilePath].path]);
+	useEffect(addOpenedFile, [selectedFilePath]);
 	useEffect(setOpenedFile, [clickedIndex, openFiles]);
 
-	// TODO icon 컨텍스트에서 관리하는 것으로 수정 필요
-	const icon = FileImagesSrc[files[selectedFilePath].type];
 	return (
 		<Styled.TabBar>
 			{openFiles.map((openFile, index) => {
@@ -65,7 +69,7 @@ function FileTabBar() {
 						key={'openFile' + index}
 						index={index}
 						FileName={openFile.name}
-						icon={icon}
+						icon={FileImagesSrc[openFile.type]}
 						type={openFile.type}
 						clicked={clickedIndex === index}
 						onClick={handleSetClickedIndex}

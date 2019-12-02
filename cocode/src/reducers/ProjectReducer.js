@@ -123,7 +123,9 @@ const selectFile = (state, { selectedFilePath }) => {
 	return {
 		...state,
 		selectedFilePath,
-		editingCode: state.files[selectedFilePath].contents
+		editingCode: selectedFilePath
+			? state.files[selectedFilePath].contents
+			: undefined
 	};
 };
 
