@@ -42,14 +42,14 @@ function ProjectCard({ _id, name, updatedAt }) {
 	];
 
 	const { dispatch } = useContext(DashBoardContext);
-	const [modify, setModify] = useState(false);
+	const [modifying, setModifying] = useState(false);
 	const nameInput = useRef(false);
 
 	//TODO loading 시 Circular, error시 토스트 띄우기
 	const [{ data, loading, error }, setRequest] = useFetch({});
 
 	const handleEditCoconutNameStart = () => {
-		setModify(true);
+		setModifying(true);
 		changeDivEditable(nameInput.current, true);
 	};
 	const handleEditCoconutNameEnd = e => {
@@ -61,16 +61,16 @@ function ProjectCard({ _id, name, updatedAt }) {
 		setRequest(updateCoconutsAPICreator(_id, { name }));
 	};
 
-	const handleKeyDown = ({ currentTarget, keyCode }) => {
-		if (keyCode === KEY_CODE_ENTER) {
-			handleEditCoconutNameEnd(currentTarget.textContent);
-		}
+	const handleKeyDown = e => {
+		if (e.keyCode === KEY_CODE_ENTER) handleEditCoconutNameEnd(e);
 	};
 
 	useEffect(() => {
-		if (modify && data) {
+		if (!data) return;
+
+		if (modifying) {
 			dispatch(updateCoconutNameActionCreator(data));
-			setModify(false);
+			setModifying(false);
 		}
 	}, [data]);
 
