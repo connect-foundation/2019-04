@@ -4,20 +4,20 @@ import {
 	DELETE_COCONUT
 } from 'actions/types';
 
-const filterNotChangedById = (list, id) => list.filter(item => item._id !== id);
-
 const fetchCoconut = (_, coconuts) => ({
 	coconuts,
 	isFetched: true
 });
 
-const updateCoconutName = (coconuts, newCoconut) => ({
-	coconut: [...filterNotChangedById(coconuts, newCoconut._id), newCoconut],
+const updateCoconutName = ({ coconuts }, newCoconut) => ({
+	coconuts: coconuts.map(coconut =>
+		coconut._id !== newCoconut._id ? coconut : newCoconut
+	),
 	isFetched: true
 });
 
-const deleteCoconut = (coconuts, { _id }) => ({
-	coconut: filterNotChangedById(coconuts, _id),
+const deleteCoconut = ({ coconuts }, { _id }) => ({
+	coconuts: coconuts.filter(coconut => coconut._id !== _id),
 	isFetched: true
 });
 
