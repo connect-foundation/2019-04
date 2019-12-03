@@ -10,7 +10,7 @@ import {
 import { getFileExtension } from 'utils';
 import FileImagesSrc from 'constants/fileImagesSrc';
 
-// fetchProject
+// Fetch project
 const fetchProject = (_, { project }) => {
 	const filesObject = project.files.reduce((acc, cur) => {
 		acc[cur._id] = cur;
@@ -18,12 +18,17 @@ const fetchProject = (_, { project }) => {
 	}, {});
 
 	const rootDirectoryId = project.root;
+	const rootPath = `/${filesObject[rootDirectoryId].name}`;
 	const convertedFilesObject = addParentIdToFiles(
+		rootPath,
 		filesObject,
 		rootDirectoryId
 	);
 	Object.assign(convertedFilesObject, {
-		[rootDirectoryId]: { ...filesObject[rootDirectoryId] }
+		[rootDirectoryId]: {
+			...filesObject[rootDirectoryId],
+			path: rootPath
+		}
 	});
 
 	const entryId = project.entry;
@@ -37,7 +42,7 @@ const fetchProject = (_, { project }) => {
 	return fetchedProject;
 };
 
-function addParentIdToFiles(filesObject, directoryId) {
+function addParentIdToFiles(prePath, filesObject, directoryId) {
 	const result =
 		directoryId === filesObject.root
 			? { [directoryId]: { ...filesObject[directoryId] } }
@@ -46,9 +51,10 @@ function addParentIdToFiles(filesObject, directoryId) {
 	return filesObject[directoryId].child.reduce((files, id) => {
 		const file = filesObject[id];
 		file['parentId'] = directoryId;
+		file['path'] = `${prePath}/${file.name}`;
 
 		const child = file.child
-			? { ...addParentIdToFiles(filesObject, id) }
+			? { ...addParentIdToFiles(file['path'], filesObject, id) }
 			: {};
 		const thisFile = { [id]: file };
 
@@ -56,6 +62,7 @@ function addParentIdToFiles(filesObject, directoryId) {
 	}, result);
 }
 
+// Update code
 const updateCode = (state, { changedCode }) => {
 	return {
 		...state,
@@ -69,6 +76,7 @@ const updateCode = (state, { changedCode }) => {
 	};
 };
 
+// Select file
 const selectFile = (state, { selectedFileId }) => {
 	return {
 		...state,
@@ -79,10 +87,12 @@ const selectFile = (state, { selectedFileId }) => {
 	};
 };
 
+// Create file
 const createFile = (state, { name, parentId, type }) => {
 	const newFileId = name; // TODO: ObjectId생성 모듈로 생성한 것
 	const newFileType =
 		type === 'directory' ? type : convertFileExtension(name);
+	const newFilePath = `${state.files[parentId].path}/${name}`;
 
 	const newFile = {
 		[newFileId]: {
@@ -90,7 +100,8 @@ const createFile = (state, { name, parentId, type }) => {
 			name,
 			type: newFileType,
 			contents: '',
-			parentId
+			parentId,
+			path: newFilePath
 		}
 	};
 	if (newFileType === 'directory') newFile[newFileId]['child'] = [];
@@ -115,18 +126,49 @@ function convertFileExtension(name) {
 	return ext;
 }
 
+// Update file name
 const updateFileName = (state, { selectedFileId, changedName }) => {
+	const { files } = state;
+	const parentId = files[selectedFileId].parentId;
+	const parentPath = files[parentId].path;
+	const updatedPath = `${parentPath}/${changedName}`;
+
+	const changedChildFiles = files[selectedFileId].child
+		? updatePathOfChild(parentPath, files, files[selectedFileId].child)
+		: {};
+
 	return {
 		...state,
 		files: {
 			...state.files,
+			...changedChildFiles,
 			[selectedFileId]: {
 				...state.files[selectedFileId],
-				name: changedName
+				name: changedName,
+				path: updatedPath
 			}
 		}
 	};
 };
+
+function updatePathOfChild(prePath, files, child) {
+	return child
+		.map(id => files[id])
+		.reduce((result, { _id, name, child }) => {
+			const path = `${prePath}/${name}`;
+			const changedChildFiles = child
+				? updatePathOfChild(path, files, child)
+				: {};
+			return {
+				...result,
+				...changedChildFiles,
+				[_id]: {
+					...file,
+					path
+				}
+			};
+		}, {});
+}
 
 function ProjectReducer(state, { type, payload }) {
 	const reducers = {
