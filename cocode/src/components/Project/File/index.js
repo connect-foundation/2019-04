@@ -78,11 +78,21 @@ function File({
 		}
 	};
 
+	const handleDragStart = e => {
+		e.dataTransfer.setData('text', _id);
+		e.stopPropagation();
+	};
+
+	const handleDragOver = e => e.preventDefault();
+
 	return (
 		<Styled.File
+			draggable={true}
 			toggleEdit={toggleEdit}
 			depth={depth}
 			onClick={handleSelectFile ? handleClick : undefined}
+			onDragStart={handleDragStart}
+			onDragOver={handleDragOver}
 			{...props}
 		>
 			<Styled.Icon src={FileImagesSrc[type]} alt={`${name}_${type}`} />

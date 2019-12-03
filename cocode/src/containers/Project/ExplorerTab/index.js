@@ -7,12 +7,14 @@ import {
 } from 'components/Project/ExplorerTabIcons';
 import Directory from 'components/Project/Directory';
 import NewFile from 'components/Project/NewFile';
+import DropZone from 'components/Common/DropZone';
 
 import ProjectContext from 'contexts/ProjectContext';
 import {
 	selectFileActionCreator,
 	updateFileNameActionCreator,
-	deleteFileActionCreator
+	deleteFileActionCreator,
+	moveFileActionCreator
 } from 'actions/Project';
 
 const TAB_TITLE = 'EXPLOLER';
@@ -66,6 +68,14 @@ function ExplorerTab() {
 		dispatchProject(updateFileNameAction);
 	};
 
+	const handleMoveFile = (directoryId, fileId) => {
+		const moveFileAction = moveFileActionCreator({
+			directoryId,
+			fileId
+		});
+		dispatchProject(moveFileAction);
+	};
+
 	return (
 		<>
 			<TabHeader handleCreateFile={handleCreateFile} />
@@ -85,6 +95,7 @@ function ExplorerTab() {
 					handleSelectFile={handleSelectFile}
 					handleEditFileName={handleEditFileName}
 					handleDeleteFile={handleDeleteFile}
+					handleMoveFile={handleMoveFile}
 				/>
 			</Styled.TabBody>
 		</>

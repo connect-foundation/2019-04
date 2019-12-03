@@ -1,9 +1,18 @@
 import React, { useState, useContext } from 'react';
 
+import DropZone from 'components/Common/DropZone';
 import File from 'components/Project/File';
 import NewFile from 'components/Project/NewFile';
 
 import ProjectContext from 'contexts/ProjectContext';
+
+import { EXPLORER_TAB_CONTAINER_THEME } from 'constants/theme';
+
+// Constants
+const {
+	explorerTabContainerFileDropZoneOverBGColor,
+	explorerTabContainerFileDropZoneNotOverBGColor
+} = EXPLORER_TAB_CONTAINER_THEME;
 
 // src 디렉토리의 index.js, src 디렉토리, package.json은 삭제불가
 function isProtectedFile({ files, root, entry, fileId }) {
@@ -21,17 +30,18 @@ function isProtectedFile({ files, root, entry, fileId }) {
 
 function Directory({
 	id,
-	path,
 	childIds,
 	depth,
 	handleSelectFile,
 	handleDeleteFile,
+	handleMoveFile,
 	...props
 }) {
 	const {
 		project: { files, root, entry, selectedFileId }
 	} = useContext(ProjectContext);
 	const [isNewFileCreating, setIsNewFileCreating] = useState(false);
+	const [isFileInDropZone, setIsFileInDropZone] = useState(false);
 	const [createFileType, setCreateFileType] = useState(null);
 
 	// Functions
@@ -58,8 +68,27 @@ function Directory({
 	};
 	const handleEndCreateFile = () => setIsNewFileCreating(false);
 
+	const handleDragOver = () => setIsFileInDropZone(true);
+	const handleDragLeave = () => setIsFileInDropZone(false);
+	const handleDrop = fileId => {
+		setIsFileInDropZone(false);
+		if (fileId === id) return;
+		handleMoveFile(id, fileId);
+	};
+
 	return (
-		<div className="DropZone">
+		<DropZone
+			className="DropZone"
+			height={isNotRoot(depth) ? 'auto' : '100%'}
+			draggableComponentOverColor={
+				isFileInDropZone
+					? explorerTabContainerFileDropZoneOverBGColor
+					: explorerTabContainerFileDropZoneNotOverBGColor
+			}
+			handleDragOver={handleDragOver}
+			handleDragLeave={handleDragLeave}
+			handleDrop={handleDrop}
+		>
 			{/* Directory type file */
 			isNotRoot(depth) && (
 				<File
@@ -89,6 +118,7 @@ function Directory({
 						handleSelectFile={handleSelectFile}
 						handleEditFileName={props.handleEditFileName}
 						handleDeleteFile={handleDeleteFile}
+						handleMoveFile={handleMoveFile}
 					/>
 				);
 			})}
@@ -128,7 +158,7 @@ function Directory({
 					/>
 				);
 			})}
-		</div>
+		</DropZone>
 	);
 }
 
