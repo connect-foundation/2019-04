@@ -165,7 +165,7 @@ function updatePathOfChild(prePath, files, child) {
 				...result,
 				...changedChildFiles,
 				[_id]: {
-					...file,
+					...files[_id],
 					path
 				}
 			};

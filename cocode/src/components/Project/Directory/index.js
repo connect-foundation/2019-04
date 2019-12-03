@@ -68,6 +68,7 @@ function Directory({
 	};
 
 	const handleCreateFile = type => {
+		setToggleDirectoryOpen(!toggleDirectoryOpen);
 		setCreateFileType(type);
 		setIsNewFileCreating(true);
 	};
@@ -82,52 +83,87 @@ function Directory({
 		handleMoveFile(id, fileId);
 	};
 
+	// Component's props
+	const dropZoneProps = {
+		className: 'DropZone',
+		height: isNotRoot(depth) ? 'auto' : '100%',
+		draggableComponentOverColor: isFileInDropZone
+			? explorerTabContainerFileDropZoneOverBGColor
+			: explorerTabContainerFileDropZoneNotOverBGColor,
+		handleDragOver: handleDragOver,
+		handleDragLeave: handleDragLeave,
+		handleDrop: handleDrop
+	};
+
+	const directoryTypeFileProps = {
+		isDirectory: true,
+		isOpened: toggleDirectoryOpen,
+		isProtectedFile: isProtectedFile({
+			files,
+			root,
+			entry,
+			fileId: id
+		}),
+		depth: depth - 1,
+		id,
+		handleSelectFile: handleToggleDirectory,
+		handleCreateFile: handleCreateFile,
+		handleEditFileName: handleEditFileName,
+		handleDeleteFile: handleDeleteFile,
+		...files[id]
+	};
+
+	const directoryTypeFileInThisDirectoryProps = id => {
+		return {
+			key: 'directory_' + id,
+			id,
+			childIds: files[id].child,
+			depth: depth + 1,
+			handleSelectFile: handleSelectFile,
+			handleEditFileName: props.handleEditFileName,
+			handleDeleteFile: handleDeleteFile,
+			handleMoveFile: handleMoveFile
+		};
+	};
+
+	const newFileProps = {
+		depth: depth,
+		type: createFileType,
+		parentId: id,
+		handleEndCreateFile: handleEndCreateFile
+	};
+
+	const fileTypeFileInThisDirectoryProps = (id, handleEditFileName) => {
+		return {
+			key: 'file' + id,
+			id,
+			isProtectedFile: isProtectedFile({
+				files,
+				root,
+				entry,
+				fileId: id
+			}),
+			isDirectory: false,
+			className: isSelected(id) && 'Is-selected-file',
+			depth,
+			handleEditFileName,
+			handleSelectFile,
+			handleCreateFile,
+			handleDeleteFile,
+			...files[id]
+		};
+	};
+
 	return (
-		<DropZone
-			className="DropZone"
-			height={isNotRoot(depth) ? 'auto' : '100%'}
-			draggableComponentOverColor={
-				isFileInDropZone
-					? explorerTabContainerFileDropZoneOverBGColor
-					: explorerTabContainerFileDropZoneNotOverBGColor
-			}
-			handleDragOver={handleDragOver}
-			handleDragLeave={handleDragLeave}
-			handleDrop={handleDrop}
-		>
-			{/* Directory type file */
-			isNotRoot(depth) && (
-				<File
-					isDirectory={true}
-					isOpened={toggleDirectoryOpen}
-					isProtectedFile={isProtectedFile({
-						files,
-						root,
-						entry,
-						fileId: id
-					})}
-					depth={depth - 1}
-					id={id}
-					handleSelectFile={handleToggleDirectory}
-					handleCreateFile={handleCreateFile}
-					handleEditFileName={handleEditFileName}
-					handleDeleteFile={handleDeleteFile}
-					{...files[id]}
-				/>
-			)}
+		<DropZone {...dropZoneProps}>
+			{/* Directory type file */}
+			{isNotRoot(depth) && <File {...directoryTypeFileProps} />}
 			<Styled.FileList toggle={toggleDirectoryOpen}>
 				{/* 이 Directory에 속한 Directory 목록 */
 				directoryList.map(({ _id }) => {
 					return (
 						<Directory
-							key={'directory_' + _id}
-							id={_id}
-							childIds={files[_id].child}
-							depth={depth + 1}
-							handleSelectFile={handleSelectFile}
-							handleEditFileName={props.handleEditFileName}
-							handleDeleteFile={handleDeleteFile}
-							handleMoveFile={handleMoveFile}
+							{...directoryTypeFileInThisDirectoryProps(_id)}
 						/>
 					);
 				})}
@@ -136,38 +172,18 @@ function Directory({
 					const handleEditFileName = changedName => {
 						props.handleEditFileName(_id, changedName);
 					};
-
 					return (
 						<File
-							key={'file' + _id}
-							id={_id}
-							isProtectedFile={isProtectedFile({
-								files,
-								root,
-								entry,
-								fileId: _id
-							})}
-							isDirectory={false}
-							className={isSelected(_id) && 'Is-selected-file'}
-							depth={depth}
-							handleEditFileName={handleEditFileName}
-							handleSelectFile={handleSelectFile}
-							handleCreateFile={handleCreateFile}
-							handleDeleteFile={handleDeleteFile}
-							{...files[_id]}
+							{...fileTypeFileInThisDirectoryProps(
+								_id,
+								handleEditFileName
+							)}
 						/>
 					);
 				})}
 			</Styled.FileList>
 			{/* 새파일 생성 버튼 클릭시 나오는 컴포넌트 */
-			isNewFileCreating && (
-				<NewFile
-					depth={depth}
-					type={createFileType}
-					parentId={id}
-					handleEndCreateFile={handleEndCreateFile}
-				/>
-			)}
+			isNewFileCreating && <NewFile {...newFileProps} />}
 		</DropZone>
 	);
 }

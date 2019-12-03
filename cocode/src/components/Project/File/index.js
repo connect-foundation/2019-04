@@ -29,7 +29,6 @@ function File({
 	name,
 	depth,
 	handleSelectFile,
-	handleCreateFile,
 	handleEditFileName,
 	handleDeleteFile,
 	...props
@@ -69,6 +68,11 @@ function File({
 		if (!acceptDeleteThisFile) return;
 
 		handleDeleteFile(_id);
+	};
+
+	const handleCreateFile = (type, e) => {
+		e.stopPropagation();
+		props.handleCreateFile(type);
 	};
 
 	const handleKeyDown = e => {
