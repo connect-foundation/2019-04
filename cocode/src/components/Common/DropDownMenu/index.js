@@ -6,14 +6,22 @@ function DropDownMenu({ children, menuItems, ...props }) {
 	const [isOpen, setIsOpen] = useState(false);
 
 	const handleIsOpen = () => setIsOpen(!isOpen);
+	const handleMenuClose = () => setIsOpen(false);
 	return (
 		<Styled.DropDownMenu {...props}>
 			{React.cloneElement(children, { onClick: handleIsOpen })}
 			{isOpen && (
 				<Styled.DropDownList>
 					{menuItems &&
-						menuItems.map(({ value, ...props }, key) => (
-							<Styled.DropDownItem {...props} key={key}>
+						menuItems.map(({ value, onClick, ...props }, key) => (
+							<Styled.DropDownItem
+								onClick={e => {
+									handleMenuClose();
+									onClick(e);
+								}}
+								{...props}
+								key={key}
+							>
 								{value}
 							</Styled.DropDownItem>
 						))}
