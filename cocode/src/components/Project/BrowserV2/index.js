@@ -18,19 +18,17 @@ function BrowserV2({ ...props }) {
 	const [fileSystem, setFileSystem] = useState({});
 
 	useEffect(() => {
-		const fileTemp = {};
+		const fileSystemTemp = {};
 		Object.keys(bundler.exports).forEach(key => {
 			delete bundler.exports[key];
 		});
 
 		function fileParser(path, id) {
 			if (files[id].type !== 'directory') {
-				fileTemp[path] = {
+				fileSystemTemp[path] = {
 					contents: files[id].contents
 				};
-				bundler.exports[path] = {
-					contents: files[id].contents
-				};
+				bundler.exports[path] = fileSystemTemp[path];
 			} else if (files[id].child) {
 				files[id].child.forEach(id => {
 					const path = idToPath(files, id);
@@ -42,7 +40,7 @@ function BrowserV2({ ...props }) {
 		const rootPath = idToPath(files, project.root);
 		if (project) fileParser(rootPath, project.root);
 
-		setFileSystem(fileTemp);
+		setFileSystem(fileSystemTemp);
 	}, [files]);
 
 	useEffect(() => {
