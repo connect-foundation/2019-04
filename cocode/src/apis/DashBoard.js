@@ -15,4 +15,15 @@ function updateCoconutsAPICreator(projectId, data) {
 	};
 }
 
-export { getCoconutsAPICreator, updateCoconutsAPICreator };
+function deleteCoconutsAPICreator(projectId) {
+	return {
+		url: `${API.projects}/${projectId}`,
+		method: 'delete'
+	};
+}
+
+export {
+	getCoconutsAPICreator,
+	updateCoconutsAPICreator,
+	deleteCoconutsAPICreator
+};

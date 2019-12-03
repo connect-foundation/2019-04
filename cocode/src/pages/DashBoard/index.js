@@ -28,7 +28,7 @@ function DashBoard() {
 	if (error) return <p>다시 시도해주세요.</p>;
 
 	return (
-		<DashBoardContext.Provider value={{ coconuts }}>
+		<DashBoardContext.Provider value={{ coconuts, dispatch }}>
 			<Header />
 			<ProjectCardList />
 		</DashBoardContext.Provider>

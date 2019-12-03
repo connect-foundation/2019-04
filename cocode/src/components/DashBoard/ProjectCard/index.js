@@ -52,9 +52,9 @@ function ProjectCard({ _id, name, updatedAt }) {
 		setModifying(true);
 		changeDivEditable(nameInput.current, true);
 	};
-	const handleEditCoconutNameEnd = e => {
+	const handleEditCoconutNameEnd = () => {
 		nameInput.current.contentEditable = false;
-		fetchName(e.currentTarget.textContent);
+		fetchName(nameInput.current.textContent);
 	};
 
 	const fetchName = name => {
@@ -62,7 +62,7 @@ function ProjectCard({ _id, name, updatedAt }) {
 	};
 
 	const handleKeyDown = e => {
-		if (e.keyCode === KEY_CODE_ENTER) handleEditCoconutNameEnd(e);
+		if (e.keyCode === KEY_CODE_ENTER) handleEditCoconutNameEnd();
 	};
 
 	useEffect(() => {

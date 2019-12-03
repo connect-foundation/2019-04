@@ -16,7 +16,7 @@ const updateCoconutName = ({ coconuts }, newCoconut) => ({
 	isFetched: true
 });
 
-const deleteCoconut = ({ coconuts }, { _id }) => ({
+const deleteCoconut = ({ coconuts }, _id) => ({
 	coconuts: coconuts.filter(coconut => coconut._id !== _id),
 	isFetched: true
 });
