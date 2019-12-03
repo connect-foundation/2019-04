@@ -21,6 +21,7 @@ const ACCEPT_DELETE_NOTIFICATION = '이 파일을 지우시겠습니까?';
 
 function File({
 	isDirectory,
+	isProtectedFile,
 	_id,
 	type,
 	name,
@@ -36,23 +37,39 @@ function File({
 	const nameEditReferenece = useRef(null);
 
 	// Event handlers
+	const noticeThieFileIsProtected = () => {
+		const WARNING_PREVENT_NOTIFICATION =
+			'해당 파일은 이름을 변경하거나 삭제할 수 없습니다.';
+		alert(WARNING_PREVENT_NOTIFICATION);
+	};
 	const handleClick = () => handleSelectFile(_id);
 
-	const handleEditFileNameStart = () => {
+	const handleEditFileNameStart = e => {
+		e.stopPropagation();
+
+		if (isProtectedFile) {
+			noticeThieFileIsProtected();
+			return;
+		}
+
 		changeDivEditable(nameEditReferenece.current, true);
 		setToggleEdit(true);
 	};
 
 	const handleEditFileNameEnd = ({ currentTarget }) => {
+		setToggleEdit(false);
+		nameEditReferenece.current.contentEditable = false;
 		const changedName = currentTarget.textContent;
 		setFileName(changedName);
 		handleEditFileName(changedName);
-
-		setToggleEdit(false);
-		nameEditReferenece.current.contentEditable = false;
 	};
 
 	const handleDeleteFileButtonClick = e => {
+		if (isProtectedFile) {
+			noticeThieFileIsProtected();
+			return;
+		}
+
 		const acceptDeleteThisFile = confirm(ACCEPT_DELETE_NOTIFICATION);
 		if (!acceptDeleteThisFile) return;
 
@@ -61,7 +78,10 @@ function File({
 	};
 
 	const handleKeyDown = e => {
-		if (e.keyCode === KEY_CODE_ENTER) handleEditFileNameEnd(e);
+		if (e.keyCode === KEY_CODE_ENTER) {
+			setToggleEdit(false);
+			nameEditReferenece.current.contentEditable = false;
+		}
 	};
 
 	return (

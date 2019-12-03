@@ -172,14 +172,8 @@ function updatePathOfChild(prePath, files, child) {
 }
 
 // Delete file
-const WARNING_NOTIFICATION = '해당 파일은 삭제할 수 없습니다.';
 const deleteFile = (state, { deleteFileId }) => {
-	const { files, entry, root } = state;
-	if (isProtectedFile({ files, root, entry, deleteFileId })) {
-		alert(WARNING_NOTIFICATION);
-		return { ...state };
-	}
-
+	const { files } = state;
 	const { parentId } = files[deleteFileId];
 	const updatedParentChilds = state.files[parentId].child.filter(
 		id => id !== deleteFileId
@@ -197,21 +191,6 @@ const deleteFile = (state, { deleteFileId }) => {
 		}
 	};
 };
-
-// src 디렉토리의 index.js, src 디렉토리, package.json은 삭제불가
-function isProtectedFile({ files, root, entry, deleteFileId }) {
-	if (deleteFileId === entry) return true;
-
-	const entryParentId = files[entry].parentId;
-	if (deleteFileId === entryParentId) return true;
-
-	const deleteFileName = files[deleteFileId].name;
-	const deleteFileParentId = files[deleteFileId].parentId;
-	if (deleteFileName === 'package.json' && deleteFileParentId === root)
-		return true;
-
-	return false;
-}
 
 function ProjectReducer(state, { type, payload }) {
 	const reducers = {
