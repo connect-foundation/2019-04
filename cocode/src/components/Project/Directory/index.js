@@ -13,6 +13,7 @@ const {
 	explorerTabContainerFileDropZoneOverBGColor,
 	explorerTabContainerFileDropZoneNotOverBGColor
 } = EXPLORER_TAB_CONTAINER_THEME;
+const WARNING_PREVENT_MOVE_NOTIFICATION = '해당 파일은 이동시킬 수 없습니다.';
 
 // src 디렉토리의 index.js, src 디렉토리, package.json은 삭제불가
 function isProtectedFile({ files, root, entry, fileId }) {
@@ -72,7 +73,8 @@ function Directory({
 	const handleDragLeave = () => setIsFileInDropZone(false);
 	const handleDrop = fileId => {
 		setIsFileInDropZone(false);
-		if (fileId === id) return;
+		if (fileId === id || isProtectedFile({ files, root, entry, fileId }))
+			return alert(WARNING_PREVENT_MOVE_NOTIFICATION);
 		handleMoveFile(id, fileId);
 	};
 
