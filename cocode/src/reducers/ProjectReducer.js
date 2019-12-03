@@ -5,7 +5,8 @@ import {
 	SELECT_FILE,
 	CREATE_FILE,
 	UPDATE_FILE_NAME,
-	DELETE_FILE
+	DELETE_FILE,
+	MOVE_FILE
 } from 'actions/types';
 
 import { getFileExtension } from 'utils';
@@ -192,6 +193,40 @@ const deleteFile = (state, { deleteFileId }) => {
 	};
 };
 
+// Move file
+const moveFile = (state, { directoryId, fileId }) => {
+	const parentIdOfMovedFile = state.files[fileId].parentId;
+	if (parentIdOfMovedFile === directoryId) return state;
+
+	const changedChild = state.files[parentIdOfMovedFile].child.filter(
+		childId => childId !== fileId
+	);
+	const newChild = state.files[directoryId].child.filter(
+		childId => childId !== fileId
+	);
+	const newPath = `${state.files[directoryId].path}/${state.files[fileId].name}`;
+
+	return {
+		...state,
+		files: {
+			...state.files,
+			[directoryId]: {
+				...state.files[directoryId],
+				child: [...newChild, fileId]
+			},
+			[fileId]: {
+				...state.files[fileId],
+				parentId: directoryId,
+				path: newPath
+			},
+			[parentIdOfMovedFile]: {
+				...state.files[parentIdOfMovedFile],
+				child: [...changedChild]
+			}
+		}
+	};
+};
+
 function ProjectReducer(state, { type, payload }) {
 	const reducers = {
 		[FETCH_PROJECT]: fetchProject,
@@ -199,7 +234,8 @@ function ProjectReducer(state, { type, payload }) {
 		[SELECT_FILE]: selectFile,
 		[UPDATE_FILE_NAME]: updateFileName,
 		[CREATE_FILE]: createFile,
-		[DELETE_FILE]: deleteFile
+		[DELETE_FILE]: deleteFile,
+		[MOVE_FILE]: moveFile
 	};
 
 	const reducer = reducers[type];
