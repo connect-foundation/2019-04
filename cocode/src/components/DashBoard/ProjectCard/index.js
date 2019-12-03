@@ -2,7 +2,10 @@ import React, { useEffect, useRef, useContext, useState } from 'react';
 import * as Styled from './style';
 import moment from 'moment';
 import DropDownMenu from 'components/Common/DropDownMenu';
-import { updateCoconutNameActionCreator } from 'actions/Dashboard';
+import {
+	updateCoconutNameActionCreator,
+	deleteCoconutActionCreator
+} from 'actions/Dashboard';
 import DashBoardContext from 'contexts/DashBoardContext';
 import useFetch from 'hooks/useFetch';
 import { KEY_CODE_ENTER } from 'constants/keyCode';
@@ -43,10 +46,11 @@ function ProjectCard({ _id, name, updatedAt }) {
 
 	const { dispatch } = useContext(DashBoardContext);
 	const [modifying, setModifying] = useState(false);
+	const [deleting, setDeleting] = useState(false);
 	const nameInput = useRef(false);
 
 	//TODO loading 시 Circular, error시 토스트 띄우기
-	const [{ data, loading, error }, setRequest] = useFetch({});
+	const [{ data, loading, error, status }, setRequest] = useFetch({});
 
 	const handleEditCoconutNameStart = () => {
 		setModifying(true);
@@ -61,18 +65,28 @@ function ProjectCard({ _id, name, updatedAt }) {
 		setRequest(updateCoconutsAPICreator(_id, { name }));
 	};
 
+	const handleRemoveCoconut = () => {
+		setDeleting(true);
+		setRequest(deleteCoconutsAPICreator(_id));
+	};
+
 	const handleKeyDown = e => {
 		if (e.keyCode === KEY_CODE_ENTER) handleEditCoconutNameEnd();
 	};
 
 	useEffect(() => {
-		if (!data) return;
+		if (loading) return;
 
-		if (modifying) {
-			dispatch(updateCoconutNameActionCreator(data));
+		if (modifying && data) {
 			setModifying(false);
+			dispatch(updateCoconutNameActionCreator(data));
 		}
-	}, [data]);
+
+		if (deleting) {
+			setDeleting(false);
+			dispatch(deleteCoconutActionCreator(_id));
+		}
+		}, [loading, status]);
 
 	return (
 		<Styled.ProjectArticle>
