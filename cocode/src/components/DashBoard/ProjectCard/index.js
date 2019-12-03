@@ -18,6 +18,8 @@ import {
 	deleteCoconutsAPICreator
 } from 'apis/DashBoard';
 
+const ACCEPT_DELETE_NOTIFICATION = '이 프로젝트 지우시겠습니까?';
+
 function MenuButton({ onClick }) {
 	return (
 		<Styled.ProjectMenuButton onClick={onClick}>
@@ -66,6 +68,9 @@ function ProjectCard({ _id, name, updatedAt }) {
 	};
 
 	const handleRemoveCoconut = () => {
+		const acceptDeleteThisCoconut = confirm(ACCEPT_DELETE_NOTIFICATION);
+		if (!acceptDeleteThisCoconut) return;
+
 		setDeleting(true);
 		setRequest(deleteCoconutsAPICreator(_id));
 	};
@@ -86,7 +91,7 @@ function ProjectCard({ _id, name, updatedAt }) {
 			setDeleting(false);
 			dispatch(deleteCoconutActionCreator(_id));
 		}
-		}, [loading, status]);
+	}, [loading, status]);
 
 	return (
 		<Styled.ProjectArticle>
