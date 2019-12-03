@@ -6,6 +6,7 @@ const presetEnv = require("@babel/preset-env");
 const presetReact = require("@babel/preset-react");
 
 const child_process = require("child_process");
+const dirName = `modules`;
 const moduleName = process.argv[2];
 const moduleVersion = process.argv[3];
 
@@ -13,7 +14,7 @@ const requireRegexp = /require[(]{1}['"]{1}[a-zA-Z-/.0-9]*['"]{1}[)]{1}/g;
 const pathRegexp = /['"]{1}[a-zA-Z0-9./_-]+['"]{1}/;
 const maskQuotationRegexp = /['"]{1}/g;
 
-const PATH_PREFIX = path.resolve(`${moduleName}/node_modules`);
+const PATH_PREFIX = path.resolve(`${dirName}/node_modules`);
 const PATH_STACK = [PATH_PREFIX];
 const Bundle = {};
 
@@ -25,7 +26,7 @@ const pakage = `{
   }
   `;
 const command = `
-    mkdir ${moduleName} && cd ${moduleName} && echo '${pakage}' >> package.json && yarn add ${moduleName}${
+    mkdir ${dirName} && cd ${dirName} && echo '${pakage}' >> package.json && yarn add ${moduleName}${
   moduleVersion ? "@" + moduleVersion : ""
 }
 `;
@@ -37,20 +38,54 @@ child_process.exec(command, (error, stdout, stderr) => {
   console.log(`stdout: ${stdout}`);
   console.log(`stderr: ${stderr}`);
   bundle();
+  console.log(Object.keys(Bundle));
+  child_process.exec(`rm -rf ${dirName}`),
+    (error, stdout, stderr) => {
+      if (error) {
+        console.error(`exec error: ${error}`);
+      }
+      console.log(`stdout: ${stdout}`);
+      console.log(`stderr: ${stderr}`);
+    };
 });
 
 function bundle() {
-  core(moduleName);
-  fs.writeFileSync(`./dist/${moduleName}.json`, JSON.stringify(Bundle));
-  console.dir(Object.keys(Bundle));
+  let entries = [];
+  try {
+    fs.statSync(pathParser(moduleName));
+    entry.push(moduleName);
+  } catch (error) {
+    const file = fs.readFileSync(pathParser(`${moduleName}/package.json`), {
+      encoding: "utf-8"
+    });
+    JSON.parse(file)["main"]
+      ? entries.push(
+          path.resolve(PATH_PREFIX, moduleName, JSON.parse(file)["main"])
+        )
+      : "";
+    JSON.parse(file)["module"]
+      ? entries.push(
+          path.resolve(PATH_PREFIX, moduleName, JSON.parse(file)["module"])
+        )
+      : "";
+  }
+  entries.forEach(entry => {
+    core(entry);
+  });
+  fs.writeFileSync(
+    `./dist/${moduleName.replace(/[/]{1}/g, "_")}.json`,
+    JSON.stringify(Bundle)
+  );
 }
 
 function core(path) {
   const parsedPath = pathParser(path);
+  const key = pathKeyParser(parsedPath);
+  if (Bundle[key]) return;
   try {
     const file = fs.readFileSync(parsedPath, { encoding: "utf-8" });
     const transpiledCode = transpileCode(file);
-    Bundle[pathKeyParser(parsedPath)] = transpiledCode;
+    Bundle[key] = transpiledCode;
     PATH_STACK.push(getParentName(parsedPath));
     const child = requirePathParser(transpiledCode);
     if (child.length) {
