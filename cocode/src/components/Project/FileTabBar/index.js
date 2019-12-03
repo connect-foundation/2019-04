@@ -11,14 +11,13 @@ const DEFAULT_OPENED_FILE_INDEX = 0;
 
 function FileTabBar() {
 	const { project, dispatchProject } = useContext(ProjectContext);
-	const { files, selectedFilePath } = project;
+	const { files, selectedFileId } = project;
 
 	const [clickedIndex, setClickedIndex] = useState(DEFAULT_OPENED_FILE_INDEX);
 	const [openFiles, setOpenFiles] = useState([]);
 
-	const isExistFile = idx => idx !== -1;
-	const FiledIndex = openFile =>
-		openFile.path === files[selectedFilePath].path;
+	const isExistFile = index => index !== -1;
+	const getIndexOfOpenFiles = ({ _id }) => _id === files[selectedFileId]._id;
 
 	const handleSetClickedIndex = index => setClickedIndex(index);
 	const handleCloseFile = (e, index) => {
@@ -26,31 +25,32 @@ function FileTabBar() {
 			setClickedIndex(index - 1);
 		if (openFiles.length === 1) {
 			const selectFileAction = selectFileActionCreator({
-				selectedFilePath: undefined
+				selectedFileId: undefined
 			});
 			dispatchProject(selectFileAction);
 		}
-		setOpenFiles(openFiles.filter((file, i) => i !== index));
+		setOpenFiles(openFiles.filter((_, i) => i !== index));
 		e.stopPropagation();
 	};
 
 	const addOpenedFile = () => {
-		if (!selectedFilePath) return;
-		const currentIdx = openFiles.findIndex(FiledIndex);
-		const newOpenedFiles = isExistFile(currentIdx)
+		if (!selectedFileId) return;
+
+		const currentIndex = openFiles.findIndex(getIndexOfOpenFiles);
+		const newOpenedFiles = isExistFile(currentIndex)
 			? openFiles
-			: openFiles.concat(files[selectedFilePath]);
-		const clickedIdx = isExistFile(currentIdx)
-			? currentIdx
+			: [...openFiles, files[selectedFileId]];
+		const clickedIndex = isExistFile(currentIndex)
+			? currentIndex
 			: openFiles.length;
 		setOpenFiles(newOpenedFiles);
-		setClickedIndex(clickedIdx);
+		setClickedIndex(clickedIndex);
 	};
 
 	const setOpenedFile = () => {
 		if (openFiles[clickedIndex]) {
 			const selectFileAction = selectFileActionCreator({
-				selectedFilePath: openFiles[clickedIndex].path
+				selectedFileId: openFiles[clickedIndex]._id
 			});
 			dispatchProject(selectFileAction);
 		} else if (openFiles[clickedIndex - 1]) {
@@ -58,8 +58,15 @@ function FileTabBar() {
 		}
 	};
 
-	useEffect(addOpenedFile, [selectedFilePath]);
+	const updateOpenedFile = () => {
+		if (!openFiles.length) return;
+		const newOpenFile = openFiles.map(({ _id }) => files[_id]);
+		setOpenFiles(newOpenFile);
+	};
+
+	useEffect(addOpenedFile, [selectedFileId]);
 	useEffect(setOpenedFile, [clickedIndex, openFiles]);
+	useEffect(updateOpenedFile, [files]);
 
 	return (
 		<Styled.TabBar>
