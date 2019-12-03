@@ -18,6 +18,8 @@ import { KEY_CODE_ENTER } from 'constants/keyCode';
 
 // Constants
 const ACCEPT_DELETE_NOTIFICATION = '이 파일을 지우시겠습니까?';
+const WARNING_PREVENT_NOTIFICATION =
+	'해당 파일은 이름을 변경하거나 삭제할 수 없습니다.';
 
 function File({
 	isDirectory,
@@ -36,21 +38,16 @@ function File({
 	const [toggleEdit, setToggleEdit] = useState(false);
 	const nameEditReferenece = useRef(null);
 
+	// Functions
+	const checkThisFileIsProtected = () =>
+		isProtectedFile && !alert(WARNING_PREVENT_NOTIFICATION);
+
 	// Event handlers
-	const noticeThieFileIsProtected = () => {
-		const WARNING_PREVENT_NOTIFICATION =
-			'해당 파일은 이름을 변경하거나 삭제할 수 없습니다.';
-		alert(WARNING_PREVENT_NOTIFICATION);
-	};
 	const handleClick = () => handleSelectFile(_id);
 
 	const handleEditFileNameStart = e => {
 		e.stopPropagation();
-
-		if (isProtectedFile) {
-			noticeThieFileIsProtected();
-			return;
-		}
+		if (checkThisFileIsProtected()) return;
 
 		changeDivEditable(nameEditReferenece.current, true);
 		setToggleEdit(true);
@@ -65,15 +62,12 @@ function File({
 	};
 
 	const handleDeleteFileButtonClick = e => {
-		if (isProtectedFile) {
-			noticeThieFileIsProtected();
-			return;
-		}
+		e.stopPropagation();
+		if (checkThisFileIsProtected()) return;
 
 		const acceptDeleteThisFile = confirm(ACCEPT_DELETE_NOTIFICATION);
 		if (!acceptDeleteThisFile) return;
 
-		e.stopPropagation();
 		handleDeleteFile(_id);
 	};
 
