@@ -60,7 +60,9 @@ function FileTabBar() {
 
 	const updateOpenedFile = () => {
 		if (!openFiles.length) return;
-		const newOpenFile = openFiles.map(({ _id }) => files[_id]);
+		const newOpenFile = openFiles
+			.map(({ _id }) => files[_id])
+			.filter(file => file);
 		setOpenFiles(newOpenFile);
 	};
 
