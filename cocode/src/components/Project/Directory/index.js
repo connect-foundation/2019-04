@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import * as Styled from './style';
 
 import DropZone from 'components/Common/DropZone';
 import File from 'components/Project/File';
@@ -43,6 +44,7 @@ function Directory({
 	} = useContext(ProjectContext);
 	const [isNewFileCreating, setIsNewFileCreating] = useState(false);
 	const [isFileInDropZone, setIsFileInDropZone] = useState(false);
+	const [toggleDirectoryOpen, setToggleDirectoryOpen] = useState(depth === 1);
 	const [createFileType, setCreateFileType] = useState(null);
 
 	// Functions
@@ -59,6 +61,8 @@ function Directory({
 	const fileList = childIds ? childIds.map(fileIdToFile).filter(isFile) : [];
 
 	// Evnet handler
+	const handleToggleDirectory = () =>
+		setToggleDirectoryOpen(!toggleDirectoryOpen);
 	const handleEditFileName = changedName => {
 		props.handleEditFileName(id, changedName);
 	};
@@ -95,6 +99,7 @@ function Directory({
 			isNotRoot(depth) && (
 				<File
 					isDirectory={true}
+					isOpened={toggleDirectoryOpen}
 					isProtectedFile={isProtectedFile({
 						files,
 						root,
@@ -103,27 +108,57 @@ function Directory({
 					})}
 					depth={depth - 1}
 					id={id}
+					handleSelectFile={handleToggleDirectory}
 					handleCreateFile={handleCreateFile}
 					handleEditFileName={handleEditFileName}
 					handleDeleteFile={handleDeleteFile}
 					{...files[id]}
 				/>
 			)}
-			{/* 이 Directory에 속한 Directory 목록 */
-			directoryList.map(({ _id }) => {
-				return (
-					<Directory
-						key={'directory_' + _id}
-						id={_id}
-						childIds={files[_id].child}
-						depth={depth + 1}
-						handleSelectFile={handleSelectFile}
-						handleEditFileName={props.handleEditFileName}
-						handleDeleteFile={handleDeleteFile}
-						handleMoveFile={handleMoveFile}
-					/>
-				);
-			})}
+			<Styled.FileList toggle={toggleDirectoryOpen}>
+				{/* 이 Directory에 속한 Directory 목록 */
+				directoryList.map(({ _id }) => {
+					return (
+						<Directory
+							key={'directory_' + _id}
+							id={_id}
+							childIds={files[_id].child}
+							depth={depth + 1}
+							handleSelectFile={handleSelectFile}
+							handleEditFileName={props.handleEditFileName}
+							handleDeleteFile={handleDeleteFile}
+							handleMoveFile={handleMoveFile}
+						/>
+					);
+				})}
+				{/* 이 Directory에 속한 File들 */
+				fileList.map(({ _id }) => {
+					const handleEditFileName = changedName => {
+						props.handleEditFileName(_id, changedName);
+					};
+
+					return (
+						<File
+							key={'file' + _id}
+							id={_id}
+							isProtectedFile={isProtectedFile({
+								files,
+								root,
+								entry,
+								fileId: _id
+							})}
+							isDirectory={false}
+							className={isSelected(_id) && 'Is-selected-file'}
+							depth={depth}
+							handleEditFileName={handleEditFileName}
+							handleSelectFile={handleSelectFile}
+							handleCreateFile={handleCreateFile}
+							handleDeleteFile={handleDeleteFile}
+							{...files[_id]}
+						/>
+					);
+				})}
+			</Styled.FileList>
 			{/* 새파일 생성 버튼 클릭시 나오는 컴포넌트 */
 			isNewFileCreating && (
 				<NewFile
@@ -133,33 +168,6 @@ function Directory({
 					handleEndCreateFile={handleEndCreateFile}
 				/>
 			)}
-			{/* 이 Directory에 속한 File들 */
-			fileList.map(({ _id }) => {
-				const handleEditFileName = changedName => {
-					props.handleEditFileName(_id, changedName);
-				};
-
-				return (
-					<File
-						key={'file' + _id}
-						id={_id}
-						isProtectedFile={isProtectedFile({
-							files,
-							root,
-							entry,
-							fileId: _id
-						})}
-						isDirectory={false}
-						className={isSelected(_id) && 'Is-selected-file'}
-						depth={depth}
-						handleEditFileName={handleEditFileName}
-						handleSelectFile={handleSelectFile}
-						handleCreateFile={handleCreateFile}
-						handleDeleteFile={handleDeleteFile}
-						{...files[_id]}
-					/>
-				);
-			})}
 		</DropZone>
 	);
 }
