@@ -3,6 +3,7 @@ import axios from 'axios';
 import { DEFAULT_REQUEST_OPTION } from 'config';
 import APIReducer from 'reducers/APIReducer';
 import {
+	fetchReadyActionCreator,
 	fetchLoadActionCreator,
 	fetchSuccessActionCreator,
 	fetchFailActionCreator
@@ -15,7 +16,8 @@ function useFetch({ method, url, data = {} }) {
 	const [state, dispatchFetchState] = useReducer(APIReducer, {
 		data: false,
 		loading: false,
-		err: false
+		err: false,
+		status: false
 	});
 
 	const requestToServer = () => {
@@ -26,7 +28,10 @@ function useFetch({ method, url, data = {} }) {
 	};
 
 	useEffect(() => {
-		if (request.url) requestToServer();
+		if (!request.url) return;
+
+		requestToServer();
+		return () => dispatchFetchState(fetchReadyActionCreator());
 	}, [request]);
 
 	return [state, setRequest];

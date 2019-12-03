@@ -1,4 +1,5 @@
 // API
+const API_READY = 'API_READY';
 const API_LOADING = 'API_LOADING';
 const API_SUCCESS = 'API_SUCCESS';
 const API_FAIL = 'API_FAILURE';
@@ -16,6 +17,7 @@ const UPDATE_COCONUT_NAME = 'updateCoconutName';
 const DELETE_COCONUT = 'deleteCoconut';
 
 export {
+	API_READY,
 	API_LOADING,
 	API_SUCCESS,
 	API_FAIL,
