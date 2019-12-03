@@ -1,28 +1,19 @@
-import React, { useState, useRef } from 'react';
+import React, { useEffect, useRef, useContext, useState } from 'react';
 import * as Styled from './style';
-import DropDownMenu from 'components/Common/DropDownMenu';
 import moment from 'moment';
+import DropDownMenu from 'components/Common/DropDownMenu';
+import { updateCoconutNameActionCreator } from 'actions/Dashboard';
+import DashBoardContext from 'contexts/DashBoardContext';
+import useFetch from 'hooks/useFetch';
 import { KEY_CODE_ENTER } from 'constants/keyCode';
 import {
 	selectAllTextAboutFocusedDom,
 	changeDivEditable
 } from 'utils/domControl';
-
-//TODO onClick시 api 요청 이벤트 핸들러 추가
-const defaultMenuItems = [
-	{
-		value: 'open',
-		onClick: () => alert('open')
-	},
-	{
-		value: 'rename',
-		onClick: () => alert('rename')
-	},
-	{
-		value: 'remove',
-		onClick: () => alert('remove')
-	}
-];
+import {
+	updateCoconutsAPICreator,
+	deleteCoconutsAPICreator
+} from 'apis/DashBoard';
 
 function MenuButton({ onClick }) {
 	return (
@@ -34,39 +25,61 @@ function MenuButton({ onClick }) {
 	);
 }
 
-function ProjectCard({ name, updatedAt, menuItems = defaultMenuItems }) {
+function ProjectCard({ _id, name, updatedAt }) {
 	const renameMenu = [
+		{
+			value: 'open',
+			onClick: () => alert('open')
+		},
 		{
 			value: 'rename',
 			onClick: () => handleEditCoconutNameStart()
+		},
+		{
+			value: 'remove',
+			onClick: () => handleRemoveCoconut()
 		}
 	];
 
-	const [_, setCoconutName] = useState(name);
-	const nameInput = useRef(null);
+	const { dispatch } = useContext(DashBoardContext);
+	const [modify, setModify] = useState(false);
+	const nameInput = useRef(false);
+
+	//TODO loading 시 Circular, error시 토스트 띄우기
+	const [{ data, loading, error }, setRequest] = useFetch({});
 
 	const handleEditCoconutNameStart = () => {
+		setModify(true);
 		changeDivEditable(nameInput.current, true);
 	};
-	const handleEditCoconutNameEnd = () => {
-		const changedName = nameInput.current.value;
-		setCoconutName(changedName);
-		console.log('end');
-
+	const handleEditCoconutNameEnd = e => {
 		nameInput.current.contentEditable = false;
+		fetchName(e.currentTarget.textContent);
 	};
 
-	const handleKeyDown = ({ keyCode }) => {
+	const fetchName = name => {
+		setRequest(updateCoconutsAPICreator(_id, { name }));
+	};
+
+	const handleKeyDown = ({ currentTarget, keyCode }) => {
 		if (keyCode === KEY_CODE_ENTER) {
-			handleEditCoconutNameEnd();
+			handleEditCoconutNameEnd(currentTarget.textContent);
 		}
 	};
+
+	useEffect(() => {
+		if (modify && data) {
+			dispatch(updateCoconutNameActionCreator(data));
+			setModify(false);
+		}
+	}, [data]);
 
 	return (
 		<Styled.ProjectArticle>
 			<Styled.ProjectTitle
 				ref={nameInput}
 				onFocus={selectAllTextAboutFocusedDom}
+				onBlur={handleEditCoconutNameEnd}
 				onKeyDown={handleKeyDown}
 			>
 				{name}
