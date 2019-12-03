@@ -10,6 +10,7 @@ const SELECT_FILE = 'selectFile';
 const CREATE_FILE = 'createFile';
 const UPDATE_FILE_NAME = 'updateFileName';
 const DELETE_FILE = 'deleteFile';
+const MOVE_FILE = 'moveFile';
 
 export {
 	API_LOADING,
@@ -20,5 +21,6 @@ export {
 	SELECT_FILE,
 	UPDATE_FILE_NAME,
 	CREATE_FILE,
-	DELETE_FILE
+	DELETE_FILE,
+	MOVE_FILE
 };
