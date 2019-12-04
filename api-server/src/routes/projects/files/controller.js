@@ -39,4 +39,47 @@ async function createFile(req, res) {
 		.catch(() => res.sendStatus(500));
 }
 
-export { createFile, preloadFile };
+// file move, file rename, update contents
+async function updateFile(req, res) {
+	const file = req.file;
+
+	const { contents, name, newParentId, oldParentId } = req.body;
+	if (contents) file.contents = contents;
+	if (name) file.name = name;
+
+	if (!newParentId) {
+		console.log(newParentId);
+		file.save()
+			.then(() => res.sendStatus(200))
+			.catch(() => res.sendStatus(500));
+		return;
+	}
+
+	const moveFileFromOldParentToNewParent = files => {
+		const newParentFile = files.filter(
+			({ _id }) => newParentId === String(_id)
+		)[0];
+		const oldParentFile = files.filter(
+			({ _id }) => oldParentId === String(_id)
+		)[0];
+
+		const transaction = new Transaction();
+
+		const dataOfNewParent = { child: [...newParentFile.child, file._id] };
+		const dataOfOldParent = {
+			child: oldParentFile.child.filter(id => file._id !== id)
+		};
+
+		transaction.update(FILE_MODEL_NAME, newParentId, dataOfNewParent);
+		transaction.update(FILE_MODEL_NAME, oldParentId, dataOfOldParent);
+
+		const successHandler = () => res.sendStatus(200);
+		transaction.runAndTerminate({ successHandler });
+	};
+
+	File.find({ _id: { $in: [newParentId, oldParentId] } })
+		.then(moveFileFromOldParentToNewParent)
+		.catch(() => res.sendStatus(500));
+}
+
+export { createFile, preloadFile, updateFile };
