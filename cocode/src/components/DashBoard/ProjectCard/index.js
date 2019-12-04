@@ -32,7 +32,7 @@ function MenuButton({ onClick }) {
 }
 
 function ProjectCard({ _id, name, updatedAt }) {
-	let history = useHistory();
+	const history = useHistory();
 	const { dispatchDashboard } = useContext(DashBoardContext);
 	const [modifying, setModifying] = useState(false);
 	const [deleting, setDeleting] = useState(false);
