@@ -82,4 +82,27 @@ async function updateFile(req, res) {
 		.catch(() => res.sendStatus(500));
 }
 
-export { createFile, preloadFile, updateFile };
+async function deleteFile(req, res) {
+	const fileId = req.file._id;
+	const { parentId } = req.body;
+
+	const deleteFileAndUpdateChildOfParent = ({ _doc: { child } }) => {
+		const transaction = new Transaction();
+
+		const dataOfParent = {
+			child: child.filter(id => String(id) !== String(fileId))
+		};
+
+		transaction.update(FILE_MODEL_NAME, parentId, dataOfParent);
+		transaction.remove(FILE_MODEL_NAME, fileId);
+
+		const successHandler = () => res.sendStatus(204);
+		transaction.runAndTerminate({ successHandler });
+	};
+
+	File.findById(parentId)
+		.then(deleteFileAndUpdateChildOfParent)
+		.catch(() => res.sendStatus(500));
+}
+
+export { createFile, preloadFile, updateFile, deleteFile };
