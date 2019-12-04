@@ -18,6 +18,10 @@ function main(moduleName, moduleVersion) {
 		moduleVersion ? '@' + moduleVersion : ''
 	}`;
 
+	try {
+		child_process.execSync(`rm -rf ${dirName}`);
+	} catch (e) {}
+
 	child_process.execSync(command);
 	if (!moduleVersion) {
 		const file = fs.readFileSync(path.resolve(`${dirName}/package.json`), {
@@ -28,61 +32,93 @@ function main(moduleName, moduleVersion) {
 			''
 		);
 	}
-	bundle();
+	bundle(moduleName);
 	child_process.execSync(`rm -rf ${dirName}`);
 	return [Bundle, moduleVersion];
 
-	function bundle() {
-		const entries = [];
-		try {
-			fs.statSync(pathParser(moduleName));
-			entry.push(moduleName);
-		} catch (error) {
-			const file = fs.readFileSync(
-				pathParser(`${moduleName}/package.json`),
-				{
-					encoding: 'utf-8'
-				}
-			);
-			JSON.parse(file)['main']
-				? entries.push(
-						path.resolve(
-							PATH_PREFIX,
-							moduleName,
-							JSON.parse(file)['main']
-						)
-				  )
-				: '';
-			JSON.parse(file)['module']
-				? entries.push(
-						path.resolve(
-							PATH_PREFIX,
-							moduleName,
-							JSON.parse(file)['module']
-						)
-				  )
-				: '';
-		}
-		entries.forEach(entry => {
-			core(entry);
+	function bundle(moduleName) {
+		let entry = null;
+		const packageKeys = ['browser', 'module', 'main'];
+		const file = fs.readFileSync(pathParser(`${moduleName}/package.json`), {
+			encoding: 'utf-8'
 		});
+		const packageObject = JSON.parse(file);
+		if (typeof packageObject['browser'] === 'object') {
+			Object.entries(packageObject['browser']).forEach(([key, value]) => {
+				const abValue = path.resolve(
+					`/node_modules/${moduleName}/`,
+					value
+				);
+				const abKey = path.resolve(`/node_modules/${moduleName}/`, key);
+				const splitedAbValue = abValue.split('/');
+				const splitedAbKey = abKey.split('/');
+				while (true) {
+					if (splitedAbValue[0] === splitedAbKey[0]) {
+						splitedAbKey.shift();
+						splitedAbValue.shift();
+					} else {
+						break;
+					}
+				}
+				let ssPath = '.';
+				while (splitedAbKey.length !== 1) {
+					splitedAbKey.shift();
+					ssPath += '/..';
+				}
+				splitedAbValue.forEach(p => {
+					ssPath += `/${p}`;
+				});
+
+				const indexCode = `
+				const basiltoast = require('${ssPath}');
+				module.exports = basiltoast;`;
+				Bundle[path.resolve(`/node_modules/${moduleName}/`, key)] = {
+					contents: transpileCode(indexCode)
+				};
+
+				core(path.resolve(dirName, 'node_modules', moduleName, value));
+			});
+		}
+		packageKeys.forEach(key => {
+			if (entry !== null) return;
+			if (packageObject[key] && typeof packageObject[key] === 'string')
+				entry = packageObject[key];
+		});
+		if (!entry) {
+			entry = 'index.js';
+		}
+		const indexEntry = entry;
+		entry = path.resolve(dirName, 'node_modules', moduleName, entry);
+		core(entry);
+		if (!Bundle[`/node_modules/${moduleName}/index.js`]) {
+			const indexCode = `
+				const basiltoast = require('./${indexEntry}');
+				module.exports = basiltoast;`;
+			Bundle[`/node_modules/${moduleName}/index.js`] = {
+				contents: transpileCode(indexCode)
+			};
+		}
 	}
 
-	function core(path) {
-		const parsedPath = pathParser(path);
+	function core(param) {
+		const parsedPath = pathParser(param);
 		const key = pathKeyParser(parsedPath);
 		if (Bundle[key]) return;
 		try {
 			const file = fs.readFileSync(parsedPath, { encoding: 'utf-8' });
 			const transpiledCode = transpileCode(file);
-			Bundle[key] = transpiledCode;
+			Bundle[key] = { contents: transpiledCode };
 			PATH_STACK.push(getParentName(parsedPath));
 			const child = requirePathParser(transpiledCode);
 			if (child.length) {
 				child.forEach(val => core(val));
 			}
 			PATH_STACK.pop();
-		} catch (error) {}
+		} catch (error) {
+			try {
+				bundle(param);
+			} catch (e) {}
+		}
 	}
 
 	function requirePathParser(code) {

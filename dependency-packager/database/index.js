@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { package } = require('./schema');
 
-mongoose.connect('mongodb://localhost/dependency', { useNewUrlParser: true });
+mongoose.connect(process.env.DEV_DATABASE_URI, { useNewUrlParser: true });
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
