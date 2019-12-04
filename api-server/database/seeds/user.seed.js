@@ -1,7 +1,7 @@
 const mock = [
 	{
 		_id: '5ddbc8d44ee9665d2649b35c',
-		username: 'basiltoast',
+		username: 'BasilToast',
 		projectIds: ['5ddbc7db8eb1b85c55a84b17']
 	},
 	{
@@ -11,13 +11,13 @@ const mock = [
 	},
 	{
 		_id: '5ddbc7db8eb1b85c55a84b10',
-		username: 'yukjisoo',
+		username: 'YukJiSoo',
 		projectIds: ['5dd61901353f4858e1b5a9d0']
 	},
 	{
 		_id: '5ddbc7db8eb1b85c55a84b11',
 		username: 'lallaheeee',
-		projectIds: ['5ddbc7db8eb1b85c55a84b17']
+		projectIds: ['5dd61901353f4858e1b5a9d2']
 	}
 ];
 
