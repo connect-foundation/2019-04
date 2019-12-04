@@ -1,4 +1,4 @@
-import Transaction from 'mongoose-transactions';
+import Transaction from '../../../utils/transaction';
 import { File } from '../../../models';
 
 const FILE_MODEL_NAME = 'File';
@@ -10,7 +10,7 @@ async function createFile(req, res) {
 
 	const transaction = new Transaction();
 
-	const createFileAndUpdateChildOdParent = ({ _doc: { _id, child } }) => {
+	const createFileAndUpdateChildOfParent = ({ _doc: { _id, child } }) => {
 		const newFile = { ...newFileInfo, projectId };
 		const newFileId = transaction.insert(FILE_MODEL_NAME, newFile);
 
@@ -19,23 +19,12 @@ async function createFile(req, res) {
 
 		transaction.update(FILE_MODEL_NAME, parentFileId, newDataOfParent);
 
-		transaction
-			.run()
-			.then(() => res.sendStatus(200))
-			.catch(error => {
-				console.error(error);
-				transaction
-					.rollback()
-					.then(() => {
-						transaction.clean();
-						res.sendStatus(500);
-					})
-					.catch(() => res.sendStatus(500));
-			});
+		const successHandler = () => res.sendStatus(201);
+		transaction.runAndTerminate({ successHandler });
 	};
 
 	File.findById(parentId)
-		.then(createFileAndUpdateChildOdParent)
+		.then(createFileAndUpdateChildOfParent)
 		.catch(() => res.sendStatus(500));
 }
 
