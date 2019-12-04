@@ -1,14 +1,23 @@
-import { API_LOADING, API_SUCCESS, API_FAIL } from 'actions/types';
+import { API_READY, API_LOADING, API_SUCCESS, API_FAIL } from 'actions/types';
+
+const ready = () => ({
+	data: false,
+	loading: false,
+	err: false,
+	status: false
+});
 
 const loading = () => ({
 	data: undefined,
 	loading: true,
-	error: false
+	error: false,
+	status: false
 });
 
-const success = (state, payload) => ({
+const success = (state, { data, status }) => ({
 	...state,
-	data: payload,
+	data,
+	status,
 	loading: false
 });
 
@@ -20,6 +29,7 @@ const fail = state => ({
 
 function APIReducer(state, { type, payload }) {
 	const reducers = {
+		[API_READY]: ready,
 		[API_LOADING]: loading,
 		[API_SUCCESS]: success,
 		[API_FAIL]: fail

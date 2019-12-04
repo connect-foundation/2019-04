@@ -26,6 +26,10 @@ const ProjectTitle = styled.h2`
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
+
+	&[contenteditable='true'] br {
+		display: none;
+	}
 `;
 
 const ProjectDescription = styled.div`
