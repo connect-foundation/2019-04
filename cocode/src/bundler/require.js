@@ -4,7 +4,6 @@ import { transformCode } from './core';
 
 function require(path, fileSystem = exports) {
 	const [newPath, newPathParent] = pathParser(path, fileSystem);
-	console.log(newPath);
 
 	pathStack.push(newPathParent);
 	const code = transformCode(fileSystem[newPath].contents).value;

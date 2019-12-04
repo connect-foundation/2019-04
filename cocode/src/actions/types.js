@@ -10,6 +10,8 @@ const FETCH_PROJECT = 'fetchProject';
 const SELECT_FILE = 'selectFile';
 const CREATE_FILE = 'createFile';
 const UPDATE_FILE_NAME = 'updateFileName';
+const DELETE_FILE = 'deleteFile';
+const MOVE_FILE = 'moveFile';
 
 //DashBoard
 const FETCH_COCONUT = 'fetchCoconut';
@@ -26,7 +28,9 @@ export {
 	SELECT_FILE,
 	UPDATE_FILE_NAME,
 	CREATE_FILE,
-	FETCH_COCONUT,
+	DELETE_FILE,
+	MOVE_FILE,
+  FETCH_COCONUT,
 	UPDATE_COCONUT_NAME,
 	DELETE_COCONUT,
 };

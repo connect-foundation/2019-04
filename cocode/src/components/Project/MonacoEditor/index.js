@@ -19,13 +19,10 @@ function MonacoEditor({ ...props }) {
 
 	useEffect(() => {
 		setCode(project.editingCode);
-	}, [project.selectedFilePath]);
+	}, [project.selectedFileId]);
 
 	return (
-		<Styled.MonacoEditor
-			{...props}
-			isFilesEmpty={!project.selectedFilePath}
-		>
+		<Styled.MonacoEditor {...props} isFilesEmpty={!project.selectedFileId}>
 			<ControlledEditor
 				value={code}
 				language="javascript"

@@ -7,39 +7,40 @@ import ProjectContext from 'contexts/ProjectContext';
 
 function BrowserV2({ ...props }) {
 	const { project } = useContext(ProjectContext);
-	const { files } = project;
+	const { files, root } = project;
 	const [fileSystem, setFileSystem] = useState({});
 
 	useEffect(() => {
-		const fileTemp = {};
+		const fileSystemTemp = {};
 		Object.keys(bundler.exports).forEach(key => {
 			delete bundler.exports[key];
 		});
 
-		function fileParser(path) {
-			if (files[path].type !== 'directory') {
-				fileTemp[path] = {
-					contents: files[path].contents
+		function fileParser(path, id) {
+			if (files[id].type !== 'directory') {
+				fileSystemTemp[path] = {
+					contents: files[id].contents
 				};
-				bundler.exports[path] = {
-					contents: files[path].contents
-				};
-			} else if (files[path].childPaths) {
-				files[path].childPaths.forEach(path => {
-					fileParser(path);
+				bundler.exports[path] = fileSystemTemp[path];
+			} else if (files[id].child) {
+				files[id].child.forEach(id => {
+					const path = files[id].path;
+					fileParser(path, id);
 				});
 			}
 		}
-		if (project) fileParser(project.rootPath);
 
-		setFileSystem(fileTemp);
+		const rootPath = files[root].path;
+		if (project) fileParser(rootPath, project.root);
+
+		setFileSystem(fileSystemTemp);
 	}, [files]);
 
 	useEffect(() => {
 		try {
-			const entry = project.entryPath.split('.')[0];
+			const entryPath = files[project.entry].path.split('.')[0];
 			bundler.init();
-			bundler.require(entry);
+			bundler.require(entryPath);
 		} catch (error) {
 			console.log(error);
 		}

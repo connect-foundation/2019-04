@@ -16,52 +16,90 @@ import {
 import FileImagesSrc from 'constants/fileImagesSrc';
 import { KEY_CODE_ENTER } from 'constants/keyCode';
 
+// Constants
+const ACCEPT_DELETE_NOTIFICATION = '이 파일을 지우시겠습니까?';
+const WARNING_PREVENT_NOTIFICATION =
+	'해당 파일은 이름을 변경하거나 삭제할 수 없습니다.';
+
 function File({
 	isDirectory,
-	path,
+	isProtectedFile,
+	_id,
 	type,
 	name,
 	depth,
 	handleSelectFile,
-	handleCreateFile,
-	handleEditFimeName,
+	handleEditFileName,
+	handleDeleteFile,
 	...props
 }) {
 	const [fileName, setFileName] = useState(name);
 	const [toggleEdit, setToggleEdit] = useState(false);
 	const nameEditReferenece = useRef(null);
 
-	const src = FileImagesSrc[type];
+	// Functions
+	const checkThisFileIsProtected = () =>
+		isProtectedFile && !alert(WARNING_PREVENT_NOTIFICATION);
 
 	// Event handlers
-	const handleClick = () => handleSelectFile(path);
+	const handleClick = () => handleSelectFile(_id);
 
-	const handleEditFileNameStart = () => {
+	const handleEditFileNameStart = e => {
+		e.stopPropagation();
+		if (checkThisFileIsProtected()) return;
+
 		changeDivEditable(nameEditReferenece.current, true);
 		setToggleEdit(true);
 	};
 
-	const handleEditFileNameEnd = e => {
-		const changedName = e.currentTarget.textContent;
-		setFileName(changedName);
-		handleEditFimeName(changedName);
-
+	const handleEditFileNameEnd = ({ currentTarget }) => {
 		setToggleEdit(false);
 		nameEditReferenece.current.contentEditable = false;
+		const changedName = currentTarget.textContent;
+		setFileName(changedName);
+		handleEditFileName(changedName);
+	};
+
+	const handleDeleteFileButtonClick = e => {
+		e.stopPropagation();
+		if (checkThisFileIsProtected()) return;
+
+		const acceptDeleteThisFile = confirm(ACCEPT_DELETE_NOTIFICATION);
+		if (!acceptDeleteThisFile) return;
+
+		handleDeleteFile(_id);
+	};
+
+	const handleCreateFile = (type, e) => {
+		e.stopPropagation();
+		props.handleCreateFile(type);
 	};
 
 	const handleKeyDown = e => {
-		if (e.keyCode === KEY_CODE_ENTER) handleEditFileNameEnd(e);
+		if (e.keyCode === KEY_CODE_ENTER) {
+			setToggleEdit(false);
+			nameEditReferenece.current.contentEditable = false;
+		}
 	};
+
+	const handleDragStart = e => {
+		e.dataTransfer.setData('text', _id);
+		e.stopPropagation();
+	};
+
+	const handleDragOver = e => e.preventDefault();
 
 	return (
 		<Styled.File
+			draggable={true}
 			toggleEdit={toggleEdit}
 			depth={depth}
 			onClick={handleSelectFile ? handleClick : undefined}
+			onDragStart={handleDragStart}
+			onDragOver={handleDragOver}
 			{...props}
 		>
-			<Styled.Icon src={src} alt={`${name}_${type}`} />
+			<Styled.Icon src={FileImagesSrc[type]} alt={`${name}_${type}`} />
 			<Styled.NameEdit
 				ref={nameEditReferenece}
 				onFocus={selectAllTextAboutFocusedDom}
@@ -71,7 +109,7 @@ function File({
 				{fileName}
 			</Styled.NameEdit>
 			<Styled.SideIcons className="Side-icons-visibility">
-				{/* <EditIcon onClick={handleEditFileNameStart} /> */}
+				<EditIcon onClick={handleEditFileNameStart} />
 				{isDirectory && (
 					<>
 						<NewFolderIcon
@@ -85,7 +123,7 @@ function File({
 						/>
 					</>
 				)}
-				<DeleteIcon />
+				<DeleteIcon onClick={handleDeleteFileButtonClick} />
 			</Styled.SideIcons>
 		</Styled.File>
 	);
