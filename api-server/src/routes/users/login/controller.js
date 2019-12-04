@@ -10,8 +10,8 @@ function loginByGithub(req, res, next) {
 	passport.authenticate(STRATEGY)(req, res, next);
 }
 
-function publishToken({ user: { username, photos } }, res) {
-	const payload = { username: username, avatar: photos[0].value };
+function publishToken({ user: { username, avatar } }, res) {
+	const payload = { username, avatar };
 	const expiresIn = { expiresIn: '7d' };
 	const token = jwt.sign(payload, JWT_SECRET, expiresIn);
 	res.cookie(KEY_JWT, token).redirect(COCODE_CLIENT_URI);
