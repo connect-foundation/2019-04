@@ -80,6 +80,21 @@ function ProjectCard({ _id, name, updatedAt }) {
 		}
 	}, [loading, status]);
 
+	const renameMenu = [
+		{
+			value: 'open',
+			handleClick: handleClickOpen
+		},
+		{
+			value: 'rename',
+			handleClick: handleEditCoconutNameStart
+		},
+		{
+			value: 'remove',
+			handleClick: handleRemoveCoconut
+		}
+	];
+
 	return (
 		<Styled.ProjectArticle onClick={handleClickOpen}>
 			<Styled.ProjectTitle
