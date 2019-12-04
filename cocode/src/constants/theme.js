@@ -12,7 +12,7 @@ const DEFAULT_THEME = {
 const DROPDOWN_THEME = {
 	dropdownButtonColor: '#2b2b2b',
 	dropdownButtonHoverColor: '#4b4b4b',
-	dropdownButtonBorderColor: '#383838',
+	dropdownButtonBorderColor: '#383838'
 };
 
 const BROWSER_THEME = {
@@ -73,6 +73,8 @@ const EXPLORER_TAB_CONTAINER_THEME = {
 	explorerTabContainerFileNameEditBGColor: '#000',
 	explorerTabContainerFileEditBGColor: 'rgba(55, 65, 64, 0.314)',
 	explorerTabContainerSelectedFileBGColor: '#2accf944',
+	explorerTabContainerFileDropZoneOverBGColor: '#2accf922',
+	explorerTabContainerFileDropZoneNotOverBGColor: 'none',
 
 	explorerTabContainerIconHoverColor: '#fff',
 	explorerTabContainerIconColor: '#878788',
@@ -105,7 +107,7 @@ const FILE_TAB_THEME = {
 
 const MONACO_THEME = {
 	editorMainColor: '#1E2022',
-	editorCurrentLineColor: '#2a2f32',
+	editorCurrentLineColor: '#2a2f32'
 };
 
 export {

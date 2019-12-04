@@ -4,7 +4,8 @@ import {
 	SELECT_FILE,
 	UPDATE_FILE_NAME,
 	CREATE_FILE,
-	DELETE_FILE
+	DELETE_FILE,
+	MOVE_FILE
 } from './types';
 
 function fetchProjectActionCreator(payload) {
@@ -31,11 +32,16 @@ function deleteFileActionCreator(payload) {
 	return { type: DELETE_FILE, payload };
 }
 
+function moveFileActionCreator(payload) {
+	return { type: MOVE_FILE, payload };
+}
+
 export {
 	updateCodeActionCreator,
 	fetchProjectActionCreator,
 	selectFileActionCreator,
 	updateFileNameActionCreator,
 	createFileActionCreator,
-	deleteFileActionCreator
+	deleteFileActionCreator,
+	moveFileActionCreator
 };

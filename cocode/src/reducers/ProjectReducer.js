@@ -5,7 +5,8 @@ import {
 	SELECT_FILE,
 	CREATE_FILE,
 	UPDATE_FILE_NAME,
-	DELETE_FILE
+	DELETE_FILE,
+	MOVE_FILE
 } from 'actions/types';
 
 import { getFileExtension } from 'utils';
@@ -164,7 +165,7 @@ function updatePathOfChild(prePath, files, child) {
 				...result,
 				...changedChildFiles,
 				[_id]: {
-					...file,
+					...files[_id],
 					path
 				}
 			};
@@ -192,6 +193,40 @@ const deleteFile = (state, { deleteFileId }) => {
 	};
 };
 
+// Move file
+const moveFile = (state, { directoryId, fileId }) => {
+	const { files } = state;
+
+	const oldParentId = files[fileId].parentId;
+	if (oldParentId === directoryId) return state;
+
+	const updateChild = list => list.filter(childId => childId !== fileId);
+	const updatedChildAtOldParent = updateChild(files[oldParentId].child);
+	const updatedChildAtNewParent = updateChild(files[directoryId].child);
+
+	const newPath = `${files[directoryId].path}/${files[fileId].name}`;
+
+	return {
+		...state,
+		files: {
+			...files,
+			[directoryId]: {
+				...files[directoryId],
+				child: [...updatedChildAtNewParent, fileId]
+			},
+			[fileId]: {
+				...files[fileId],
+				parentId: directoryId,
+				path: newPath
+			},
+			[oldParentId]: {
+				...files[oldParentId],
+				child: [...updatedChildAtOldParent]
+			}
+		}
+	};
+};
+
 function ProjectReducer(state, { type, payload }) {
 	const reducers = {
 		[FETCH_PROJECT]: fetchProject,
@@ -199,7 +234,8 @@ function ProjectReducer(state, { type, payload }) {
 		[SELECT_FILE]: selectFile,
 		[UPDATE_FILE_NAME]: updateFileName,
 		[CREATE_FILE]: createFile,
-		[DELETE_FILE]: deleteFile
+		[DELETE_FILE]: deleteFile,
+		[MOVE_FILE]: moveFile
 	};
 
 	const reducer = reducers[type];

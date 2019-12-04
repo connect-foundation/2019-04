@@ -29,7 +29,6 @@ function File({
 	name,
 	depth,
 	handleSelectFile,
-	handleCreateFile,
 	handleEditFileName,
 	handleDeleteFile,
 	...props
@@ -71,6 +70,11 @@ function File({
 		handleDeleteFile(_id);
 	};
 
+	const handleCreateFile = (type, e) => {
+		e.stopPropagation();
+		props.handleCreateFile(type);
+	};
+
 	const handleKeyDown = e => {
 		if (e.keyCode === KEY_CODE_ENTER) {
 			setToggleEdit(false);
@@ -78,11 +82,21 @@ function File({
 		}
 	};
 
+	const handleDragStart = e => {
+		e.dataTransfer.setData('text', _id);
+		e.stopPropagation();
+	};
+
+	const handleDragOver = e => e.preventDefault();
+
 	return (
 		<Styled.File
+			draggable={true}
 			toggleEdit={toggleEdit}
 			depth={depth}
 			onClick={handleSelectFile ? handleClick : undefined}
+			onDragStart={handleDragStart}
+			onDragOver={handleDragOver}
 			{...props}
 		>
 			<Styled.Icon src={FileImagesSrc[type]} alt={`${name}_${type}`} />
