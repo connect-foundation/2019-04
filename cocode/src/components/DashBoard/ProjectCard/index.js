@@ -34,19 +34,19 @@ function ProjectCard({ _id, name, updatedAt }) {
 	const renameMenu = [
 		{
 			value: 'open',
-			onClick: () => alert('open')
+			handleClick: () => alert('open')
 		},
 		{
 			value: 'rename',
-			onClick: () => handleEditCoconutNameStart()
+			handleClick: () => handleEditCoconutNameStart()
 		},
 		{
 			value: 'remove',
-			onClick: () => handleRemoveCoconut()
+			handleClick: () => handleRemoveCoconut()
 		}
 	];
 
-	const { dispatch } = useContext(DashBoardContext);
+	const { dispatchDashboard } = useContext(DashBoardContext);
 	const [modifying, setModifying] = useState(false);
 	const [deleting, setDeleting] = useState(false);
 	const nameInput = useRef(false);
@@ -60,10 +60,7 @@ function ProjectCard({ _id, name, updatedAt }) {
 	};
 	const handleEditCoconutNameEnd = () => {
 		nameInput.current.contentEditable = false;
-		fetchName(nameInput.current.textContent);
-	};
-
-	const fetchName = name => {
+		const name = nameInput.current.textContent;
 		setRequest(updateCoconutsAPICreator(_id, { name }));
 	};
 
@@ -84,12 +81,12 @@ function ProjectCard({ _id, name, updatedAt }) {
 
 		if (modifying && data) {
 			setModifying(false);
-			dispatch(updateCoconutNameActionCreator(data));
+			dispatchDashboard(updateCoconutNameActionCreator(data));
 		}
 
 		if (deleting) {
 			setDeleting(false);
-			dispatch(deleteCoconutActionCreator(_id));
+			dispatchDashboard(deleteCoconutActionCreator(_id));
 		}
 	}, [loading, status]);
 

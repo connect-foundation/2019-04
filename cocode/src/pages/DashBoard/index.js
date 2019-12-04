@@ -9,26 +9,21 @@ import { fetchCoconutActionCreator } from 'actions/Dashboard';
 
 function DashBoard() {
 	const { user } = useContext(UserContext);
-	const [{ coconuts, isFetched }, dispatch] = useReducer(DashBoardReducer, {
-		coconuts: [],
-		isFetched: false
-	});
+	const [coconuts, dispatchDashboard] = useReducer(DashBoardReducer, []);
 	const [{ data, loading, error }, setRequest] = useFetch({});
 
 	useEffect(() => {
 		if (user) setRequest(getCoconutsAPICreator(user.username));
-	}, [user]);
+		if (data) dispatchDashboard(fetchCoconutActionCreator(data));
+	}, [user, data]);
 
-	useEffect(() => {
-		if (!isFetched && data) dispatch(fetchCoconutActionCreator(data));
-	}, [data]);
 
 	//TODO loading 컴포넌트 만들기
 	if (loading) return <p>Loading...</p>;
 	if (error) return <p>다시 시도해주세요.</p>;
 
 	return (
-		<DashBoardContext.Provider value={{ coconuts, dispatch }}>
+		<DashBoardContext.Provider value={{ coconuts, dispatchDashboard }}>
 			<Header />
 			<ProjectCardList />
 		</DashBoardContext.Provider>
