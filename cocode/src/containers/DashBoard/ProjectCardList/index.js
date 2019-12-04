@@ -15,7 +15,7 @@ function ProjectCardList() {
 				<Style.CoconutCount>{coconuts.length}</Style.CoconutCount>
 			</Style.Title>
 			<Style.CardList>
-				<Link to="/project">
+				<Link to="/project/new">
 					<CreateButton />
 				</Link>
 				{coconuts.map((coconut, index) => (

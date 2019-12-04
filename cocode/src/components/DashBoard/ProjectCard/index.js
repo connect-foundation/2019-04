@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useContext, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import * as Styled from './style';
 import moment from 'moment';
 import DropDownMenu from 'components/Common/DropDownMenu';
@@ -31,21 +32,7 @@ function MenuButton({ onClick }) {
 }
 
 function ProjectCard({ _id, name, updatedAt }) {
-	const renameMenu = [
-		{
-			value: 'open',
-			handleClick: () => alert('open')
-		},
-		{
-			value: 'rename',
-			handleClick: () => handleEditCoconutNameStart()
-		},
-		{
-			value: 'remove',
-			handleClick: () => handleRemoveCoconut()
-		}
-	];
-
+	const history = useHistory();
 	const { dispatchDashboard } = useContext(DashBoardContext);
 	const [modifying, setModifying] = useState(false);
 	const [deleting, setDeleting] = useState(false);
@@ -54,10 +41,13 @@ function ProjectCard({ _id, name, updatedAt }) {
 	//TODO loading 시 Circular, error시 토스트 띄우기
 	const [{ data, loading, error, status }, setRequest] = useFetch({});
 
+	const handleClickOpen = () => history.push(`../project/${_id}`);
+
 	const handleEditCoconutNameStart = () => {
 		setModifying(true);
 		changeDivEditable(nameInput.current, true);
 	};
+
 	const handleEditCoconutNameEnd = () => {
 		nameInput.current.contentEditable = false;
 		const name = nameInput.current.textContent;
@@ -90,8 +80,23 @@ function ProjectCard({ _id, name, updatedAt }) {
 		}
 	}, [loading, status]);
 
+	const renameMenu = [
+		{
+			value: 'open',
+			handleClick: handleClickOpen
+		},
+		{
+			value: 'rename',
+			handleClick: handleEditCoconutNameStart
+		},
+		{
+			value: 'remove',
+			handleClick: handleRemoveCoconut
+		}
+	];
+
 	return (
-		<Styled.ProjectArticle>
+		<Styled.ProjectArticle onClick={handleClickOpen}>
 			<Styled.ProjectTitle
 				ref={nameInput}
 				onFocus={selectAllTextAboutFocusedDom}

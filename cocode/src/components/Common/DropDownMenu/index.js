@@ -5,8 +5,12 @@ import * as Styled from './style';
 function DropDownMenu({ children, menuItems, ...props }) {
 	const [isOpen, setIsOpen] = useState(false);
 
-	const handleIsOpen = () => setIsOpen(!isOpen);
+	const handleIsOpen = (e) => {
+		e.stopPropagation();
+		setIsOpen(!isOpen);
+	};
 	const handleMenuClose = (handleClick, e) => {
+		e.stopPropagation();
 		setIsOpen(false);
 		handleClick(e);
 	};
