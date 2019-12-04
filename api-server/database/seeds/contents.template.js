@@ -87,7 +87,41 @@ const template = {
 		'    "eject": "react-scripts eject"\n' +
 		'  },\n' +
 		'  "browserslist": [">0.2%", "not dead", "not ie <= 11", "not op_mini all"]\n' +
-		'}\n'
+		'}\n',
+	version1:
+		'const { useState } = React;\n' +
+		'\n' +
+		'function App() {\n' +
+		'	const [state, setState] = useState("Cocode");\n' +
+		'\n' +
+		'	return(\n' +
+		'		<>\n' +
+		'			<h1>Hi! {state}</h1>\n' +
+		'		</>\n' +
+		'	)\n' +
+		'}\n' +
+		'\n' +
+		'ReactDOM.render(<App />, document.getElementById("coconut-root"));\n',
+	Apple:
+		'function Apple() {\n' +
+		'	return(\n' +
+		'		<>\n' +
+		'			<h1>Apple!</h1>\n' +
+		'		</>\n' +
+		'	)\n' +
+		'}\n' +
+		'\n' +
+		'export default Apple;\n',
+	Banana:
+		'function Banana() {\n' +
+		'	return(\n' +
+		'		<>\n' +
+		'			<h1>Banana!</h1>\n' +
+		'		</>\n' +
+		'	)\n' +
+		'}\n' +
+		'\n' +
+		'export default Banana;\n'
 };
 
 function getTemplate(file) {

@@ -9,6 +9,12 @@ const FileSchema = new mongoose.Schema(
 		type: {
 			type: String
 		},
+		contents: {
+			type: String
+		},
+		projectId: {
+			type: ObjectId
+		},
 		child: [
 			{
 				type: ObjectId,
