@@ -195,33 +195,33 @@ const deleteFile = (state, { deleteFileId }) => {
 
 // Move file
 const moveFile = (state, { directoryId, fileId }) => {
-	const parentIdOfMovedFile = state.files[fileId].parentId;
-	if (parentIdOfMovedFile === directoryId) return state;
+	const { files } = state;
 
-	const changedChild = state.files[parentIdOfMovedFile].child.filter(
-		childId => childId !== fileId
-	);
-	const newChild = state.files[directoryId].child.filter(
-		childId => childId !== fileId
-	);
-	const newPath = `${state.files[directoryId].path}/${state.files[fileId].name}`;
+	const oldParentId = files[fileId].parentId;
+	if (oldParentId === directoryId) return state;
+
+	const updateChild = list => list.filter(childId => childId !== fileId);
+	const updatedChildAtOldParent = updateChild(files[oldParentId].child);
+	const updatedChildAtNewParent = updateChild(files[directoryId].child);
+
+	const newPath = `${files[directoryId].path}/${files[fileId].name}`;
 
 	return {
 		...state,
 		files: {
-			...state.files,
+			...files,
 			[directoryId]: {
-				...state.files[directoryId],
-				child: [...newChild, fileId]
+				...files[directoryId],
+				child: [...updatedChildAtNewParent, fileId]
 			},
 			[fileId]: {
-				...state.files[fileId],
+				...files[fileId],
 				parentId: directoryId,
 				path: newPath
 			},
-			[parentIdOfMovedFile]: {
-				...state.files[parentIdOfMovedFile],
-				child: [...changedChild]
+			[oldParentId]: {
+				...files[oldParentId],
+				child: [...updatedChildAtOldParent]
 			}
 		}
 	};
