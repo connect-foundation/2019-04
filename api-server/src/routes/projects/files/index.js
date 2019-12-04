@@ -1,7 +1,8 @@
 import express from 'express';
-import { createFile } from './controller';
+import { createFile, preloadFile } from './controller';
 const router = express.Router();
 
 router.post('/', createFile);
+router.param('fileId', preloadFile);
 
 export default router;

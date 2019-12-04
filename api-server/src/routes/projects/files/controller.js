@@ -3,6 +3,17 @@ import { File } from '../../../models';
 
 const FILE_MODEL_NAME = 'File';
 
+async function preloadFile(req, res, next, fileId) {
+	File.findById(fileId)
+		.then(file => {
+			if (!file) return res.sendStatus(404);
+
+			req.file = file;
+			return next();
+		})
+		.catch(() => res.sendStatus(404));
+}
+
 async function createFile(req, res) {
 	const { _id } = req.project;
 	const projectId = _id;
@@ -28,4 +39,4 @@ async function createFile(req, res) {
 		.catch(() => res.sendStatus(500));
 }
 
-export { createFile };
+export { createFile, preloadFile };
