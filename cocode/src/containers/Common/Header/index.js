@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import * as Styled from './style';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import deleteCookie from 'utils/deleteCookie';
 
@@ -13,12 +13,13 @@ import LoginModalBody from 'components/Common/LoginModalBody';
 import UserContext from 'contexts/UserContext';
 
 function Header() {
+	const history = useHistory();
 	const { user } = useContext(UserContext);
 	const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
 
 	const handleOpenSignInModal = () => setIsSignInModalOpen(true);
 	const handleCloseSignInModal = () => setIsSignInModalOpen(false);
-	const handleClickDashBoard = () => (window.location.href = '../dashboard');
+	const handleClickDashBoard = () => history.push('/dashboard');
 	const handleSignOut = () => {
 		const confirm = window.confirm('로그아웃 하시겠습니까?');
 		if (!confirm) return;
