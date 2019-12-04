@@ -11,7 +11,8 @@ import NewFile from 'components/Project/NewFile';
 import ProjectContext from 'contexts/ProjectContext';
 import {
 	selectFileActionCreator,
-	updateFileNameActionCreator
+	updateFileNameActionCreator,
+	deleteFileActionCreator
 } from 'actions/Project';
 
 const TAB_TITLE = 'EXPLOLER';
@@ -60,6 +61,11 @@ function ExplorerTab() {
 		dispatchProject(updateFileNameAction);
 	};
 
+	const handleDeleteFile = deleteFileId => {
+		const updateFileNameAction = deleteFileActionCreator({ deleteFileId });
+		dispatchProject(updateFileNameAction);
+	};
+
 	return (
 		<>
 			<TabHeader handleCreateFile={handleCreateFile} />
@@ -78,6 +84,7 @@ function ExplorerTab() {
 					depth={1}
 					handleSelectFile={handleSelectFile}
 					handleEditFileName={handleEditFileName}
+					handleDeleteFile={handleDeleteFile}
 				/>
 			</Styled.TabBody>
 		</>

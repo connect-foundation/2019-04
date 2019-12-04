@@ -16,8 +16,14 @@ import {
 import FileImagesSrc from 'constants/fileImagesSrc';
 import { KEY_CODE_ENTER } from 'constants/keyCode';
 
+// Constants
+const ACCEPT_DELETE_NOTIFICATION = '이 파일을 지우시겠습니까?';
+const WARNING_PREVENT_NOTIFICATION =
+	'해당 파일은 이름을 변경하거나 삭제할 수 없습니다.';
+
 function File({
 	isDirectory,
+	isProtectedFile,
 	_id,
 	type,
 	name,
@@ -25,31 +31,51 @@ function File({
 	handleSelectFile,
 	handleCreateFile,
 	handleEditFileName,
+	handleDeleteFile,
 	...props
 }) {
 	const [fileName, setFileName] = useState(name);
 	const [toggleEdit, setToggleEdit] = useState(false);
 	const nameEditReferenece = useRef(null);
 
+	// Functions
+	const checkThisFileIsProtected = () =>
+		isProtectedFile && !alert(WARNING_PREVENT_NOTIFICATION);
+
 	// Event handlers
 	const handleClick = () => handleSelectFile(_id);
 
-	const handleEditFileNameStart = () => {
+	const handleEditFileNameStart = e => {
+		e.stopPropagation();
+		if (checkThisFileIsProtected()) return;
+
 		changeDivEditable(nameEditReferenece.current, true);
 		setToggleEdit(true);
 	};
 
 	const handleEditFileNameEnd = ({ currentTarget }) => {
+		setToggleEdit(false);
+		nameEditReferenece.current.contentEditable = false;
 		const changedName = currentTarget.textContent;
 		setFileName(changedName);
 		handleEditFileName(changedName);
+	};
 
-		setToggleEdit(false);
-		nameEditReferenece.current.contentEditable = false;
+	const handleDeleteFileButtonClick = e => {
+		e.stopPropagation();
+		if (checkThisFileIsProtected()) return;
+
+		const acceptDeleteThisFile = confirm(ACCEPT_DELETE_NOTIFICATION);
+		if (!acceptDeleteThisFile) return;
+
+		handleDeleteFile(_id);
 	};
 
 	const handleKeyDown = e => {
-		if (e.keyCode === KEY_CODE_ENTER) handleEditFileNameEnd(e);
+		if (e.keyCode === KEY_CODE_ENTER) {
+			setToggleEdit(false);
+			nameEditReferenece.current.contentEditable = false;
+		}
 	};
 
 	return (
@@ -83,7 +109,7 @@ function File({
 						/>
 					</>
 				)}
-				<DeleteIcon />
+				<DeleteIcon onClick={handleDeleteFileButtonClick} />
 			</Styled.SideIcons>
 		</Styled.File>
 	);

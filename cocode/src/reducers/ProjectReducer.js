@@ -4,7 +4,8 @@ import {
 	FETCH_PROJECT,
 	SELECT_FILE,
 	CREATE_FILE,
-	UPDATE_FILE_NAME
+	UPDATE_FILE_NAME,
+	DELETE_FILE
 } from 'actions/types';
 
 import { getFileExtension } from 'utils';
@@ -170,13 +171,35 @@ function updatePathOfChild(prePath, files, child) {
 		}, {});
 }
 
+// Delete file
+const deleteFile = (state, { deleteFileId }) => {
+	const { files } = state;
+	const { parentId } = files[deleteFileId];
+	const updatedParentChilds = state.files[parentId].child.filter(
+		id => id !== deleteFileId
+	);
+
+	return {
+		...state,
+		files: {
+			...state.files,
+			[deleteFileId]: undefined,
+			[parentId]: {
+				...state.files[parentId],
+				child: updatedParentChilds
+			}
+		}
+	};
+};
+
 function ProjectReducer(state, { type, payload }) {
 	const reducers = {
 		[FETCH_PROJECT]: fetchProject,
 		[UPDATE_CODE]: updateCode,
 		[SELECT_FILE]: selectFile,
 		[UPDATE_FILE_NAME]: updateFileName,
-		[CREATE_FILE]: createFile
+		[CREATE_FILE]: createFile,
+		[DELETE_FILE]: deleteFile
 	};
 
 	const reducer = reducers[type];

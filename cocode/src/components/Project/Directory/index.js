@@ -5,9 +5,31 @@ import NewFile from 'components/Project/NewFile';
 
 import ProjectContext from 'contexts/ProjectContext';
 
-function Directory({ id, path, childIds, depth, handleSelectFile, ...props }) {
+// src 디렉토리의 index.js, src 디렉토리, package.json은 삭제불가
+function isProtectedFile({ files, root, entry, fileId }) {
+	if (fileId === entry) return true;
+
+	const entryParentId = files[entry].parentId;
+	if (fileId === entryParentId) return true;
+
+	const fileName = files[fileId].name;
+	const fileParentId = files[fileId].parentId;
+	if (fileName === 'package.json' && fileParentId === root) return true;
+
+	return false;
+}
+
+function Directory({
+	id,
+	path,
+	childIds,
+	depth,
+	handleSelectFile,
+	handleDeleteFile,
+	...props
+}) {
 	const {
-		project: { files, selectedFileId }
+		project: { files, root, entry, selectedFileId }
 	} = useContext(ProjectContext);
 	const [isNewFileCreating, setIsNewFileCreating] = useState(false);
 	const [createFileType, setCreateFileType] = useState(null);
@@ -42,10 +64,17 @@ function Directory({ id, path, childIds, depth, handleSelectFile, ...props }) {
 			isNotRoot(depth) && (
 				<File
 					isDirectory={true}
+					isProtectedFile={isProtectedFile({
+						files,
+						root,
+						entry,
+						fileId: id
+					})}
 					depth={depth - 1}
 					id={id}
 					handleCreateFile={handleCreateFile}
 					handleEditFileName={handleEditFileName}
+					handleDeleteFile={handleDeleteFile}
 					{...files[id]}
 				/>
 			)}
@@ -59,6 +88,7 @@ function Directory({ id, path, childIds, depth, handleSelectFile, ...props }) {
 						depth={depth + 1}
 						handleSelectFile={handleSelectFile}
 						handleEditFileName={props.handleEditFileName}
+						handleDeleteFile={handleDeleteFile}
 					/>
 				);
 			})}
@@ -81,12 +111,19 @@ function Directory({ id, path, childIds, depth, handleSelectFile, ...props }) {
 					<File
 						key={'file' + _id}
 						id={_id}
+						isProtectedFile={isProtectedFile({
+							files,
+							root,
+							entry,
+							fileId: _id
+						})}
 						isDirectory={false}
 						className={isSelected(_id) && 'Is-selected-file'}
 						depth={depth}
 						handleEditFileName={handleEditFileName}
 						handleSelectFile={handleSelectFile}
 						handleCreateFile={handleCreateFile}
+						handleDeleteFile={handleDeleteFile}
 						{...files[_id]}
 					/>
 				);

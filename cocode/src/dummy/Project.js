@@ -137,11 +137,7 @@ const project = {
 			_id: '5dd553be4561ae2bae9cb463',
 			name: 'root',
 			type: 'directory',
-			child: [
-				'5dd553be4561ae2bae9cb45f'
-				// '5dd553be4561ae2bae9cb461',
-				// '5dd553be4561ae2bae9cb462'
-			]
+			child: ['5dd553be4561ae2bae9cb45f', '5dd553be4561ae2bae9cb462']
 		},
 		{
 			_id: '5dd553be4561ae2bae9cb45f',
@@ -182,13 +178,13 @@ const project = {
 			type: 'js',
 			contents: getTemplate('Banana'),
 			_id: '5dd553be4561ae2bae9cb460'
+		},
+		{
+			name: 'package.json',
+			type: 'npm',
+			contents: getTemplate('package'),
+			_id: '5dd553be4561ae2bae9cb462'
 		}
-		// {
-		// 	name: 'package.json',
-		// 	type: 'npm',
-		// 	contents: getTemplate('package'),
-		// 	_id: '5dd553be4561ae2bae9cb462'
-		// }
 	]
 };
 
