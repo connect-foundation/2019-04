@@ -1,4 +1,4 @@
-import { Project } from '../../models';
+import { Project, File } from '../../models';
 
 async function preloadProject(req, res, next, projectId) {
 	Project.findById(projectId)
@@ -9,6 +9,25 @@ async function preloadProject(req, res, next, projectId) {
 			return next();
 		})
 		.catch(next);
+}
+
+async function getProjectByProjectId(req, res) {
+	const project = req.project;
+	const { _id, name, description, author, entry, root } = project;
+
+	File.find({ projectId: _id })
+		.then(files => {
+			if (!files) return res.sendStatus(404);
+			res.status(200).send({
+				name,
+				description,
+				author,
+				root,
+				entry,
+				files
+			});
+		})
+		.catch(() => res.sendStatus(500));
 }
 
 async function modifyProject(req, res) {
@@ -33,4 +52,4 @@ async function deleteProject(req, res, next) {
 		.catch(() => res.sendStatus(500));
 }
 
-export { modifyProject, preloadProject, deleteProject };
+export { preloadProject, modifyProject, getProjectByProjectId, deleteProject };
