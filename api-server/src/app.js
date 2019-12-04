@@ -14,8 +14,6 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', () => console.log('connected to Mongo'));
 
 mongoose.connect(DATABASE_URI, MONGO_OPTION);
-mongoose.set('useCreateIndex', true);
-mongoose.set('useFindAndModify', false);
 
 app.use(morgan('dev'));
 app.use(cors(CORS_OPTION));

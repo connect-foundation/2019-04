@@ -15,6 +15,7 @@ const DATABASE_URI =
 		? process.env.PROD_DATABASE_URI
 		: process.env.DEV_DATABASE_URI;
 console.log(process.env.NODE_ENV);
+
 const COCODE_CLIENT_URI =
 	process.env.NODE_ENV === 'production'
 		? process.env.PROD_COCODE_CLIENT_URI
@@ -28,7 +29,9 @@ const CORS_OPTION = {
 
 const MONGO_OPTION = {
 	useNewUrlParser: true,
-	useUnifiedTopology: true
+	useUnifiedTopology: true,
+	useCreateIndex: true,
+	useFindAndModify: false
 };
 
 export {
