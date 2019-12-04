@@ -8,7 +8,7 @@ async function preloadProject(req, res, next, projectId) {
 			req.project = project;
 			return next();
 		})
-		.catch(next);
+		.catch(() => res.sendStatus(404));
 }
 
 async function getProjectByProjectId(req, res) {
