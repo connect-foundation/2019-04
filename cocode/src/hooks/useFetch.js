@@ -16,7 +16,7 @@ function useFetch({ method, url, data = {} }) {
 	const [state, dispatchFetchState] = useReducer(APIReducer, {
 		data: false,
 		loading: false,
-		err: false,
+		error: false,
 		status: false
 	});
 

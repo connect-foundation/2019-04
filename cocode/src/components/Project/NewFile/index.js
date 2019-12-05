@@ -22,7 +22,7 @@ function NewFile({ projectId, depth, type, parentId, handleEndCreateFile }) {
 	} = useContext(ProjectContext);
 	const [fileName, setFileName] = useState('');
 	const fileNameInputReferenece = useRef(null);
-	const [{ data }, setRequest] = useFetch({});
+	const [{ data, error }, setRequest] = useFetch({});
 
 	const isDuplicatedFileName = fileName => {
 		return files[parentId].child
@@ -70,10 +70,16 @@ function NewFile({ projectId, depth, type, parentId, handleEndCreateFile }) {
 		changeDivEditable(fileNameInputReferenece.current, false);
 	};
 
+	const handleErrorResponse = () => {
+		if (!error) return;
+		changeDivEditable(fileNameInputReferenece.current, false);
+	};
+
 	useEffect(() => {
 		fileNameInputReferenece.current.focus();
 	}, []);
 	useEffect(handleSetNewFileState, [data]);
+	useEffect(handleErrorResponse, [error]);
 
 	return (
 		<Styled.NewFile depth={depth}>
