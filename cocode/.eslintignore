@@ -4,3 +4,4 @@ webpack.config.js
 .prettierrc
 .env
 public/*
+src/template/*
