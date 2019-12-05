@@ -7,7 +7,6 @@ import {
 } from 'components/Project/ExplorerTabIcons';
 import Directory from 'components/Project/Directory';
 import NewFile from 'components/Project/NewFile';
-import DropZone from 'components/Common/DropZone';
 
 import ProjectContext from 'contexts/ProjectContext';
 import {
@@ -64,8 +63,8 @@ function ExplorerTab() {
 	};
 
 	const handleDeleteFile = deleteFileId => {
-		const updateFileNameAction = deleteFileActionCreator({ deleteFileId });
-		dispatchProject(updateFileNameAction);
+		const deleteFileAction = deleteFileActionCreator({ deleteFileId });
+		dispatchProject(deleteFileAction);
 	};
 
 	const handleMoveFile = (directoryId, fileId) => {

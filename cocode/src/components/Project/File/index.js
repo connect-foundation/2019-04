@@ -1,4 +1,5 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import * as Styled from './style';
 
 import {
@@ -16,6 +17,12 @@ import {
 import FileImagesSrc from 'constants/fileImagesSrc';
 import { KEY_CODE_ENTER } from 'constants/keyCode';
 
+import useFetch from 'hooks/useFetch';
+
+import { deleteFileAPICreator } from 'apis/File';
+
+import { DELETE_FILE } from 'actions/types';
+
 // Constants
 const ACCEPT_DELETE_NOTIFICATION = '이 파일을 지우시겠습니까?';
 const WARNING_PREVENT_NOTIFICATION =
@@ -25,6 +32,7 @@ function File({
 	isDirectory,
 	isProtectedFile,
 	_id,
+	parentId,
 	type,
 	name,
 	depth,
@@ -33,9 +41,19 @@ function File({
 	handleDeleteFile,
 	...props
 }) {
+	const { projectId } = useParams();
+
 	const [fileName, setFileName] = useState(name);
 	const [toggleEdit, setToggleEdit] = useState(false);
+	const [requestedAPI, setRequestedAPI] = useState(null);
+
 	const nameEditReferenece = useRef(null);
+	const [{ data, error }, setRequest] = useFetch({});
+
+	// Variables
+	const successHandler = {
+		[DELETE_FILE]: handleDeleteFile
+	};
 
 	// Functions
 	const checkThisFileIsProtected = () =>
@@ -67,7 +85,12 @@ function File({
 		const acceptDeleteThisFile = confirm(ACCEPT_DELETE_NOTIFICATION);
 		if (!acceptDeleteThisFile) return;
 
-		handleDeleteFile(_id);
+		const deleteFileId = _id;
+		const deleteFileAPI = deleteFileAPICreator(projectId, deleteFileId, {
+			parentId
+		});
+		setRequest(deleteFileAPI);
+		setRequestedAPI(DELETE_FILE);
 	};
 
 	const handleCreateFile = (type, e) => {
@@ -88,6 +111,20 @@ function File({
 	};
 
 	const handleDragOver = e => e.preventDefault();
+
+	const handleSetFileState = () => {
+		if (!requestedAPI) return;
+
+		successHandler[requestedAPI](_id);
+		setRequestedAPI(null);
+	};
+
+	const handleErrorResponse = () => {
+		error && setRequestedAPI(null);
+	};
+
+	useEffect(handleSetFileState, [data]);
+	useEffect(handleErrorResponse, [error]);
 
 	return (
 		<Styled.File

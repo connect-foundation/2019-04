@@ -7,4 +7,12 @@ function getProjectInfoAPICreator(projectId) {
 	};
 }
 
-export { getProjectInfoAPICreator };
+function forkProjectAPICreator(data) {
+	return {
+		url: `${API.projects}`,
+		method: 'post',
+		data
+	};
+}
+
+export { getProjectInfoAPICreator, forkProjectAPICreator };
