@@ -90,8 +90,7 @@ const selectFile = (state, { selectedFileId }) => {
 };
 
 // Create file
-const createFile = (state, { name, parentId, type }) => {
-	const newFileId = name; // TODO: ObjectId생성 모듈로 생성한 것
+const createFile = (state, { newFileId, name, parentId, type }) => {
 	const newFileType =
 		type === 'directory' ? type : convertFileExtension(name);
 	const newFilePath = `${state.files[parentId].path}/${name}`;

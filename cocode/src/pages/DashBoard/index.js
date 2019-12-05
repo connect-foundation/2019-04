@@ -12,11 +12,15 @@ function DashBoard() {
 	const [coconuts, dispatchDashboard] = useReducer(DashBoardReducer, []);
 	const [{ data, loading, error }, setRequest] = useFetch({});
 
-	useEffect(() => {
-		if (user) setRequest(getCoconutsAPICreator(user.username));
-		if (data) dispatchDashboard(fetchCoconutActionCreator(data));
-	}, [user, data]);
+	const handleRequestGetCoconutAPI = () => {
+		user && setRequest(getCoconutsAPICreator(user.username));
+	};
+	const handleSetDashBoardState = () => {
+		data && dispatchDashboard(fetchCoconutActionCreator(data));
+	};
 
+	useEffect(handleRequestGetCoconutAPI, [user]);
+	useEffect(handleSetDashBoardState, [data]);
 
 	//TODO loading 컴포넌트 만들기
 	if (loading) return <p>Loading...</p>;
