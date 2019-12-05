@@ -11,7 +11,7 @@ async function preloadFile(req, res, next, fileId) {
 			req.file = file;
 			return next();
 		})
-		.catch(() => res.sendStatus(404));
+		.catch(() => res.sendStatus(500));
 }
 
 async function createFile(req, res) {
@@ -48,7 +48,6 @@ async function updateFile(req, res) {
 	if (name) file.name = name;
 
 	if (!newParentId) {
-		console.log(newParentId);
 		file.save()
 			.then(() => res.sendStatus(200))
 			.catch(() => res.sendStatus(500));
