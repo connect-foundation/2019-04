@@ -1,0 +1,6 @@
+README.md
+webpack.config.js
+.babelrc
+.prettierrc
+.env
+public/*
