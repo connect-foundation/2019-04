@@ -1,4 +1,5 @@
 import React, { useReducer, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import * as Styled from './style';
 
 import Header from 'containers/Common/Header';
@@ -14,12 +15,15 @@ import { fetchProjectActionCreator } from 'actions/Project';
 
 import { TAB_BAR_THEME } from 'constants/theme';
 
-import projectDummyData from 'dummy/Project';
+import reactTemplate from 'template/objectIdMapper';
+import useFetch from 'hooks/useFetch';
+import { getProjectInfoAPICreator } from 'apis/Project';
 
 const DEFAULT_CLICKED_TAB_INDEX = 1;
 
 function Project() {
-	// temp state : custom hook 만들면 대체할 예정
+	const { projectId } = useParams();
+	const [{ data, loading, error }, setRequest] = useFetch({});
 	const [isFetched, setIsFetched] = useState(false);
 	const [clickedTabIndex, setClickedTabIndex] = useState(
 		DEFAULT_CLICKED_TAB_INDEX
@@ -27,14 +31,33 @@ function Project() {
 	const [project, dispatchProject] = useReducer(ProjectReducer, {});
 
 	const handleFetchProject = () => {
-		const fetchProjectAction = fetchProjectActionCreator({
-			project: projectDummyData
-		});
+		if (projectId !== 'new') {
+			const getProjectInfoAPI = getProjectInfoAPICreator(projectId);
+			setRequest(getProjectInfoAPI);
+			return;
+		}
+
+		const project = reactTemplate();
+		handleSetProjectState(project);
+	};
+
+	const handleSetProjectState = project => {
+		const fetchProjectAction = fetchProjectActionCreator({ project });
 		dispatchProject(fetchProjectAction);
 		setIsFetched(true);
 	};
 
 	useEffect(handleFetchProject, []);
+
+	useEffect(() => {
+		if (!data) return;
+
+		if (!isFetched) handleSetProjectState(data);
+	}, [data]);
+
+	// //TODO loading 컴포넌트 만들기
+	if (loading) return <p>Loading...</p>;
+	if (error) return <p>다시 시도해주세요.</p>;
 
 	return (
 		<ProjectContext.Provider
