@@ -61,7 +61,9 @@ function NewFile({ projectId, depth, type, parentId, handleEndCreateFile }) {
 	const handleSetNewFileState = () => {
 		if (!data) return;
 
+		const { newFileId } = data;
 		const createFileAction = createFileActionCreator({
+			newFileId,
 			name: fileName,
 			parentId,
 			type
