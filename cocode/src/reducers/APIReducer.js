@@ -3,7 +3,7 @@ import { API_READY, API_LOADING, API_SUCCESS, API_FAIL } from 'actions/types';
 const ready = () => ({
 	data: false,
 	loading: false,
-	err: false,
+	error: false,
 	status: false
 });
 
