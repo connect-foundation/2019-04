@@ -66,7 +66,9 @@ async function updateFile(req, res) {
 
 		const dataOfNewParent = { child: [...newParentFile.child, file._id] };
 		const dataOfOldParent = {
-			child: oldParentFile.child.filter(id => file._id !== id)
+			child: oldParentFile.child.filter(
+				id => String(file._id) !== String(id)
+			)
 		};
 
 		transaction.update(FILE_MODEL_NAME, newParentId, dataOfNewParent);
