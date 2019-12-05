@@ -27,7 +27,7 @@ const data = [
 		_id: '5dd553be4561ae2bae9cb45d'
 	},
 	{
-		name: 'Apple.js',
+		name: 'Jisoo.js',
 		projectId: '5dd61901353f4858e1b5a9d0',
 		type: 'js',
 		contents: getTemplate('Apple'),
@@ -36,7 +36,7 @@ const data = [
 	{
 		_id: '5dd553be4561ae2bae9cb461',
 		projectId: '5dd61901353f4858e1b5a9d0',
-		name: 'Component',
+		name: 'heera',
 		type: 'directory',
 		child: ['5dd553be4561ae2bae9cb460']
 	},

@@ -17,9 +17,9 @@ const mock = [
 	},
 	{
 		_id: '5dd61901353f4858e1b5a9d0',
-		name: 'root',
+		name: '안녕난희라',
 		description: 'directory',
-		author: 'YukJiSoo',
+		author: 'lallaheeee',
 		root: '5dd553be4561ae2bae9cb463',
 		entry: '5dd553be4561ae2bae9cb45d'
 	},
@@ -41,9 +41,9 @@ const mock = [
 	},
 	{
 		_id: '5ddbc9a59d5b885e041d5276',
-		name: 'root',
+		name: '안녕 난지수',
 		description: 'directory',
-		author: 'yukjisoo',
+		author: 'lallaheeee',
 		root: '5dd553be4561ae2bae9cb463',
 		entry: '5dd553be4561ae2bae9cb45d'
 	},
