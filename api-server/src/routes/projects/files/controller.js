@@ -30,7 +30,7 @@ async function createFile(req, res) {
 
 		transaction.update(FILE_MODEL_NAME, parentFileId, newDataOfParent);
 
-		const successHandler = () => res.sendStatus(201);
+		const successHandler = () => res.status(201).send({ newFileId });
 		transaction.runAndTerminate({ successHandler });
 	};
 
