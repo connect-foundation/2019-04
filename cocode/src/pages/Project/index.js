@@ -1,5 +1,5 @@
-import React, { useReducer, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useReducer, useEffect, useState, useContext } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
 import * as Styled from './style';
 
 import Header from 'containers/Common/Header';
@@ -15,13 +15,16 @@ import { fetchProjectActionCreator } from 'actions/Project';
 
 import { TAB_BAR_THEME } from 'constants/theme';
 
-import reactTemplate from 'template/objectIdMapper';
+import UserContext from 'contexts/UserContext';
 import useFetch from 'hooks/useFetch';
-import { getProjectInfoAPICreator } from 'apis/Project';
+import reactTemplate from 'template/objectIdMapper';
+import { getProjectInfoAPICreator, forkProjectAPICreator } from 'apis/Project';
 
 const DEFAULT_CLICKED_TAB_INDEX = 1;
 
 function Project() {
+	const { user } = useContext(UserContext);
+	const history = useHistory();
 	const { projectId } = useParams();
 	const [{ data, loading, error }, setRequest] = useFetch({});
 	const [isFetched, setIsFetched] = useState(false);
@@ -37,8 +40,25 @@ function Project() {
 			return;
 		}
 
-		const project = reactTemplate();
+		const name = prompt('프로젝트 이름을 입력해주세요');
+		if (!name) {
+			history.goBack();
+			return;
+		}
+
+		const project = handleForkNewCoconut(name);
 		handleSetProjectState(project);
+		history.push(`../project/${project._id}`);
+	};
+
+	const handleForkNewCoconut = name => {
+		const project = reactTemplate();
+		project.name = name;
+		project.author = user.username;
+		const forkProjectInfoAPI = forkProjectAPICreator(project);
+		setRequest(forkProjectInfoAPI);
+
+		return project;
 	};
 
 	const handleSetProjectState = project => {
