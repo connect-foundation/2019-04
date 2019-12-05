@@ -52,4 +52,25 @@ async function deleteProject(req, res) {
 		.catch(() => res.sendStatus(500));
 }
 
-export { preloadProject, modifyProject, getProjectByProjectId, deleteProject };
+async function forkProject(req, res) {
+	const { _id, name, description, author, files, root, entry } = req.body;
+	const newProject = { _id, name, description, author, root, entry };
+
+	Project.findById(_id)
+		.then(project => {
+			if (project) res.sendStatus(409);
+
+			Project.create(newProject).then(() => {
+				File.insertMany(files).then(() => res.sendStatus(201));
+			});
+		})
+		.catch(() => res.sendStatus(500));
+}
+
+export {
+	preloadProject,
+	modifyProject,
+	getProjectByProjectId,
+	deleteProject,
+	forkProject
+};
