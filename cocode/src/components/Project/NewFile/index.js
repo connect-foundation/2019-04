@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect, useContext, useRef } from 'react';
+import { useParams } from 'react-router-dom';
 import * as Styled from './style';
 
 import ProjectContext from 'contexts/ProjectContext';
@@ -15,7 +16,9 @@ import useFetch from 'hooks/useFetch';
 
 import { createFileAPICreator } from 'apis/File';
 
-function NewFile({ projectId, depth, type, parentId, handleEndCreateFile }) {
+function NewFile({ depth, type, parentId, handleEndCreateFile }) {
+	const { projectId } = useParams();
+
 	const {
 		project: { files },
 		dispatchProject
