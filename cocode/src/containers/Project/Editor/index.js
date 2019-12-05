@@ -6,14 +6,13 @@ import FileTabBar from 'components/Project/FileTabBar';
 import MonacoEditor from 'components/Project/MonacoEditor';
 
 import ProjectContext from 'contexts/ProjectContext';
-import {
-	updateCodeActionCreator,
-	undoUpdateCodeActionCreator
-} from 'actions/Project';
+import { updateCodeActionCreator } from 'actions/Project';
 
 import useFetch from 'hooks/useFetch';
 
 import { updateFileAPICreator } from 'apis/File';
+
+let timer;
 
 function Editor() {
 	const { projectId } = useParams();
@@ -24,7 +23,7 @@ function Editor() {
 
 	const { selectedFileId } = project;
 
-	const handleUpdateCode = (_, changedCode) => {
+	const debouncedHandlerUpdateCode = changedCode => () => {
 		setCode(changedCode);
 
 		const updateCodeAction = updateCodeActionCreator({
@@ -33,10 +32,17 @@ function Editor() {
 		dispatchProject(updateCodeAction);
 	};
 
+	const handleUpdateCode = (_, changedCode) => {
+		if (timer) clearTimeout(timer);
+
+		timer = setTimeout(debouncedHandlerUpdateCode(changedCode), 300);
+	};
+
 	const handleChangedSelectedFile = () => setCode(project.editingCode);
 
 	const handleRequestUpdateCode = () => {
 		if (!isEditorMounted) return;
+
 		const updateFileAPI = updateFileAPICreator(projectId, selectedFileId, {
 			contents: code
 		});
