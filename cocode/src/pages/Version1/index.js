@@ -7,7 +7,7 @@ import { SplitPaneContainer } from 'components/Common/SplitPane';
 
 import ProjectReducer from 'reducers/ProjectReducer';
 
-import projectDummyData from 'dummy/Project';
+import reactTemplate from 'template/objectIdMapper';
 
 import {
 	fetchProjectActionCreator,
@@ -19,7 +19,7 @@ function Version1() {
 
 	const handleFetchProject = () => {
 		const fetchProjectAction = fetchProjectActionCreator({
-			project: projectDummyData
+			project: reactTemplate()
 		});
 		dispatchProject(fetchProjectAction);
 	};
