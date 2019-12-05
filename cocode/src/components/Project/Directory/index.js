@@ -1,4 +1,5 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { useParams } from 'react-router-dom';
 import * as Styled from './style';
 
 import DropZone from 'components/Common/DropZone';
@@ -8,6 +9,11 @@ import NewFile from 'components/Project/NewFile';
 import ProjectContext from 'contexts/ProjectContext';
 
 import { EXPLORER_TAB_CONTAINER_THEME } from 'constants/theme';
+
+import useFetch from 'hooks/useFetch';
+
+import { updateFileAPICreator } from 'apis/File';
+import { MOVE_FILE } from 'actions/types';
 
 // Constants
 const {
@@ -39,6 +45,8 @@ function Directory({
 	handleMoveFile,
 	...props
 }) {
+	const { projectId } = useParams();
+
 	const {
 		project: { files, root, entry, selectedFileId }
 	} = useContext(ProjectContext);
@@ -46,6 +54,13 @@ function Directory({
 	const [isFileInDropZone, setIsFileInDropZone] = useState(false);
 	const [toggleDirectoryOpen, setToggleDirectoryOpen] = useState(depth === 1);
 	const [createFileType, setCreateFileType] = useState(null);
+
+	const [requestedAPI, setRequestedAPI] = useState(null);
+	const [{ data, error }, setRequest] = useFetch({});
+
+	const successHandler = {
+		[MOVE_FILE]: handleMoveFile
+	};
 
 	// Functions
 	const isNotRoot = depth => depth !== 1;
@@ -80,8 +95,33 @@ function Directory({
 		setIsFileInDropZone(false);
 		if (fileId === id || isProtectedFile({ files, root, entry, fileId }))
 			return alert(WARNING_PREVENT_MOVE_NOTIFICATION);
-		handleMoveFile(id, fileId);
+
+		requestMoveFile(fileId);
 	};
+
+	const requestMoveFile = fileId => {
+		const oldParentId = files[fileId].parentId;
+
+		const updateFileAPI = updateFileAPICreator(projectId, fileId, {
+			newParentId: id,
+			oldParentId
+		});
+
+		setRequest(updateFileAPI);
+		setRequestedAPI(handleMoveFile.bind(undefined, id, fileId));
+	};
+
+	const handleSetFileState = () => {
+		if (!requestedAPI) return;
+		if (requestedAPI === MOVE_FILE) successHandler[requestedAPI]();
+	};
+
+	const handleErrorResponse = () => {
+		error && setRequestedAPI(null);
+	};
+
+	useEffect(handleSetFileState, [data]);
+	useEffect(handleErrorResponse, [error]);
 
 	// Component's props
 	const dropZoneProps = {
