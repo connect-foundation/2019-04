@@ -7,4 +7,11 @@ function getProjectInfoAPICreator(projectId) {
 	};
 }
 
-export { getProjectInfoAPICreator };
+function getDenpendencyList(name) {
+	return {
+		url: `${API.dependency(name)}`,
+		method: 'get'
+	};
+}
+
+export { getProjectInfoAPICreator, getDenpendencyList };

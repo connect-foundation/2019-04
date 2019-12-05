@@ -11,7 +11,7 @@ function DependencySearchItem({ name, versions, github, npm }) {
         <Styled.Item>
             {name}
             <Styled.Description>
-                <DependencySelector options={versions} />
+                {/*<DependencySelector options={versions} />*/}
                 <PlusImage />
                 <GitHubLogo href={github}/>
                 <NpmLogo href={npm}/>

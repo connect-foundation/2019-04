@@ -14,7 +14,8 @@ const API = {
 	login: `${API_SERVER}/users/login`,
 	users: `${API_SERVER}/users`,
 	projects: `${API_SERVER}/projects`,
-	files: projectId => `${API_SERVER}/projects/${projectId}/files`
+	files: projectId => `${API_SERVER}/projects/${projectId}/files`,
+	dependency: name => `${API_SERVER}/dependency/search?name=${name}`
 };
 
 export { DEFAULT_REQUEST_OPTION, API };
