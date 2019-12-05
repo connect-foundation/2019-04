@@ -117,6 +117,7 @@ function Directory({
 		return {
 			key: 'directory_' + id,
 			id,
+			parentId: id,
 			childIds: files[id].child,
 			depth: depth + 1,
 			handleSelectFile: handleSelectFile,
@@ -137,6 +138,7 @@ function Directory({
 		return {
 			key: 'file' + id,
 			id,
+			parentId: id,
 			isProtectedFile: isProtectedFile({
 				files,
 				root,
