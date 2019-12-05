@@ -16,6 +16,8 @@ const SearchBar = styled.input.attrs(() => ({
 const DependencySearchList = styled.ul`
     & {
         list-style: none;
+        overflow: scroll;
+        height: 50vh;
     }
 `;
 
