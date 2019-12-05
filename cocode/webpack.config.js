@@ -13,7 +13,8 @@ module.exports = {
 	entry: ['@babel/polyfill', __dirname + '/src/index.js'],
 	output: {
 		path: __dirname + '/public',
-		filename: 'bundle.js'
+		filename: 'bundle.js',
+		publicPath: '/'
 	},
 	node: {
 		fs: 'empty'
