@@ -8,4 +8,12 @@ function createFileAPICreator(projectId, data) {
 	};
 }
 
-export { createFileAPICreator };
+function deleteFileAPICreator(projectId, fileId, data) {
+	return {
+		url: `${API.files(projectId)}/${fileId}`,
+		method: 'delete',
+		data
+	};
+}
+
+export { createFileAPICreator, deleteFileAPICreator };
