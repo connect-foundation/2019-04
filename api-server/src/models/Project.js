@@ -12,7 +12,11 @@ const ProjectSchema = new mongoose.Schema(
 		author: {
 			type: String
 		},
-		rootDirectory: {
+		root: {
+			type: ObjectId,
+			ref: 'File'
+		},
+		entry: {
 			type: ObjectId,
 			ref: 'File'
 		}
