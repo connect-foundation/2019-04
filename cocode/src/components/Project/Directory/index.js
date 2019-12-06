@@ -83,7 +83,7 @@ function Directory({
 	};
 
 	const handleCreateFile = type => {
-		setToggleDirectoryOpen(!toggleDirectoryOpen);
+		setToggleDirectoryOpen(true);
 		setCreateFileType(type);
 		setIsNewFileCreating(true);
 	};
