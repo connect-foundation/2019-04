@@ -2,11 +2,10 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-
-import { PORT, DATABASE_URI } from './config';
-
+import morgan from 'morgan';
 import passport from './middlewares/passport';
 import apiRouter from './routes';
+import { PORT, DATABASE_URI, CORS_OPTION, MONGO_OPTION } from './config';
 
 const app = express();
 
@@ -14,19 +13,13 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', () => console.log('connected to Mongo'));
 
-mongoose.connect(DATABASE_URI, {
-	useNewUrlParser: true,
-	useUnifiedTopology: true
-});
+mongoose.connect(DATABASE_URI, MONGO_OPTION);
 
-const corsOption = {
-	origin: (origin, callback) => callback(null, true),
-	exposedHeaders: ['Set-Cookie'],
-	credentials: true
-};
-
-app.use(cors(corsOption));
+app.use(morgan('dev'));
+app.use(cors(CORS_OPTION));
 app.use(cookieParser());
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use(passport.initialize());
 
 app.use('/api', apiRouter);
