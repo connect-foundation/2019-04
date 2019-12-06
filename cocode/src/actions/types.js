@@ -12,6 +12,7 @@ const CREATE_FILE = 'createFile';
 const UPDATE_FILE_NAME = 'updateFileName';
 const DELETE_FILE = 'deleteFile';
 const MOVE_FILE = 'moveFile';
+const INSTALL_DEPENDENCY = 'installDependency';
 
 //DashBoard
 const FETCH_COCONUT = 'fetchCoconut';
@@ -30,7 +31,8 @@ export {
 	CREATE_FILE,
 	DELETE_FILE,
 	MOVE_FILE,
+	INSTALL_DEPENDENCY,
 	FETCH_COCONUT,
 	UPDATE_COCONUT_NAME,
-	DELETE_COCONUT,
+	DELETE_COCONUT
 };

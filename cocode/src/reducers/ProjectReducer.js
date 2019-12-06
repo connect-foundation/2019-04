@@ -6,7 +6,8 @@ import {
 	CREATE_FILE,
 	UPDATE_FILE_NAME,
 	DELETE_FILE,
-	MOVE_FILE
+	MOVE_FILE,
+	INSTALL_DEPENDENCY
 } from 'actions/types';
 
 import { getFileExtension } from 'utils';
@@ -38,7 +39,8 @@ const fetchProject = (_, { project }) => {
 		...project,
 		files: convertedFilesObject,
 		selectedFileId: entryId,
-		editingCode: convertedFilesObject[entryId].contents
+		editingCode: convertedFilesObject[entryId].contents,
+		dependency: {}
 	};
 
 	return fetchedProject;
@@ -226,6 +228,19 @@ const moveFile = (state, { directoryId, fileId }) => {
 	};
 };
 
+function registerDependency(state, { moduleName, moduleVersion }) {
+	return {
+		...state,
+		dependency: {
+			...state.dependency,
+			[moduleName]: {
+				name: moduleName,
+				version: moduleVersion
+			}
+		}
+	};
+}
+
 function ProjectReducer(state, { type, payload }) {
 	const reducers = {
 		[FETCH_PROJECT]: fetchProject,
@@ -234,7 +249,8 @@ function ProjectReducer(state, { type, payload }) {
 		[UPDATE_FILE_NAME]: updateFileName,
 		[CREATE_FILE]: createFile,
 		[DELETE_FILE]: deleteFile,
-		[MOVE_FILE]: moveFile
+		[MOVE_FILE]: moveFile,
+		[INSTALL_DEPENDENCY]: registerDependency
 	};
 
 	const reducer = reducers[type];
