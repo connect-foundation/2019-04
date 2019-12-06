@@ -37,10 +37,11 @@ function BrowserV2({ ...props }) {
 			try {
 				bundler.init();
 				bundler.require('./index.js');
-        setErrorDescription(null);
+				setErrorDescription(null);
 			} catch (error) {
 				setErrorDescription(error.stack);
 			}
+		}
 	}, [isChange]);
 
 	return (
