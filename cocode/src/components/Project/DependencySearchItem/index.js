@@ -41,9 +41,7 @@ function DependencySearchItem({ name, latestVersion, github, npm }) {
 			{name}
 			<Styled.Description>
 				{/*<DependencySelector options={versions} />*/}
-				<div onClick={handleFetchModule}>
-					{!dependency[name] && <PlusImage />}
-				</div>
+				{!dependency[name] && <PlusImage onClick={handleFetchModule} />}
 				<GitHubLogo href={github} />
 				<NpmLogo href={npm} />
 			</Styled.Description>
