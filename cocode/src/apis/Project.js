@@ -7,6 +7,14 @@ function getProjectInfoAPICreator(projectId) {
 	};
 }
 
+function forkProjectAPICreator(data) {
+	return {
+		url: `${API.projects}`,
+		method: 'post',
+		data
+	};
+}
+
 function getDenpendencyList(name) {
 	return {
 		url: `${API.dependency(name)}`,
@@ -14,4 +22,4 @@ function getDenpendencyList(name) {
 	};
 }
 
-export { getProjectInfoAPICreator, getDenpendencyList };
+export { getProjectInfoAPICreator, forkProjectAPICreator, getDenpendencyList };
