@@ -9,6 +9,7 @@ function BrowserV2({ ...props }) {
 	const { project } = useContext(ProjectContext);
 	const { files, root } = project;
 	const [fileSystem, setFileSystem] = useState({});
+	const [errorDescription, setErrorDescription] = useState(null);
 
 	useEffect(() => {
 		const fileSystemTemp = {};
@@ -41,12 +42,21 @@ function BrowserV2({ ...props }) {
 			const entryPath = files[project.entry].path.split('.')[0];
 			bundler.init();
 			bundler.require(entryPath);
+
+			setErrorDescription(null);
 		} catch (error) {
-			console.log(error);
+			setErrorDescription(error.stack);
 		}
 	}, [fileSystem]);
 
-	return <Styled.BrowserV2 {...props}></Styled.BrowserV2>;
+	return (
+		<Styled.Frame>
+			<Styled.ErrorDisplay errorDescription={errorDescription}>
+				<pre>{errorDescription}</pre>
+			</Styled.ErrorDisplay>
+			<Styled.BrowserV2 {...props}></Styled.BrowserV2>
+		</Styled.Frame>
+	);
 }
 
 export default BrowserV2;
