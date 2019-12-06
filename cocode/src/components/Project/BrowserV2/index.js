@@ -8,20 +8,15 @@ import ProjectContext from 'contexts/ProjectContext';
 function BrowserV2({ ...props }) {
 	const { project } = useContext(ProjectContext);
 	const { files, root } = project;
-	const [fileSystem, setFileSystem] = useState({});
+	const [isChange, setIsChange] = useState(false);
 
 	useEffect(() => {
-		const fileSystemTemp = {};
-		Object.keys(bundler.exports).forEach(key => {
-			delete bundler.exports[key];
-		});
-
 		function fileParser(path, id) {
 			if (files[id].type !== 'directory') {
-				fileSystemTemp[path] = {
+				fileSystem[path] = {
 					contents: files[id].contents
 				};
-				bundler.exports[path] = fileSystemTemp[path];
+				delete exports[path];
 			} else if (files[id].child) {
 				files[id].child.forEach(id => {
 					const path = files[id].path;
@@ -29,22 +24,22 @@ function BrowserV2({ ...props }) {
 				});
 			}
 		}
-
 		const rootPath = files[root].path;
 		if (project) fileParser(rootPath, project.root);
-
-		setFileSystem(fileSystemTemp);
+		setIsChange(true);
 	}, [files]);
 
 	useEffect(() => {
-		try {
-			const entryPath = files[project.entry].path.split('.')[0];
-			bundler.init();
-			bundler.require(entryPath);
-		} catch (error) {
-			console.log(error);
+		if (isChange) {
+			setIsChange(false);
+			try {
+				bundler.init();
+				bundler.require('./index.js');
+			} catch (error) {
+				console.log(error);
+			}
 		}
-	}, [fileSystem]);
+	}, [isChange]);
 
 	return <Styled.BrowserV2 {...props}></Styled.BrowserV2>;
 }
