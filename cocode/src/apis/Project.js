@@ -15,4 +15,11 @@ function forkProjectAPICreator(data) {
 	};
 }
 
-export { getProjectInfoAPICreator, forkProjectAPICreator };
+function getDenpendencyList(name) {
+	return {
+		url: `${API.dependency(name)}`,
+		method: 'get'
+	};
+}
+
+export { getProjectInfoAPICreator, forkProjectAPICreator, getDenpendencyList };
