@@ -89,7 +89,8 @@ const template = {
 		'  "browserslist": [">0.2%", "not dead", "not ie <= 11", "not op_mini all"]\n' +
 		'}\n',
 	version1:
-		'const { useState } = React;\n' +
+		'import React, { useState } from "react";\n' +
+		'import ReactDOM from "react-dom";\n' +
 		'\n' +
 		'function App() {\n' +
 		'	const [state, setState] = useState("Cocode");\n' +
