@@ -19,9 +19,9 @@ import { KEY_CODE_ENTER } from 'constants/keyCode';
 
 import useFetch from 'hooks/useFetch';
 
-import { deleteFileAPICreator } from 'apis/File';
+import { deleteFileAPICreator, updateFileAPICreator } from 'apis/File';
 
-import { DELETE_FILE } from 'actions/types';
+import { DELETE_FILE, UPDATE_FILE_NAME } from 'actions/types';
 
 // Constants
 const ACCEPT_DELETE_NOTIFICATION = '이 파일을 지우시겠습니까?';
@@ -52,7 +52,8 @@ function File({
 
 	// Variables
 	const successHandler = {
-		[DELETE_FILE]: handleDeleteFile
+		[DELETE_FILE]: handleDeleteFile,
+		[UPDATE_FILE_NAME]: handleEditFileName
 	};
 
 	// Functions
@@ -74,8 +75,19 @@ function File({
 		setToggleEdit(false);
 		nameEditReferenece.current.contentEditable = false;
 		const changedName = currentTarget.textContent;
-		setFileName(changedName);
-		handleEditFileName(changedName);
+
+		const updateFileId = _id;
+		const updateFileAPI = updateFileAPICreator(projectId, updateFileId, {
+			name: changedName
+		});
+
+		successHandler[UPDATE_FILE_NAME] = () => {
+			setFileName(changedName);
+			handleEditFileName(changedName);
+		};
+
+		setRequest(updateFileAPI);
+		setRequestedAPI(UPDATE_FILE_NAME);
 	};
 
 	const handleDeleteFileButtonClick = e => {
@@ -89,6 +101,7 @@ function File({
 		const deleteFileAPI = deleteFileAPICreator(projectId, deleteFileId, {
 			parentId
 		});
+
 		setRequest(deleteFileAPI);
 		setRequestedAPI(DELETE_FILE);
 	};
@@ -115,8 +128,8 @@ function File({
 	const handleSetFileState = () => {
 		if (!requestedAPI) return;
 
-		successHandler[requestedAPI](_id);
-		setRequestedAPI(null);
+		if (requestedAPI === UPDATE_FILE_NAME) successHandler[requestedAPI]();
+		if (requestedAPI === DELETE_FILE) successHandler[requestedAPI](_id);
 	};
 
 	const handleErrorResponse = () => {
