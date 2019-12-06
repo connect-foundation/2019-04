@@ -3,6 +3,11 @@ const API_SERVER =
 		? process.env.PROD_API_SERVER_IP
 		: process.env.DEV_API_SERVER_IP;
 
+const DEPENDENCY_SERVER =
+	process.env.NODE_ENV === 'production'
+		? process.env.PROD_DEPENDENCY_SERVER_IP
+		: process.env.DEV_DEPENDENCY_SERVER_IP;
+
 const DEFAULT_REQUEST_OPTION = {
 	withCredentials: true,
 	mode: 'cors',
@@ -18,4 +23,8 @@ const API = {
 	dependency: name => `${API_SERVER}/dependency/search?name=${name}`
 };
 
-export { DEFAULT_REQUEST_OPTION, API };
+const DEPENDENCY = {
+	modules: `${DEPENDENCY_SERVER}/modules`
+};
+
+export { DEFAULT_REQUEST_OPTION, API, DEPENDENCY };
