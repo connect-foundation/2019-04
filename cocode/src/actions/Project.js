@@ -5,7 +5,8 @@ import {
 	UPDATE_FILE_NAME,
 	CREATE_FILE,
 	DELETE_FILE,
-	MOVE_FILE
+	MOVE_FILE,
+	INSTALL_DEPENDENCY
 } from './types';
 
 function fetchProjectActionCreator(payload) {
@@ -36,6 +37,10 @@ function moveFileActionCreator(payload) {
 	return { type: MOVE_FILE, payload };
 }
 
+function installDependencyActionCreator(payload) {
+	return { type: INSTALL_DEPENDENCY, payload };
+}
+
 export {
 	updateCodeActionCreator,
 	fetchProjectActionCreator,
@@ -43,5 +48,6 @@ export {
 	updateFileNameActionCreator,
 	createFileActionCreator,
 	deleteFileActionCreator,
-	moveFileActionCreator
+	moveFileActionCreator,
+	installDependencyActionCreator
 };

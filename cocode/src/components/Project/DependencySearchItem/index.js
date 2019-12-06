@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import * as Styled from './style';
 
 import PlusImage from 'components/Project/PlusImage';
@@ -9,19 +9,30 @@ import DependencySelector from 'components/Project/DependencySelector';
 import { getModule } from 'apis/Dependency';
 import useFetch from 'hooks/useFetch';
 
+import { installDependencyActionCreator } from 'actions/Project';
+import { ProjectContext } from 'contexts';
+
 function DependencySearchItem({ name, latestVersion, github, npm }) {
+	const { project, dispatchProject } = useContext(ProjectContext);
 	const [{ data }, setRequest] = useFetch({});
 	const handleFetchModule = () => {
 		const moduleName = name;
 		const moduleVersion = latestVersion;
 		setRequest(getModule(moduleName, moduleVersion));
 	};
+	const { dependency } = project;
 
 	useEffect(() => {
 		if (data) {
 			Object.entries(data).forEach(([key, value]) => {
 				fileSystem[key] = value;
 			});
+			dispatchProject(
+				installDependencyActionCreator({
+					moduleName: name,
+					moduleVersion: latestVersion
+				})
+			);
 		}
 	}, [data]);
 
@@ -31,7 +42,7 @@ function DependencySearchItem({ name, latestVersion, github, npm }) {
 			<Styled.Description>
 				{/*<DependencySelector options={versions} />*/}
 				<div onClick={handleFetchModule}>
-					<PlusImage />
+					{!dependency[name] && <PlusImage />}
 				</div>
 				<GitHubLogo href={github} />
 				<NpmLogo href={npm} />
