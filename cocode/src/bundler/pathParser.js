@@ -1,40 +1,25 @@
-import { pathStack, exports } from './global';
+import { pathStack } from './global';
+import path from 'path';
 
-function pathParser(path, fileSystem = exports) {
-	const [parsedPath, splitedPath] = pathInitializer(path, fileSystem);
+const DEPENDENCY_PATH = '/node_modules/';
+function pathParser(param) {
+	if (param[0] !== '.' && param[0] !== '/') {
+		param = `${DEPENDENCY_PATH}${param}`;
+	}
+	param = path.resolve(pathStack[pathStack.length - 1], param);
+	const extension = param.split('.');
 
-	splitedPath.forEach(dir => {
-		if (dir === '.') return;
-		if (dir === '..') {
-			if (parsedPath.length === 0) throw new Error('path error');
-			parsedPath.pop();
-		} else parsedPath.push(dir);
-	});
-
-	const newPath = parsedPath.reduce((acc, current) => {
-		if (current === '') return acc;
-		acc += `/${current}`;
-		return acc;
-	}, '');
-
-	parsedPath.pop();
-	const newPathParent = parsedPath.reduce((acc, current) => {
-		if (current === '') return acc;
-		acc += `/${current}`;
-		return acc;
-	}, '');
-	return [`${newPath}.js`, newPathParent];
-	// 확장자 관련 코드 필요..
-}
-
-function pathInitializer(path) {
-	// node_modules 의존성 검사 필요
-	const splitedPath = path.split('/').filter(val => val !== '');
-
-	const initialPath = pathStack[pathStack.length - 1]
-		.split('/')
-		.filter(fileName => fileName !== '');
-	return [initialPath, splitedPath];
+	if (extension[extension.length - 1] !== 'js') {
+		if (fileSystem[`${param}.js`]) {
+			return [`${param}.js`, path.dirname(param)];
+		} else if (fileSystem[`${param}/index.js`]) {
+			return [`${param}/index.js`, param];
+		} else {
+			throw Error('path error');
+		}
+	} else {
+		return [param, path.dirname(param)];
+	}
 }
 
 export { pathParser };

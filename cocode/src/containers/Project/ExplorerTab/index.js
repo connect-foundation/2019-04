@@ -11,7 +11,9 @@ import NewFile from 'components/Project/NewFile';
 import ProjectContext from 'contexts/ProjectContext';
 import {
 	selectFileActionCreator,
-	updateFileNameActionCreator
+	updateFileNameActionCreator,
+	deleteFileActionCreator,
+	moveFileActionCreator
 } from 'actions/Project';
 
 const TAB_TITLE = 'EXPLOLER';
@@ -37,26 +39,40 @@ function ExplorerTab() {
 	const [createFileType, setCreateFileType] = useState(null);
 
 	const { project, dispatchProject } = useContext(ProjectContext);
-	const { files, root, rootPath } = project;
-	const childPathsInRoot = files[rootPath].childPaths;
+	const { files, root } = project;
+	const childIdsInRoot = files[root].child;
 
 	const handleCreateFile = type => {
 		setCreateFileType(type);
 		setIsNewFileCreating(true);
 	};
+
 	const handleEndCreateFile = () => setIsNewFileCreating(false);
 
-	const handleSelectFile = selectedFilePath => {
-		const selectFileAction = selectFileActionCreator({ selectedFilePath });
+	const handleSelectFile = selectedFileId => {
+		const selectFileAction = selectFileActionCreator({ selectedFileId });
 		dispatchProject(selectFileAction);
 	};
 
-	const handleEditFileName = (selectedFilePath, changedName) => {
+	const handleEditFileName = (selectedFileId, changedName) => {
 		const updateFileNameAction = updateFileNameActionCreator({
-			selectedFilePath,
+			selectedFileId,
 			changedName
 		});
 		dispatchProject(updateFileNameAction);
+	};
+
+	const handleDeleteFile = deleteFileId => {
+		const deleteFileAction = deleteFileActionCreator({ deleteFileId });
+		dispatchProject(deleteFileAction);
+	};
+
+	const handleMoveFile = (directoryId, fileId) => {
+		const moveFileAction = moveFileActionCreator({
+			directoryId,
+			fileId
+		});
+		dispatchProject(moveFileAction);
 	};
 
 	return (
@@ -66,17 +82,19 @@ function ExplorerTab() {
 				<NewFile
 					depth={1}
 					type={createFileType}
-					parentPath={rootPath}
+					parentId={root}
 					handleEndCreateFile={handleEndCreateFile}
 				/>
 			)}
 			<Styled.TabBody>
 				<Directory
-					path={rootPath}
-					childPaths={childPathsInRoot}
+					id={root}
+					childIds={childIdsInRoot}
 					depth={1}
 					handleSelectFile={handleSelectFile}
 					handleEditFileName={handleEditFileName}
+					handleDeleteFile={handleDeleteFile}
+					handleMoveFile={handleMoveFile}
 				/>
 			</Styled.TabBody>
 		</>

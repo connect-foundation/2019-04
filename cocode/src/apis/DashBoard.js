@@ -7,4 +7,23 @@ function getCoconutsAPICreator(username) {
 	};
 }
 
-export { getCoconutsAPICreator };
+function updateCoconutsAPICreator(projectId, data) {
+	return {
+		url: `${API.projects}/${projectId}`,
+		method: 'patch',
+		data
+	};
+}
+
+function deleteCoconutsAPICreator(projectId) {
+	return {
+		url: `${API.projects}/${projectId}`,
+		method: 'delete'
+	};
+}
+
+export {
+	getCoconutsAPICreator,
+	updateCoconutsAPICreator,
+	deleteCoconutsAPICreator
+};

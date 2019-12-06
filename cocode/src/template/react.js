@@ -128,68 +128,64 @@ function getTemplate(file) {
 	return template[file];
 }
 
-const project = {
-	name: 'example',
-	entry: '5dd553be4561ae2bae9cb45d',
-	root: '5dd553be4561ae2bae9cb463',
+const reactTemplate = () => ({
+	_id: '',
+	name: 'react template',
+	description: 'this is react template',
+	author: 'New user',
+	root: '',
+	entry: 'index.js',
 	files: [
 		{
-			_id: '5dd553be4561ae2bae9cb463',
+			_id: '',
+			projectId: '',
 			name: 'root',
 			type: 'directory',
-			child: [
-				'5dd553be4561ae2bae9cb45f'
-				// '5dd553be4561ae2bae9cb461',
-				// '5dd553be4561ae2bae9cb462'
-			]
+			child: ['src', 'package.json']
 		},
 		{
-			_id: '5dd553be4561ae2bae9cb45f',
+			_id: '',
+			projectId: '',
 			name: 'src',
 			type: 'directory',
-			child: [
-				'5dd553be4561ae2bae9cb45d',
-				'5dd553be4561ae2bae9cb45e',
-				'5dd553be4561ae2bae9cb461'
-			]
+			child: ['index.js', 'Apple.js', 'Component']
 		},
 		{
+			_id: '',
 			name: 'index.js',
+			projectId: '',
 			type: 'js',
-			contents: getTemplate('version1'),
-			_id: '5dd553be4561ae2bae9cb45d'
+			contents: getTemplate('version1')
 		},
 		{
-			name: 'index.js',
-			type: 'js',
-			contents: getTemplate('version1'),
-			_id: '5dd553be4561ae2bae9cb45d'
-		},
-		{
+			_id: '',
 			name: 'Apple.js',
+			projectId: '',
 			type: 'js',
-			contents: getTemplate('Apple'),
-			_id: '5dd553be4561ae2bae9cb45e'
+			contents: getTemplate('Apple')
 		},
 		{
-			_id: '5dd553be4561ae2bae9cb461',
+			_id: '',
+			projectId: '',
 			name: 'Component',
 			type: 'directory',
-			child: ['5dd553be4561ae2bae9cb460']
+			child: ['Banana.js']
 		},
 		{
+			_id: '',
 			name: 'Banana.js',
+			projectId: '5dd61901353f4858e1b5a9d0',
 			type: 'js',
-			contents: getTemplate('Banana'),
-			_id: '5dd553be4561ae2bae9cb460'
+			contents: getTemplate('Banana')
+		},
+		{
+			_id: '',
+			name: 'package.json',
+			projectId: '',
+			type: 'npm',
+			contents: getTemplate('package')
 		}
-		// {
-		// 	name: 'package.json',
-		// 	type: 'npm',
-		// 	contents: getTemplate('package'),
-		// 	_id: '5dd553be4561ae2bae9cb462'
-		// }
 	]
-};
+});
 
-export default project;
+export { reactTemplate };

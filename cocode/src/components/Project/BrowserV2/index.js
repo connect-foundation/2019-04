@@ -7,45 +7,50 @@ import ProjectContext from 'contexts/ProjectContext';
 
 function BrowserV2({ ...props }) {
 	const { project } = useContext(ProjectContext);
-	const { files } = project;
+	const { files, root } = project;
+	const [isChange, setIsChange] = useState(false);
 	const [fileSystem, setFileSystem] = useState({});
+	const [errorDescription, setErrorDescription] = useState(null);
 
 	useEffect(() => {
-		const fileTemp = {};
-		Object.keys(bundler.exports).forEach(key => {
-			delete bundler.exports[key];
-		});
-
-		function fileParser(path) {
-			if (files[path].type !== 'directory') {
-				fileTemp[path] = {
-					contents: files[path].contents
+		function fileParser(path, id) {
+			if (files[id].type !== 'directory') {
+				fileSystem[path] = {
+					contents: files[id].contents
 				};
-				bundler.exports[path] = {
-					contents: files[path].contents
-				};
-			} else if (files[path].childPaths) {
-				files[path].childPaths.forEach(path => {
-					fileParser(path);
+				delete exports[path];
+			} else if (files[id].child) {
+				files[id].child.forEach(id => {
+					const path = files[id].path;
+					fileParser(path, id);
 				});
 			}
 		}
-		if (project) fileParser(project.rootPath);
-
-		setFileSystem(fileTemp);
+		const rootPath = files[root].path;
+		if (project) fileParser(rootPath, project.root);
+		setIsChange(true);
 	}, [files]);
 
 	useEffect(() => {
-		try {
-			const entry = project.entryPath.split('.')[0];
-			bundler.init();
-			bundler.require(entry);
-		} catch (error) {
-			console.log(error);
-		}
-	}, [fileSystem]);
+		if (isChange) {
+			setIsChange(false);
+			try {
+				bundler.init();
+				bundler.require('./index.js');
+        setErrorDescription(null);
+			} catch (error) {
+				setErrorDescription(error.stack);
+			}
+	}, [isChange]);
 
-	return <Styled.BrowserV2 {...props}></Styled.BrowserV2>;
+	return (
+		<Styled.Frame>
+			<Styled.ErrorDisplay errorDescription={errorDescription}>
+				<pre>{errorDescription}</pre>
+			</Styled.ErrorDisplay>
+			<Styled.BrowserV2 {...props}></Styled.BrowserV2>
+		</Styled.Frame>
+	);
 }
 
 export default BrowserV2;

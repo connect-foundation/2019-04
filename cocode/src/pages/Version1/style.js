@@ -5,7 +5,7 @@ const Main = styled.main`
 		display: flex;
 		flex-direction: row;
 
-		height: ${({ theme }) => theme.exceptHeaderHeignt};
+		height: ${({ theme }) => theme.exceptHeaderHeight};
 	}
 
 	.Stretch-item {

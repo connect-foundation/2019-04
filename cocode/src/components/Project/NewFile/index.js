@@ -1,40 +1,51 @@
 import * as React from 'react';
 import { useState, useEffect, useContext, useRef } from 'react';
+import { useParams } from 'react-router-dom';
 import * as Styled from './style';
 
 import ProjectContext from 'contexts/ProjectContext';
 import { createFileActionCreator } from 'actions/Project';
 
+import { getFileExtension } from 'utils';
 import { changeDivEditable } from 'utils/domControl';
 
 import FileImagesSrc from 'constants/fileImagesSrc';
 import { KEY_CODE_ENTER } from 'constants/keyCode';
 
-function NewFile({ depth, type, parentPath, handleEndCreateFile }) {
+import useFetch from 'hooks/useFetch';
+
+import { createFileAPICreator } from 'apis/File';
+
+function NewFile({ depth, type, parentId, handleEndCreateFile }) {
+	const { projectId } = useParams();
+
 	const {
 		project: { files },
 		dispatchProject
 	} = useContext(ProjectContext);
 	const [fileName, setFileName] = useState('');
 	const fileNameInputReferenece = useRef(null);
+	const [{ data, error }, setRequest] = useFetch({});
 
-	const writeEnd = e => {
+	const isDuplicatedFileName = fileName => {
+		return files[parentId].child
+			.map(id => files[id].name)
+			.some(name => name === fileName);
+	};
+
+	const requestCreateFile = e => {
 		const name = e.currentTarget.textContent;
-		const filePath = `${parentPath}${parentPath === '/' ? '' : '/'}${name}`;
-		const isDuplicated = Object.keys(files).some(path => path === filePath);
-		if (isDuplicated) {
+		if (isDuplicatedFileName(name)) {
 			e.preventDefault();
 			return;
 		}
 
-		const createFileAction = createFileActionCreator({
+		const createFileAPI = createFileAPICreator(projectId, {
 			name,
-			parentPath,
-			type
+			parentId,
+			type: type === 'directory' ? type : getFileExtension(name)
 		});
-
-		dispatchProject(createFileAction);
-		changeDivEditable(fileNameInputReferenece.current, false);
+		setRequest(createFileAPI);
 	};
 
 	const handleWriteFileName = ({ currentTarget: { textContent } }) => {
@@ -44,12 +55,36 @@ function NewFile({ depth, type, parentPath, handleEndCreateFile }) {
 	const handleBlur = () => handleEndCreateFile();
 
 	const handleKeyDown = e => {
-		if (e.keyCode === KEY_CODE_ENTER) writeEnd(e);
+		if (e.keyCode === KEY_CODE_ENTER) {
+			requestCreateFile(e);
+			e.preventDefault();
+		}
+	};
+
+	const handleSetNewFileState = () => {
+		if (!data) return;
+
+		const { newFileId } = data;
+		const createFileAction = createFileActionCreator({
+			newFileId,
+			name: fileName,
+			parentId,
+			type
+		});
+		dispatchProject(createFileAction);
+		changeDivEditable(fileNameInputReferenece.current, false);
+	};
+
+	const handleErrorResponse = () => {
+		if (!error) return;
+		changeDivEditable(fileNameInputReferenece.current, false);
 	};
 
 	useEffect(() => {
 		fileNameInputReferenece.current.focus();
 	}, []);
+	useEffect(handleSetNewFileState, [data]);
+	useEffect(handleErrorResponse, [error]);
 
 	return (
 		<Styled.NewFile depth={depth}>

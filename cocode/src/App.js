@@ -27,7 +27,7 @@ function App() {
 					<Switch>
 						<Route exact path="/" component={Home} />
 						<Route path="/dashboard" component={DashBoard} />
-						<Route path="/project" component={Project} />
+						<Route path="/project/:projectId" component={Project} />
 						<Route path="/history" component={History} />
 					</Switch>
 				</ThemeProvider>

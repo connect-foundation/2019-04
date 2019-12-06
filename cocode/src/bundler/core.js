@@ -1,7 +1,7 @@
 import * as babel from '@babel/core';
 import presetEnv from '@babel/preset-env';
 import presetReact from '@babel/preset-react';
-import { pathStack, exports } from './global';
+import { pathStack } from './global';
 
 function transformCode(code) {
 	try {
@@ -22,7 +22,7 @@ function transformCode(code) {
 
 function init() {
 	while (pathStack.length) pathStack.pop();
-	pathStack.push('');
+	pathStack.push('/root/src/');
 }
 
 export { transformCode, init };

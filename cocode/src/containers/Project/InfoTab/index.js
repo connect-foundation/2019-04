@@ -16,7 +16,7 @@ function Info({ title, context }) {
 		setIsEditable(true);
 		if (input.current) input.current.focus();
 	};
-	const handleOnChage = event => setValue(event.target.innerText);
+	const handleOnChange = event => setValue(event.target.innerText);
 
 	const handleOnSubmit = () => setIsEditable(false);
 
@@ -55,7 +55,7 @@ function Info({ title, context }) {
 				ref={input}
 				contentEditable={isEditable}
 				className={title}
-				onChange={handleOnChage}
+				onChange={handleOnChange}
 				onBlur={handleOnSubmit}
 				onFocus={handleOnFocus}
 				onKeyDown={handleOnKeyDown}
