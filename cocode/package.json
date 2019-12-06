@@ -4,6 +4,7 @@
 	"description": "cocode client service",
 	"main": "index.js",
 	"scripts": {
+		"init:modules": "node init-script",
 		"start": "webpack-dev-server --open",
 		"start:docker": "webpack-dev-server --open --host 0.0.0.0",
 		"watch": "webpack --watch",

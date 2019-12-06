@@ -9,6 +9,8 @@ function BrowserV2({ ...props }) {
 	const { project } = useContext(ProjectContext);
 	const { files, root } = project;
 	const [isChange, setIsChange] = useState(false);
+	const [fileSystem, setFileSystem] = useState({});
+	const [errorDescription, setErrorDescription] = useState(null);
 
 	useEffect(() => {
 		function fileParser(path, id) {
@@ -35,13 +37,20 @@ function BrowserV2({ ...props }) {
 			try {
 				bundler.init();
 				bundler.require('./index.js');
+        setErrorDescription(null);
 			} catch (error) {
-				console.log(error);
+				setErrorDescription(error.stack);
 			}
-		}
 	}, [isChange]);
 
-	return <Styled.BrowserV2 {...props}></Styled.BrowserV2>;
+	return (
+		<Styled.Frame>
+			<Styled.ErrorDisplay errorDescription={errorDescription}>
+				<pre>{errorDescription}</pre>
+			</Styled.ErrorDisplay>
+			<Styled.BrowserV2 {...props}></Styled.BrowserV2>
+		</Styled.Frame>
+	);
 }
 
 export default BrowserV2;

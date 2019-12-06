@@ -1,28 +1,16 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React from 'react';
 import { ControlledEditor } from '@monaco-editor/react';
 import * as Styled from './style';
 
-import ProjectContext from 'contexts/ProjectContext';
-import { updateCodeActionCreator } from 'actions/Project';
-
-function MonacoEditor({ ...props }) {
-	const { project, dispatchProject } = useContext(ProjectContext);
-	const [code, setCode] = useState('');
-
-	const handleOnChange = (_, changedCode) => {
-		setCode(changedCode);
-		const updateCodeAction = updateCodeActionCreator({
-			changedCode: changedCode
-		});
-		dispatchProject(updateCodeAction);
-	};
-
-	useEffect(() => {
-		setCode(project.editingCode);
-	}, [project.selectedFileId]);
-
+function MonacoEditor({
+	isFilesEmpty,
+	code,
+	handleEditorDidMount,
+	handleUpdateCode,
+	...props
+}) {
 	return (
-		<Styled.MonacoEditor {...props} isFilesEmpty={!project.selectedFileId}>
+		<Styled.MonacoEditor isFilesEmpty={isFilesEmpty} {...props}>
 			<ControlledEditor
 				value={code}
 				language="javascript"
@@ -30,7 +18,8 @@ function MonacoEditor({ ...props }) {
 				options={{
 					fontSize: '16px'
 				}}
-				onChange={handleOnChange}
+				onChange={handleUpdateCode}
+				editorDidMount={handleEditorDidMount}
 			/>
 		</Styled.MonacoEditor>
 	);
