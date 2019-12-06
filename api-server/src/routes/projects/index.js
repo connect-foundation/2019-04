@@ -4,10 +4,12 @@ import {
 	preloadProject,
 	getProjectByProjectId,
 	modifyProject,
-	deleteProject
+	deleteProject,
+	forkProject
 } from './controller';
 const router = express.Router();
 
+router.post('/',forkProject);
 router.param('projectId', preloadProject);
 router.get('/:projectId', getProjectByProjectId);
 router.patch('/:projectId', modifyProject);
