@@ -9,7 +9,6 @@ function BrowserV2({ ...props }) {
 	const { project } = useContext(ProjectContext);
 	const { files, root } = project;
 	const [isChange, setIsChange] = useState(false);
-	const [fileSystem, setFileSystem] = useState({});
 	const [errorDescription, setErrorDescription] = useState(null);
 
 	useEffect(() => {
