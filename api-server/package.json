@@ -5,13 +5,10 @@
 	"main": "app.js",
 	"scripts": {
 		"dev": "NODE_ENV=development nodemon --exec babel-node src/app.js",
-		"start": "NODE_ENV=production nodemon --exec babel-node src/app.js",
-		"pm2:dev": "NODE_ENV=development pm2 start --interpreter babel-node src/app.js",
-		"pm2:start": "NODE_ENV=production pm2 start --interpreter babel-node src/app.js",
-		"pm2:monitor": "pm2 monit",
-		"pm2:ls": "pm2 list",
-		"pm2:stop": "pm2 stop app",
+		"start": "pm2 start ecosystem.config.js --env production",
 		"test": "jest",
+		"ls": "pm2 list",
+		"stop": "pm2 stop app",
 		"initdb": "npx babel-node database/init-database.js"
 	},
 	"husky": {
