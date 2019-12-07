@@ -9,12 +9,16 @@ import DependencySelector from 'components/Project/DependencySelector';
 import { getModule } from 'apis/Dependency';
 import useFetch from 'hooks/useFetch';
 
-import { installDependencyActionCreator } from 'actions/Project';
+import {
+	installDependencyActionCreator,
+	waitingInstallDependencyActionCreator
+} from 'actions/Project';
 import { ProjectContext } from 'contexts';
 
 function DependencySearchItem({ name, latestVersion, github, npm }) {
 	const { project, dispatchProject } = useContext(ProjectContext);
-	const [{ data }, setRequest] = useFetch({});
+	const [{ data, loading }, setRequest] = useFetch({});
+
 	const handleFetchModule = () => {
 		const moduleName = name;
 		const moduleVersion = latestVersion;
@@ -22,19 +26,30 @@ function DependencySearchItem({ name, latestVersion, github, npm }) {
 	};
 	const { dependency } = project;
 
-	useEffect(() => {
-		if (data) {
-			Object.entries(data).forEach(([key, value]) => {
-				fileSystem[key] = value;
-			});
-			dispatchProject(
-				installDependencyActionCreator({
-					moduleName: name,
-					moduleVersion: latestVersion
-				})
-			);
-		}
-	}, [data]);
+	const successInstallDependency = dependency => {
+		Object.entries(dependency).forEach(([key, value]) => {
+			fileSystem[key] = value;
+		});
+		dispatchProject(
+			installDependencyActionCreator({
+				moduleName: name,
+				moduleVersion: latestVersion
+			})
+		);
+	};
+
+	const handleSuccesResponse = () => {
+		if (data)
+			setTimeout(successInstallDependency.bind(undefined, data), 1000);
+	};
+
+	const handleStartInstall = () => {
+		if (!loading) return;
+		dispatchProject(waitingInstallDependencyActionCreator());
+	};
+
+	useEffect(handleSuccesResponse, [data]);
+	useEffect(handleStartInstall, [loading]);
 
 	return (
 		<Styled.Item>
