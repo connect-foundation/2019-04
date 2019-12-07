@@ -6,7 +6,8 @@ import {
 	CREATE_FILE,
 	DELETE_FILE,
 	MOVE_FILE,
-	INSTALL_DEPENDENCY
+	INSTALL_DEPENDENCY,
+	WAITING_INSTALL_DEPENDENCY
 } from './types';
 
 function fetchProjectActionCreator(payload) {
@@ -41,6 +42,10 @@ function installDependencyActionCreator(payload) {
 	return { type: INSTALL_DEPENDENCY, payload };
 }
 
+function waitingInstallDependencyActionCreator(payload) {
+	return { type: WAITING_INSTALL_DEPENDENCY, payload };
+}
+
 export {
 	updateCodeActionCreator,
 	fetchProjectActionCreator,
@@ -49,5 +54,6 @@ export {
 	createFileActionCreator,
 	deleteFileActionCreator,
 	moveFileActionCreator,
-	installDependencyActionCreator
+	installDependencyActionCreator,
+	waitingInstallDependencyActionCreator
 };
