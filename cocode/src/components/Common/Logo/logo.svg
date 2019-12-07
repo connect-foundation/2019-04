@@ -1,19 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="62" height="54" viewBox="0 0 66.614 60">
-  <g id="a" clip-path="url(#clip-path)">
-    <g id="그룹_11" transform="translate(-9.956)">
-      <path id="패스_8" d="M26.457,0C41.068,0,52.913,12.374,52.913,27.638S41.068,55.276,26.457,55.276c-6.823,0-12.7-3.407-17.488-7.929C4.083,42.171,0,35.774,0,27.638,0,12.374,11.845,0,26.457,0Z" transform="translate(23.656)" fill="#6d4c41"/>
-      <g id="그룹_10" transform="translate(0 5.017)">
-        <path id="패스_9" d="M23.28,0C27.238,0,31.5.006,34.848,1.847c6.9,3.8,10.507,13.693,10.507,22.26,0,7.139-3.286,15.705-8.546,19.945-3.785,3.053-10.526,3.556-10.6,3.461C13.682,47.512,0,36.632,0,24.107S10.756,0,23.28,0Z" transform="matrix(0.719, -0.695, 0.695, 0.719, 0, 31.521)" fill="#8d6e63"/>
-        <ellipse id="타원_9" cx="15.591" cy="22.677" rx="15.591" ry="22.677" transform="translate(10.465 23.008) rotate(-45)" fill="#6d4c41"/>
-        <ellipse id="타원_10" cx="12.992" cy="20.079" rx="12.992" ry="20.079" transform="translate(14.474 22.502) rotate(-45)" fill="#fff"/>
-        <ellipse id="타원_11" cx="8.74" cy="15.827" rx="8.74" ry="15.827" transform="translate(20.959 22.225) rotate(-45)" fill="#cfd8dc"/>
-        <path id="패스_10" d="M1005.289,439.839l-3.36,3.916-3.307,8.46,4.1-1.781,4.025-1.659,1.54-7.99Z" transform="translate(-966.64 -401.94)" fill="#cfd8dc"/>
-        <path id="패스_11" d="M1026.483,328.494l-7.6,3.408-1.1,2.989,8.106-3.334Z" transform="translate(-985.802 -284.616)" fill="#5f4138"/>
-        <path id="패스_12" d="M1028.46,319.126l-6.9,3.88-1.475,3.978,7.551-3.383Z" transform="translate(-986.941 -279.674)" fill="#b0bec5"/>
-      </g>
-      <ellipse id="타원_12" cx="3.071" cy="2.598" rx="3.071" ry="2.598" transform="translate(53.893 5.197)" fill="#5a3e35"/>
-      <ellipse id="타원_13" cx="3.071" cy="2.598" rx="3.071" ry="2.598" transform="translate(53.893 12.756)" fill="#5a3e35"/>
-      <ellipse id="타원_14" cx="3.071" cy="2.598" rx="3.071" ry="2.598" transform="translate(62.397 11.811)" fill="#5a3e35"/>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="62" height="54" viewBox="0 0 141 127">
+  <g id="코코넛_dark" data-name="코코넛 – dark" clip-path="url(#clip-코코넛_dark)">
+    <path id="패스_7" data-name="패스 7" d="M56,0c30.928,0,56,26.191,56,58.5S86.928,117,56,117c-14.443,0-26.883-7.212-37.017-16.783C8.643,89.262,0,75.721,0,58.5,0,26.191,25.072,0,56,0Z" transform="translate(29)" fill="#fff"/>
+    <g id="그룹_8" data-name="그룹 8" transform="translate(-887 -226)">
+      <path id="패스_3" data-name="패스 3" d="M49.276-3.027c8.377,0,17.406.013,24.485,3.91C88.375,8.923,96,29.867,96,48c0,15.11-6.956,33.243-18.088,42.216C69.9,96.679,55.633,97.743,55.47,97.541,28.961,97.541,0,74.51,0,48S22.767-3.027,49.276-3.027Z" transform="matrix(0.719, -0.695, 0.695, 0.719, 868.031, 305.515)" fill="#fff"/>
+      <ellipse id="타원_3" data-name="타원 3" cx="33" cy="48" rx="33" ry="48" transform="translate(888.078 285.318) rotate(-45)"/>
+      <ellipse id="타원_2" data-name="타원 2" cx="27.5" cy="42.5" rx="27.5" ry="42.5" transform="translate(896.563 284.247) rotate(-45)" fill="#fff"/>
+      <ellipse id="타원_1" data-name="타원 1" cx="18.5" cy="33.5" rx="18.5" ry="33.5" transform="translate(910.291 283.661) rotate(-45)"/>
+      <path id="패스_4" data-name="패스 4" d="M1012.734,439.839l-7.112,8.289-7,17.906,8.671-3.769,8.519-3.511,3.259-16.913Z" transform="translate(-65 -123)"/>
+      <path id="패스_5" data-name="패스 5" d="M1036.2,328.494l-16.08,7.214-2.338,6.326,17.157-7.056Z" transform="translate(-84.163 1)"/>
+      <path id="패스_6" data-name="패스 6" d="M1037.809,319.126l-14.6,8.212-3.122,8.42,15.983-7.161Z" transform="translate(-84 1)"/>
     </g>
+    <ellipse id="타원_6" data-name="타원 6" cx="6.5" cy="5.5" rx="6.5" ry="5.5" transform="translate(98 14)"/>
+    <ellipse id="타원_7" data-name="타원 7" cx="6.5" cy="5.5" rx="6.5" ry="5.5" transform="translate(93 27)"/>
+    <ellipse id="타원_8" data-name="타원 8" cx="6.5" cy="5.5" rx="6.5" ry="5.5" transform="translate(111 25)"/>
   </g>
 </svg>
