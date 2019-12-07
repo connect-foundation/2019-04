@@ -36,6 +36,15 @@ function isProtectedFile({ files, root, entry, fileId }) {
 	return false;
 }
 
+function isFileNotMoveable({ files, fileId, newParentId }) {
+	const fileName = files[fileId].name;
+	const childsOfNewParent = files[newParentId].child;
+
+	return childsOfNewParent
+		.map(id => files[id].name)
+		.some(name => name === fileName);
+}
+
 function Directory({
 	id,
 	childIds,
@@ -93,7 +102,11 @@ function Directory({
 	const handleDragLeave = () => setIsFileInDropZone(false);
 	const handleDrop = fileId => {
 		setIsFileInDropZone(false);
-		if (fileId === id || isProtectedFile({ files, root, entry, fileId }))
+		if (
+			fileId === id ||
+			isProtectedFile({ files, root, entry, fileId }) ||
+			isFileNotMoveable({ files, fileId, newParentId: id })
+		)
 			return alert(WARNING_PREVENT_MOVE_NOTIFICATION);
 
 		requestMoveFile(fileId);
