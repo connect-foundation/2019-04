@@ -24,11 +24,11 @@ function InstallingDisplay() {
 
 function DependencyTab() {
 	const { project } = useContext(ProjectContext);
-	const { dependency } = project;
+	const { dependencyInstalling } = project;
 
 	return (
 		<Styled.Frame>
-			{dependency.installing && <InstallingDisplay />}
+			{dependencyInstalling && <InstallingDisplay />}
 			<Styled.DependencyArea>
 				<Dependency title={TabTitleFirst}>
 					<DependencyNow />

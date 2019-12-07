@@ -41,9 +41,8 @@ const fetchProject = (_, { project }) => {
 		files: convertedFilesObject,
 		selectedFileId: entryId,
 		editingCode: convertedFilesObject[entryId].contents,
-		dependency: {
-			installing: false
-		}
+		dependency: {},
+		dependencyInstalling: false
 	};
 
 	return fetchedProject;
@@ -235,9 +234,9 @@ function waitingInstallDependency(state) {
 	return {
 		...state,
 		dependency: {
-			...state.dependency,
-			installing: true
-		}
+			...state.dependency
+		},
+		dependencyInstalling: true
 	};
 }
 
@@ -249,9 +248,9 @@ function registerDependency(state, { moduleName, moduleVersion }) {
 			[moduleName]: {
 				name: moduleName,
 				version: moduleVersion
-			},
-			installing: false
-		}
+			}
+		},
+		dependencyInstalling: false
 	};
 }
 

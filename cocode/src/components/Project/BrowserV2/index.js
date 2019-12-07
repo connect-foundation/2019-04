@@ -7,7 +7,7 @@ import ProjectContext from 'contexts/ProjectContext';
 
 function BrowserV2({ ...props }) {
 	const { project } = useContext(ProjectContext);
-	const { files, root, dependency } = project;
+	const { files, root, dependencyInstalling } = project;
 	const [isChange, setIsChange] = useState(false);
 	const [errorDescription, setErrorDescription] = useState(null);
 
@@ -26,7 +26,7 @@ function BrowserV2({ ...props }) {
 	}
 
 	const handleEndInstallDependency = () => {
-		if (!dependency.installing) setIsChange(true);
+		if (!dependencyInstalling) setIsChange(true);
 	};
 
 	const handleParsingProject = () => {
@@ -48,7 +48,7 @@ function BrowserV2({ ...props }) {
 		}
 	};
 
-	useEffect(handleEndInstallDependency, [dependency.installing]);
+	useEffect(handleEndInstallDependency, [dependencyInstalling]);
 	useEffect(handleParsingProject, [files]);
 	useEffect(handleBuildProject, [isChange]);
 
