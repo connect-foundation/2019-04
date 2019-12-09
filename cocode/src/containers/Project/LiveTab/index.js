@@ -1,9 +1,10 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import * as Styled from './style';
 import LiveUserProfile from 'components/Project/LiveUserProfile';
 import { LiveContext } from 'contexts';
-import { LiveStore } from 'stores';
-import {LIVE_ON, LIVE_OFF} from 'actions/types';
+
+import {liveOffActionCreator, fetchLiveActionCreator } from 'actions/Live';
+import avatar from 'components/Common/UserProfile/avatar.jpeg';
 
 const LIVE_STATUS_LABEL = 'You’ve gone live!';
 const OFF_BUTTON_LABEL = 'Go Live';
@@ -12,6 +13,28 @@ const OFF_DESCRIPTION =
 	'Invite others to live edit this coconut with you. We’re doing it live!';
 const ON_DESCRIPTION =
 	'Share this link with others to invite them to the live.';
+
+const dummy = {
+	url: 'https://cocode.com/live/',
+	participants: [
+		{
+			username: 'basiltoast',
+			avatar
+		},
+		{
+			username: 'basiltoast',
+			avatar
+		},
+		{
+			username: 'basiltoast',
+			avatar
+		}
+	],
+	owner: {
+		username: 'lallaheeee',
+		avatar
+	}
+};
 
 function LiveOff({ onClick }) {
 	return (
@@ -40,21 +63,23 @@ function LiveOn({ onClick }) {
 }
 
 function LiveTab() {
-	const [liveState, setLiveState] = useState(false);
-	const { dispatchLive } = useContext(LiveContext);
+	const { url, dispatchLive } = useContext(LiveContext);
 
-	const handleTurnLive = () => setLiveState(!liveState);
+	const handleTurnLive = () => {
+		if (url) dispatchLive(liveOffActionCreator());
+		else dispatchLive(fetchLiveActionCreator(dummy));
+	};
 	return (
-		<LiveStore>
+		<React.Fragment>
 			<Styled.Title>LIVE</Styled.Title>
 			<Styled.Wrapper>
-				{liveState ? (
+				{url ? (
 					<LiveOn onClick={handleTurnLive} />
 				) : (
 					<LiveOff onClick={handleTurnLive} />
 				)}
 			</Styled.Wrapper>
-		</LiveStore>
+		</React.Fragment>
 	);
 }
 

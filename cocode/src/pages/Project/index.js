@@ -20,6 +20,8 @@ import useFetch from 'hooks/useFetch';
 import reactTemplate from 'template/objectIdMapper';
 import { getProjectInfoAPICreator, forkProjectAPICreator } from 'apis/Project';
 
+import { LiveStore } from 'stores';
+
 const DEFAULT_CLICKED_TAB_INDEX = 1;
 
 function Project() {
@@ -88,6 +90,7 @@ function Project() {
 				setClickedTabIndex
 			}}
 		>
+			<LiveStore>
 			<Header />
 			{isFetched && (
 				<Styled.Main>
@@ -101,6 +104,7 @@ function Project() {
 					</SplitPaneContainer>
 				</Styled.Main>
 			)}
+			</LiveStore>
 		</ProjectContext.Provider>
 	);
 }
