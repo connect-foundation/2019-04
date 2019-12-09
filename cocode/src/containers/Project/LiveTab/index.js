@@ -38,10 +38,10 @@ const dummy = {
 
 function LiveOff({ onClick }) {
 	return (
-		<React.Fragment>
+		<>
 			<Styled.Description>{OFF_DESCRIPTION}</Styled.Description>
 			<Styled.Button onClick={onClick}> {OFF_BUTTON_LABEL}</Styled.Button>
-		</React.Fragment>
+		</>
 	);
 }
 
@@ -49,7 +49,7 @@ function LiveOn({ onClick }) {
 	const { url, participants, owner } = useContext(LiveContext);
 
 	return (
-		<React.Fragment>
+		<>
 			<Styled.LiveStatusLabel>
 				<Styled.LiveStatusSpan />
 				{LIVE_STATUS_LABEL}
@@ -58,7 +58,7 @@ function LiveOn({ onClick }) {
 			<Styled.LinkURL>{url}</Styled.LinkURL>
 			<Styled.Button onClick={onClick}>{ON_BUTTON_LABEL}</Styled.Button>
 			<LiveUserProfile owner={owner} participants={participants} />
-		</React.Fragment>
+		</>
 	);
 }
 
@@ -70,7 +70,7 @@ function LiveTab() {
 		else dispatchLive(fetchLiveActionCreator(dummy));
 	};
 	return (
-		<React.Fragment>
+		<>
 			<Styled.Title>LIVE</Styled.Title>
 			<Styled.Wrapper>
 				{url ? (
@@ -79,7 +79,7 @@ function LiveTab() {
 					<LiveOff onClick={handleTurnLive} />
 				)}
 			</Styled.Wrapper>
-		</React.Fragment>
+		</>
 	);
 }
 

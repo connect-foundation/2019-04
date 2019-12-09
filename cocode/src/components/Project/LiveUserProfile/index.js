@@ -10,7 +10,7 @@ function LiveUserProfile({ username, avatar }) {
 			<Styled.UserAvatar src={avatar} alt="프로필" />
 			<Styled.UserName>{username}</Styled.UserName>
 			{user.username === username && (
-				<Styled.OwnersLabel>(you)</Styled.OwnersLabel>
+				<Styled.SelfLabel>(you)</Styled.SelfLabel>
 			)}
 		</Styled.UserProfile>
 	);

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { TAB_CONTAINER_THEME } from 'constants/theme';
+import { TAB_CONTAINER_THEME, LIVE_TAB_THEME } from 'constants/theme';
 
 const Title = styled.h1`
 	& {
@@ -32,10 +32,10 @@ const UserAvatar = styled.img`
 	}
 `;
 
-const OwnersLabel = styled(UserName)`
+const SelfLabel = styled(UserName)`
 	& {
-		color: #333333;
+		color: ${LIVE_TAB_THEME.liveSelfLabelColor};
 	}
 `;
 
-export { Title, UserProfile, UserName, UserAvatar, OwnersLabel };
+export { Title, UserProfile, UserName, UserAvatar, SelfLabel };

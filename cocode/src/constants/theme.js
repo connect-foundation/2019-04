@@ -103,7 +103,8 @@ const LIVE_TAB_THEME = {
 	liveButtonBGColor: '#880000',
 	liveFontColor: '#bcbcbc',
 	liveStatusLabelColor: '#c74040b3',
-	liveLinkBGColor: '#000000'
+	liveLinkBGColor: '#000000',
+	liveSelfLabelColor: '#333333'
 };
 
 const FILE_TAB_THEME = {
