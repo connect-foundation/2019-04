@@ -1,38 +1,17 @@
 import React, { useContext, useState } from 'react';
 import * as Styled from './style';
 import LiveUserProfile from 'components/Project/LiveUserProfile';
-import { UserContext } from 'contexts';
-import avatar from 'components/Common/UserProfile/avatar.jpeg';
+import { LiveContext } from 'contexts';
+import { LiveStore } from 'stores';
+import {LIVE_ON, LIVE_OFF} from 'actions/types';
 
+const LIVE_STATUS_LABEL = 'You’ve gone live!';
+const OFF_BUTTON_LABEL = 'Go Live';
+const ON_BUTTON_LABEL = 'Stop Live';
 const OFF_DESCRIPTION =
 	'Invite others to live edit this coconut with you. We’re doing it live!';
 const ON_DESCRIPTION =
 	'Share this link with others to invite them to the live.';
-
-const LIVE_STATUS_LABEL = 'You’ve gone live!';
-
-const OFF_BUTTON_LABEL = ' Go Live';
-const ON_BUTTON_LABEL = 'Stop Live';
-
-const dummyUsers = [
-	{
-		username: 'basiltoast',
-		avatar
-	},
-	{
-		username: 'basiltoast',
-		avatar
-	},
-	{
-		username: 'basiltoast',
-		avatar
-	}
-];
-
-const dummyOwner = {
-	username: 'lallaheeee',
-	avatar
-};
 
 function LiveOff({ onClick }) {
 	return (
@@ -43,7 +22,9 @@ function LiveOff({ onClick }) {
 	);
 }
 
-function LiveOn({ onClick, owner, participants, url }) {
+function LiveOn({ onClick }) {
+	const { url, participants, owner } = useContext(LiveContext);
+
 	return (
 		<React.Fragment>
 			<Styled.LiveStatusLabel>
@@ -60,27 +41,20 @@ function LiveOn({ onClick, owner, participants, url }) {
 
 function LiveTab() {
 	const [liveState, setLiveState] = useState(false);
-	const [url, setURL] = useState('https://cocode.com/live/');
-	const [participants, setPaticipants] = useState(dummyUsers);
-	const [owner, setOwner] = useState(dummyOwner);
+	const { dispatchLive } = useContext(LiveContext);
 
 	const handleTurnLive = () => setLiveState(!liveState);
 	return (
-		<React.Fragment>
+		<LiveStore>
 			<Styled.Title>LIVE</Styled.Title>
 			<Styled.Wrapper>
 				{liveState ? (
-					<LiveOn
-						onClick={handleTurnLive}
-						owner={owner}
-						participants={participants}
-						url={url}
-					/>
+					<LiveOn onClick={handleTurnLive} />
 				) : (
 					<LiveOff onClick={handleTurnLive} />
 				)}
 			</Styled.Wrapper>
-		</React.Fragment>
+		</LiveStore>
 	);
 }
 
