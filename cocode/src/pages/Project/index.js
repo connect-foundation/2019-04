@@ -91,19 +91,22 @@ function Project() {
 			}}
 		>
 			<LiveStore>
-			<Header />
-			{isFetched && (
-				<Styled.Main>
-					<TabBar theme={TAB_BAR_THEME} />
-					<SplitPaneContainer split="vertical" defaultSize="20vw">
-						<TabContainer />
-						<SplitPaneContainer split="vertical" defaultSize="40vw">
-							<Editor />
-							<BrowserV2 id="coconut-root" />
+				<Header />
+				{isFetched && (
+					<Styled.Main>
+						<TabBar theme={TAB_BAR_THEME} />
+						<SplitPaneContainer split="vertical" defaultSize="20vw">
+							<TabContainer />
+							<SplitPaneContainer
+								split="vertical"
+								defaultSize="40vw"
+							>
+								<Editor />
+								<BrowserV2 id="coconut-root" />
+							</SplitPaneContainer>
 						</SplitPaneContainer>
-					</SplitPaneContainer>
-				</Styled.Main>
-			)}
+					</Styled.Main>
+				)}
 			</LiveStore>
 		</ProjectContext.Provider>
 	);
