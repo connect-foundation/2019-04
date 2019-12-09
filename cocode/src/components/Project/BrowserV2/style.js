@@ -24,7 +24,7 @@ const ErrorDisplay = styled.div`
 	}
 `;
 
-const BrowserV2 = styled.div`
+const BrowserV2 = styled.iframe`
 	& {
 		position: absolute;
 
@@ -32,7 +32,6 @@ const BrowserV2 = styled.div`
 		width: 100%;
 
 		background-color: white;
-		color: black;
 	}
 `;
 

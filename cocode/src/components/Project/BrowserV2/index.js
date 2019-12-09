@@ -5,6 +5,8 @@ import * as bundler from 'bundler';
 
 import ProjectContext from 'contexts/ProjectContext';
 
+import { COCONUT_SERVER } from 'config';
+
 function BrowserV2({ ...props }) {
 	const { project } = useContext(ProjectContext);
 	const { files, root, dependencyInstalling } = project;
@@ -38,6 +40,8 @@ function BrowserV2({ ...props }) {
 	const handleBuildProject = () => {
 		if (isChange) {
 			setIsChange(false);
+			// 1. save in IDB
+			// 2. postmessage to iframe
 			try {
 				bundler.init();
 				bundler.require('./index.js');
@@ -57,7 +61,10 @@ function BrowserV2({ ...props }) {
 			<Styled.ErrorDisplay errorDescription={errorDescription}>
 				<pre>{errorDescription}</pre>
 			</Styled.ErrorDisplay>
-			<Styled.BrowserV2 {...props}></Styled.BrowserV2>
+			<Styled.BrowserV2
+				src={`${COCONUT_SERVER}/123`}
+				{...props}
+			></Styled.BrowserV2>
 		</Styled.Frame>
 	);
 }
