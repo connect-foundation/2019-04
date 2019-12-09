@@ -36,16 +36,16 @@ const dummyOwner = {
 
 function LiveOff({ onClick }) {
 	return (
-		<>
+		<React.Fragment>
 			<Styled.Description>{OFF_DESCRIPTION}</Styled.Description>
 			<Styled.Button onClick={onClick}> {OFF_BUTTON_LABEL}</Styled.Button>
-		</>
+		</React.Fragment>
 	);
 }
 
 function LiveOn({ onClick, owner, participants, url }) {
 	return (
-		<>
+		<React.Fragment>
 			<Styled.LiveStatusLabel>
 				<Styled.LiveStatusSpan />
 				{LIVE_STATUS_LABEL}
@@ -54,7 +54,7 @@ function LiveOn({ onClick, owner, participants, url }) {
 			<Styled.LinkURL>{url}</Styled.LinkURL>
 			<Styled.Button onClick={onClick}>{ON_BUTTON_LABEL}</Styled.Button>
 			<LiveUserProfile owner={owner} participants={participants} />
-		</>
+		</React.Fragment>
 	);
 }
 
@@ -66,7 +66,7 @@ function LiveTab() {
 
 	const handleTurnLive = () => setLiveState(!liveState);
 	return (
-		<>
+		<React.Fragment>
 			<Styled.Title>LIVE</Styled.Title>
 			<Styled.Wrapper>
 				{liveState ? (
@@ -80,7 +80,7 @@ function LiveTab() {
 					<LiveOff onClick={handleTurnLive} />
 				)}
 			</Styled.Wrapper>
-		</>
+		</React.Fragment>
 	);
 }
 
