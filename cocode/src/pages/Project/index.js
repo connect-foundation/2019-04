@@ -19,6 +19,7 @@ import UserContext from 'contexts/UserContext';
 import useFetch from 'hooks/useFetch';
 import reactTemplate from 'template/objectIdMapper';
 import { getProjectInfoAPICreator, forkProjectAPICreator } from 'apis/Project';
+import { LiveStore } from 'stores';
 
 const DEFAULT_CLICKED_TAB_INDEX = 0;
 
@@ -88,19 +89,24 @@ function Project() {
 				setClickedTabIndex
 			}}
 		>
-			<Header />
-			{isFetched && (
-				<Styled.Main>
-					<TabBar theme={TAB_BAR_THEME} />
-					<SplitPaneContainer split="vertical" defaultSize="20vw">
-						<TabContainer />
-						<SplitPaneContainer split="vertical" defaultSize="40vw">
-							<Editor />
-							<BrowserV2 id="coconut-root" />
+			<LiveStore>
+				<Header />
+				{isFetched && (
+					<Styled.Main>
+						<TabBar theme={TAB_BAR_THEME} />
+						<SplitPaneContainer split="vertical" defaultSize="20vw">
+							<TabContainer />
+							<SplitPaneContainer
+								split="vertical"
+								defaultSize="40vw"
+							>
+								<Editor />
+								<BrowserV2 id="coconut-root" />
+							</SplitPaneContainer>
 						</SplitPaneContainer>
-					</SplitPaneContainer>
-				</Styled.Main>
-			)}
+					</Styled.Main>
+				)}
+			</LiveStore>
 		</ProjectContext.Provider>
 	);
 }
