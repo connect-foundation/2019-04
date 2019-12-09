@@ -8,7 +8,7 @@ const Frame = styled.div`
 const ErrorDisplay = styled.div`
 	& {
 		position: absolute;
-		z-index: 1;
+		z-index: ${({ errorDescription }) => (errorDescription ? 1 : -1)};
 		overflow-x: scroll;
 
 		padding: 1rem;

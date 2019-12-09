@@ -3,6 +3,8 @@ import path from 'path';
 
 const DEPENDENCY_PATH = '/node_modules/';
 function pathParser(param) {
+	const moduleName = param;
+
 	if (param[0] !== '.' && param[0] !== '/') {
 		param = `${DEPENDENCY_PATH}${param}`;
 	}
@@ -15,7 +17,7 @@ function pathParser(param) {
 		} else if (fileSystem[`${param}/index.js`]) {
 			return [`${param}/index.js`, param];
 		} else {
-			throw Error('path error');
+			throw Error(`Module not found: '${moduleName}'`);
 		}
 	} else {
 		return [param, path.dirname(param)];
