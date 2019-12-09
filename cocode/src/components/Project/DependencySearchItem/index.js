@@ -9,6 +9,9 @@ import DependencySelector from 'components/Project/DependencySelector';
 import { getModule } from 'apis/Dependency';
 import useFetch from 'hooks/useFetch';
 
+// Constants
+const MIN_WAIT_TIME = 1000;
+
 import {
 	installDependencyActionCreator,
 	waitingInstallDependencyActionCreator
@@ -40,7 +43,10 @@ function DependencySearchItem({ name, latestVersion, github, npm }) {
 
 	const handleSuccesResponse = () => {
 		if (data)
-			setTimeout(successInstallDependency.bind(undefined, data), 1000);
+			setTimeout(
+				successInstallDependency.bind(undefined, data),
+				MIN_WAIT_TIME
+			);
 	};
 
 	const handleStartInstall = () => {
