@@ -20,7 +20,7 @@ import useFetch from 'hooks/useFetch';
 import reactTemplate from 'template/objectIdMapper';
 import { getProjectInfoAPICreator, forkProjectAPICreator } from 'apis/Project';
 
-const DEFAULT_CLICKED_TAB_INDEX = 1;
+const DEFAULT_CLICKED_TAB_INDEX = 0;
 
 function Project() {
 	const { user } = useContext(UserContext);

@@ -12,7 +12,9 @@ import useFetch from 'hooks/useFetch';
 
 import { updateFileAPICreator } from 'apis/File';
 
+// Constatnts
 let timer;
+const DEBOUNCING_TIME = 1000;
 
 function Editor() {
 	const { projectId } = useParams();
@@ -35,7 +37,10 @@ function Editor() {
 	const handleUpdateCode = (_, changedCode) => {
 		if (timer) clearTimeout(timer);
 
-		timer = setTimeout(debouncedHandlerUpdateCode(changedCode), 300);
+		timer = setTimeout(
+			debouncedHandlerUpdateCode(changedCode),
+			DEBOUNCING_TIME
+		);
 	};
 
 	const handleChangedSelectedFile = () => setCode(project.editingCode);

@@ -13,6 +13,7 @@ const UPDATE_FILE_NAME = 'updateFileName';
 const DELETE_FILE = 'deleteFile';
 const MOVE_FILE = 'moveFile';
 const INSTALL_DEPENDENCY = 'installDependency';
+const WAITING_INSTALL_DEPENDENCY = 'waitingInstallDependency';
 
 //DashBoard
 const FETCH_COCONUT = 'fetchCoconut';
@@ -32,6 +33,7 @@ export {
 	DELETE_FILE,
 	MOVE_FILE,
 	INSTALL_DEPENDENCY,
+	WAITING_INSTALL_DEPENDENCY,
 	FETCH_COCONUT,
 	UPDATE_COCONUT_NAME,
 	DELETE_COCONUT

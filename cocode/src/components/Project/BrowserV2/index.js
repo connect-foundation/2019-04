@@ -7,31 +7,35 @@ import ProjectContext from 'contexts/ProjectContext';
 
 function BrowserV2({ ...props }) {
 	const { project } = useContext(ProjectContext);
-	const { files, root } = project;
+	const { files, root, dependencyInstalling } = project;
 	const [isChange, setIsChange] = useState(false);
-	const [fileSystem, setFileSystem] = useState({});
 	const [errorDescription, setErrorDescription] = useState(null);
 
-	useEffect(() => {
-		function fileParser(path, id) {
-			if (files[id].type !== 'directory') {
-				fileSystem[path] = {
-					contents: files[id].contents
-				};
-				delete exports[path];
-			} else if (files[id].child) {
-				files[id].child.forEach(id => {
-					const path = files[id].path;
-					fileParser(path, id);
-				});
-			}
+	function fileParser(path, id) {
+		if (files[id].type !== 'directory') {
+			fileSystem[path] = {
+				contents: files[id].contents
+			};
+			delete exports[path];
+		} else if (files[id].child) {
+			files[id].child.forEach(id => {
+				const path = files[id].path;
+				fileParser(path, id);
+			});
 		}
+	}
+
+	const handleEndInstallDependency = () => {
+		if (!dependencyInstalling) setIsChange(true);
+	};
+
+	const handleParsingProject = () => {
 		const rootPath = files[root].path;
 		if (project) fileParser(rootPath, project.root);
 		setIsChange(true);
-	}, [files]);
+	};
 
-	useEffect(() => {
+	const handleBuildProject = () => {
 		if (isChange) {
 			setIsChange(false);
 			try {
@@ -42,7 +46,11 @@ function BrowserV2({ ...props }) {
 				setErrorDescription(error.stack);
 			}
 		}
-	}, [isChange]);
+	};
+
+	useEffect(handleEndInstallDependency, [dependencyInstalling]);
+	useEffect(handleParsingProject, [files]);
+	useEffect(handleBuildProject, [isChange]);
 
 	return (
 		<Styled.Frame>

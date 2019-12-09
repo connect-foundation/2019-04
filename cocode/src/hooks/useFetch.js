@@ -21,7 +21,7 @@ function useFetch({ method, url, data = {} }) {
 	});
 
 	const requestToServer = () => {
-		dispatchFetchState(fetchLoadActionCreator);
+		dispatchFetchState(fetchLoadActionCreator());
 		API(request)
 			.then(res => dispatchFetchState(fetchSuccessActionCreator(res)))
 			.catch(error => dispatchFetchState(fetchFailActionCreator(error)));
