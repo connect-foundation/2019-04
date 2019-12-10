@@ -7,7 +7,7 @@ import { SplitPaneContainer } from 'components/Common/SplitPane';
 
 import ProjectReducer from 'reducers/ProjectReducer';
 
-import reactTemplate from 'template/objectIdMapper';
+import reactTemplate from 'template/copyProject';
 
 import {
 	fetchProjectActionCreator,

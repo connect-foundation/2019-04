@@ -17,7 +17,8 @@ import { TAB_BAR_THEME } from 'constants/theme';
 
 import UserContext from 'contexts/UserContext';
 import useFetch from 'hooks/useFetch';
-import reactTemplate from 'template/objectIdMapper';
+import { reactTemplate } from 'template/react';
+import copyProject from 'template/copyProject';
 import { getProjectInfoAPICreator, forkProjectAPICreator } from 'apis/Project';
 import { LiveStore } from 'stores';
 
@@ -53,7 +54,8 @@ function Project() {
 	};
 
 	const handleForkNewCoconut = name => {
-		const project = reactTemplate();
+		const project = copyProject(reactTemplate());
+
 		project.name = name;
 		project.author = user.username;
 		const forkProjectInfoAPI = forkProjectAPICreator(project);
