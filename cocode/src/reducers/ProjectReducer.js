@@ -8,7 +8,8 @@ import {
 	DELETE_FILE,
 	MOVE_FILE,
 	INSTALL_DEPENDENCY,
-	WAITING_INSTALL_DEPENDENCY
+	WAITING_INSTALL_DEPENDENCY,
+	CLONE_PROJECT
 } from 'actions/types';
 
 import { getFileExtension } from 'utils';
@@ -36,12 +37,13 @@ const fetchProject = (_, { project }) => {
 	});
 
 	const entryId = project.entry;
+	const dependency = getDependencyList(convertedFilesObject, project.root);
 	const fetchedProject = {
 		...project,
 		files: convertedFilesObject,
 		selectedFileId: entryId,
 		editingCode: convertedFilesObject[entryId].contents,
-		dependency: {},
+		dependency,
 		dependencyInstalling: false
 	};
 
@@ -66,6 +68,18 @@ function addParentIdToFiles(prePath, filesObject, directoryId) {
 
 		return { ...files, ...thisFile, ...child };
 	}, result);
+}
+
+function getDependencyList(files, root) {
+	const childOfRoot = files[root].child;
+	const packageJSON = childOfRoot
+		.map(id => files[id])
+		.filter(({ name }) => name === 'package.json')[0].contents;
+	const dependencies = JSON.parse(packageJSON).dependencies;
+
+	return Object.entries(dependencies).reduce((acc, [key, value]) => {
+		return { ...acc, [key]: { name: key, version: value } };
+	}, {});
 }
 
 // Update code
@@ -254,6 +268,10 @@ function registerDependency(state, { moduleName, moduleVersion }) {
 	};
 }
 
+function cloneProject(_, { project }) {
+	return project;
+}
+
 function ProjectReducer(state, { type, payload }) {
 	const reducers = {
 		[FETCH_PROJECT]: fetchProject,
@@ -264,7 +282,8 @@ function ProjectReducer(state, { type, payload }) {
 		[DELETE_FILE]: deleteFile,
 		[MOVE_FILE]: moveFile,
 		[INSTALL_DEPENDENCY]: registerDependency,
-		[WAITING_INSTALL_DEPENDENCY]: waitingInstallDependency
+		[WAITING_INSTALL_DEPENDENCY]: waitingInstallDependency,
+		[CLONE_PROJECT]: cloneProject
 	};
 
 	const reducer = reducers[type];

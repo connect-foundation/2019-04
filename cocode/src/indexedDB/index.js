@@ -122,8 +122,9 @@ function getDataFilterByKeys({
 		const objectStore = transaction.objectStore(idbName);
 		const cursorRequest = objectStore.openCursor();
 
-		const result = [];
-		const cloneFilterKeys = [...filterKeys];
+		const result = {};
+		let cloneFilterKeys = filterKeys.map(item => item);
+
 		cursorRequest.onsuccess = ({ target }) => {
 			const cursor = target.result;
 			if (!cursor || cloneFilterKeys.length === 0) {
@@ -132,9 +133,10 @@ function getDataFilterByKeys({
 			}
 
 			const { key, value } = cursor;
-			if (!cloneFilterKeys[key]) {
-				cloneFilterKeys[key] = undefined;
-				result.push(value);
+			const isExist = cloneFilterKeys.some(item => key === item);
+			if (isExist) {
+				cloneFilterKeys = cloneFilterKeys.filter(item => key !== item);
+				result[key] = value;
 			}
 			cursor.continue();
 		};
