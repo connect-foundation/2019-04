@@ -14,6 +14,7 @@ const DELETE_FILE = 'deleteFile';
 const MOVE_FILE = 'moveFile';
 const INSTALL_DEPENDENCY = 'installDependency';
 const WAITING_INSTALL_DEPENDENCY = 'waitingInstallDependency';
+const SAVE_FILE = 'saveFile';
 
 //DashBoard
 const FETCH_COCONUT = 'fetchCoconut';
@@ -48,5 +49,6 @@ export {
 	LIVE_ON,
 	LIVE_OFF,
 	LIVE_JOIN_USER,
-	LIVE_LEFT_USER
+	LIVE_LEFT_USER,
+	SAVE_FILE
 };
