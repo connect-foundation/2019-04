@@ -49,7 +49,7 @@ function Project() {
 
 		const project = handleForkNewCoconut(name);
 		handleSetProjectState(project);
-		history.push(`../project/${project._id}`);
+		history.replace(`../project/${project._id}`);
 	};
 
 	const handleForkNewCoconut = name => {
@@ -74,7 +74,7 @@ function Project() {
 		if (!data) return;
 
 		if (!isFetched) handleSetProjectState(data);
-	}, [data]);
+	}, [data, isFetched]);
 
 	// //TODO loading 컴포넌트 만들기
 	if (loading) return <p>Loading...</p>;
