@@ -12,9 +12,15 @@ import useFetch from 'hooks/useFetch';
 
 import { updateFileAPICreator } from 'apis/File';
 
+import { KEY_CODE_S } from 'constants/keyCode';
+
 // Constatnts
 let timer;
 const DEBOUNCING_TIME = 1000;
+
+const isPressCtrlAndS = e =>
+	(window.navigator.platform.match('Mac') ? e.metaKey : e.ctrlKey) &&
+	e.which === KEY_CODE_S;
 
 function Editor() {
 	const { projectId } = useParams();
@@ -49,13 +55,19 @@ function Editor() {
 		if (!isEditorMounted) return;
 
 		const updateFileAPI = updateFileAPICreator(projectId, selectedFileId, {
-			contents: code
+			contents: project.editingCode
 		});
 		setRequest(updateFileAPI);
 	};
 
+	const handleOnKeyDown = e => {
+		if (isPressCtrlAndS(e)) {
+			e.preventDefault();
+			handleRequestUpdateCode();
+		}
+	};
+
 	useEffect(handleChangedSelectedFile, [project.selectedFileId]);
-	useEffect(handleRequestUpdateCode, [code]);
 
 	const handleEditorDidMount = () => setIsEditorMounted(true);
 	return (
@@ -67,6 +79,7 @@ function Editor() {
 				handleUpdateCode={handleUpdateCode}
 				handleEditorDidMount={handleEditorDidMount}
 				className="Stretch-width"
+				onKeyDown={handleOnKeyDown}
 			/>
 		</Styled.Editor>
 	);
