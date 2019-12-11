@@ -1,50 +1,26 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import * as Styled from './style';
-import { useHistory } from 'react-router-dom';
 
 import FileTabBar from 'components/Project/FileTabBar';
 import MonacoEditor from 'components/Project/MonacoEditor';
 
-import ProjectContext from 'contexts/ProjectContext';
+import { UserContext, ProjectContext } from 'contexts';
 import {
 	updateCodeActionCreator,
 	saveFileActionCreator
 } from 'actions/Project';
 
 import useFetch from 'hooks/useFetch';
-
 import { updateFileAPICreator } from 'apis/File';
-
-import { KEY_CODE_S } from 'constants/keyCode';
-import { UserContext } from 'contexts';
-import copyProject from 'template/copyProject';
 import { forkProjectAPICreator } from 'apis/Project';
+
+import parseProject from './parseProject';
+import { isPressCtrlAndS } from 'utils/keyDownEvent';
 
 // Constatnts
 let timer;
 const DEBOUNCING_TIME = 1000;
-
-const isPressCtrlAndS = e =>
-	(window.navigator.platform.match('Mac') ? e.metaKey : e.ctrlKey) &&
-	e.which === KEY_CODE_S;
-
-const parseProjectForRequest = (project, user) => {
-	const { dependency, entry, name, root, _id } = project;
-	const projectInfo = JSON.parse(
-		JSON.stringify({ dependency, entry, name, root, _id })
-	);
-	const files = [];
-	Object.entries(project.files).forEach(([_, file]) => {
-		const { child, name, projectId, type, _id, contents } = file;
-		files.push({ child, name, projectId, type, _id, contents });
-	});
-	const parsingProject = copyProject({ ...projectInfo, files });
-
-	parsingProject.author = user.username;
-
-	return parsingProject;
-};
 
 function Editor() {
 	const history = useHistory();
@@ -77,7 +53,7 @@ function Editor() {
 	};
 
 	const handleForkCoconut = () => {
-		const parsingProject = parseProjectForRequest(project, user);
+		const parsingProject = parseProject(project, user);
 
 		setProject(parsingProject);
 		const forkProjectInfoAPI = forkProjectAPICreator(parsingProject);
