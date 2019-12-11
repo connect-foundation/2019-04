@@ -34,11 +34,10 @@ function mappingNewIdAtProjectFiles(idMap, { _id, files }) {
 	return newFiles;
 }
 
-function updateProjectInfo(idMap, project, username) {
+function updateProjectInfo(idMap, project) {
 	const { _id, root, entry } = project;
 	return {
 		_id: idMap[_id],
-		author: username,
 		root: idMap[root],
 		entry: idMap[entry]
 	};

@@ -52,26 +52,8 @@ function Project() {
 			return;
 		}
 
-		const name = prompt('프로젝트 이름을 입력해주세요');
-		if (!name) {
-			history.goBack();
-			return;
-		}
-
-		const project = handleForkNewCoconut(name);
-		handleSetProjectState(project);
-		history.replace(`../project/${project._id}`);
-	};
-
-	const handleForkNewCoconut = name => {
 		const project = copyProject(reactTemplate());
-
-		project.name = name;
-		project.author = user.username;
-		const forkProjectInfoAPI = forkProjectAPICreator(project);
-		setRequest(forkProjectInfoAPI);
-
-		return project;
+		handleSetProjectState(project);
 	};
 
 	const handleSetProjectState = project => {
@@ -89,8 +71,12 @@ function Project() {
 	}, [data, isFetched]);
 
 	useEffect(() => {
-		if (status === 201) history.push(`../project/${data._id}`);
-	}, [data, history, status]);
+		if (status === 201) {
+			projectId !== 'new'
+				? history.push(`../project/${data._id}`)
+				: history.replace(`../project/${data._id}`);
+		}
+	}, [data, history, projectId, status]);
 
 	// //TODO loading 컴포넌트 만들기
 	if (loading) return <p>Loading...</p>;
