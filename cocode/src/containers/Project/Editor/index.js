@@ -16,6 +16,9 @@ import useFetch from 'hooks/useFetch';
 import { updateFileAPICreator } from 'apis/File';
 
 import { KEY_CODE_S } from 'constants/keyCode';
+import { UserContext } from 'contexts';
+import copyProject from 'template/copyProject';
+import { forkProjectAPICreator } from 'apis/Project';
 
 // Constatnts
 let timer;
@@ -26,6 +29,7 @@ const isPressCtrlAndS = e =>
 	e.which === KEY_CODE_S;
 
 function Editor() {
+	const { user } = useContext(UserContext);
 	const { projectId } = useParams();
 	const { project, dispatchProject } = useContext(ProjectContext);
 	const [code, setCode] = useState(project.editingCode);
@@ -46,10 +50,43 @@ function Editor() {
 	const handleRequestUpdateCode = () => {
 		if (!isEditorMounted) return;
 
+		if (user.username !== project.author) {
+			handleForkCoconut();
+		}
+
 		const updateFileAPI = updateFileAPICreator(projectId, selectedFileId, {
 			contents: project.editingCode
 		});
 		setRequest(updateFileAPI);
+	};
+
+	const parseProjectForRequest = () => {
+		const { dependency, entry, name, root, _id } = project;
+		const projectInfo = JSON.parse(
+			JSON.stringify({ dependency, entry, name, root, _id })
+		);
+		const files = [];
+		Object.entries(project.files).forEach(
+			([_, { child, name, projectId, type, _id }]) => {
+				files.push({ child, name, projectId, type, _id });
+			}
+		);
+		const parsingProject = copyProject({ ...projectInfo, files });
+
+		parsingProject.author = user.username;
+
+		return parsingProject;
+	};
+
+	const handleForkCoconut = () => {
+		const parsingProject = parseProjectForRequest();
+
+		console.dir(parsingProject);
+
+		const forkProjectInfoAPI = forkProjectAPICreator(parsingProject);
+		setRequest(forkProjectInfoAPI);
+
+		return project;
 	};
 
 	const handleOnKeyDown = e => {
