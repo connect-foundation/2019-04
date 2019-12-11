@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import * as Styled from './style';
+import { useHistory } from 'react-router-dom';
 
 import FileTabBar from 'components/Project/FileTabBar';
 import MonacoEditor from 'components/Project/MonacoEditor';
@@ -28,13 +29,32 @@ const isPressCtrlAndS = e =>
 	(window.navigator.platform.match('Mac') ? e.metaKey : e.ctrlKey) &&
 	e.which === KEY_CODE_S;
 
+const parseProjectForRequest = (project, user) => {
+	const { dependency, entry, name, root, _id } = project;
+	const projectInfo = JSON.parse(
+		JSON.stringify({ dependency, entry, name, root, _id })
+	);
+	const files = [];
+	Object.entries(project.files).forEach(([_, file]) => {
+		const { child, name, projectId, type, _id, contents } = file;
+		files.push({ child, name, projectId, type, _id, contents });
+	});
+	const parsingProject = copyProject({ ...projectInfo, files });
+
+	parsingProject.author = user.username;
+
+	return parsingProject;
+};
+
 function Editor() {
+	const history = useHistory();
 	const { user } = useContext(UserContext);
 	const { projectId } = useParams();
 	const { project, dispatchProject } = useContext(ProjectContext);
 	const [code, setCode] = useState(project.editingCode);
 	const [isEditorMounted, setIsEditorMounted] = useState(false);
-	const [_, setRequest] = useFetch({});
+	const [{ status }, setRequest] = useFetch({});
+	const [tmpProject, setProject] = useState(false);
 
 	const [fileSelectFlag, setFileSelectFlag] = useState(undefined);
 	const { selectedFileId } = project;
@@ -50,50 +70,38 @@ function Editor() {
 	const handleRequestUpdateCode = () => {
 		if (!isEditorMounted) return;
 
-		if (user.username !== project.author) {
-			handleForkCoconut();
-		}
-
 		const updateFileAPI = updateFileAPICreator(projectId, selectedFileId, {
 			contents: project.editingCode
 		});
 		setRequest(updateFileAPI);
 	};
 
-	const parseProjectForRequest = () => {
-		const { dependency, entry, name, root, _id } = project;
-		const projectInfo = JSON.parse(
-			JSON.stringify({ dependency, entry, name, root, _id })
-		);
-		const files = [];
-		Object.entries(project.files).forEach(
-			([_, { child, name, projectId, type, _id }]) => {
-				files.push({ child, name, projectId, type, _id });
-			}
-		);
-		const parsingProject = copyProject({ ...projectInfo, files });
-
-		parsingProject.author = user.username;
-
-		return parsingProject;
-	};
-
 	const handleForkCoconut = () => {
-		const parsingProject = parseProjectForRequest();
+		const parsingProject = parseProjectForRequest(project, user);
 
-		console.dir(parsingProject);
-
+		setProject(parsingProject);
 		const forkProjectInfoAPI = forkProjectAPICreator(parsingProject);
 		setRequest(forkProjectInfoAPI);
 
 		return project;
 	};
 
+	useEffect(() => {
+		if (status === 201) {
+			history.push(`../project/${tmpProject._id}`);
+		}
+	}, [history, status, tmpProject._id]);
+
 	const handleOnKeyDown = e => {
 		if (isPressCtrlAndS(e)) {
 			e.preventDefault();
 			const { files, selectedFileId } = project;
 			if (files[selectedFileId].isEditing) {
+				if (user.username !== project.author) {
+					handleForkCoconut();
+					return;
+				}
+
 				handleRequestUpdateCode();
 				dispatchProject(saveFileActionCreator());
 			}
