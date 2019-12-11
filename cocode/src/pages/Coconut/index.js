@@ -41,6 +41,8 @@ function Coconut() {
 	);
 	const [isReadyToBuild, setIsReadyToBuild] = useState(false);
 
+	const [messageFromCocode, setMessageFromCocode] = useState(undefined);
+
 	/* Coconut Build Life cycle */
 	// Component did mount
 	const handleComponentDidMount = useCallback(() => {
@@ -61,6 +63,7 @@ function Coconut() {
 	const cleanUpComponent = useCallback(() => {
 		projectIDBConnection && projectIDBConnection.close();
 		dependencyIDBConnection && dependencyIDBConnection.close();
+
 		setProjectIDBConnection(undefined);
 		setDependencyIDBConnection(undefined);
 	}, [projectIDBConnection, dependencyIDBConnection]);
@@ -113,6 +116,11 @@ function Coconut() {
 	// After project data fetch
 	const handleProjectFetched = useCallback(() => {
 		if (!project) return;
+		if (messageFromCocode) {
+			setMessageFromCocode(undefined);
+			buildProject();
+			return;
+		}
 
 		const successHandler = connection => {
 			setDependencyIDBConnection(connection);
@@ -121,7 +129,7 @@ function Coconut() {
 			idbName: DEPENDENCY_IDBNAME,
 			successHandler
 		});
-	}, [project]);
+	}, [project, messageFromCocode]);
 
 	// Check dependency in IDB
 	const handleCheckDependency = useCallback(() => {
@@ -239,6 +247,32 @@ function Coconut() {
 		[project]
 	);
 
+	const handleMessageFromCocode = useCallback(() => {
+		if (!messageFromCocode) return;
+		const { command } = messageFromCocode;
+
+		const coconutActions = { updateFile };
+		coconutActions[command]();
+	}, [messageFromCocode]);
+
+	const updateFile = useCallback(() => {
+		const { files } = project;
+		const { fileId, file } = messageFromCocode;
+
+		const newProject = {
+			...project,
+			files: {
+				...files,
+				[fileId]: file
+			}
+		};
+
+		const cloneProjectAction = cloneProjectActionCreator({
+			project: newProject
+		});
+		dispatchProject(cloneProjectAction);
+	}, [project, messageFromCocode]);
+
 	useEffect(handleComponentDidMount, []);
 	useEffect(handleCheckProjectData, [projectIDBConnection]);
 	useEffect(handleFetchProjectResponse, [fetchProjectRequest]);
@@ -247,6 +281,8 @@ function Coconut() {
 	useEffect(handleInstallDependency, [needToInstallDependency]);
 	useEffect(handleInstallDependencyResponse, [dependencyRequest]);
 	useEffect(handleBuildProject, [isReadyToBuild]);
+
+	useEffect(handleMessageFromCocode, [messageFromCocode]);
 
 	return <div id="coconut-root"></div>;
 }

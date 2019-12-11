@@ -1,68 +1,40 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
+import { useParams } from 'react-router-dom';
 import * as Styled from './style';
-
-import * as bundler from 'bundler';
 
 import ProjectContext from 'contexts/ProjectContext';
 
-import { COCONUT_SERVER } from 'config';
-
 function BrowserV2({ ...props }) {
+	const { projectId } = useParams();
+
 	const { project } = useContext(ProjectContext);
-	const { files, root, dependencyInstalling } = project;
-	const [isChange, setIsChange] = useState(false);
-	const [errorDescription, setErrorDescription] = useState(null);
+	const { files, dependencyInstalling } = project;
+	const [isReadyToReceiveMessage, setIsReadyToReceiveMessage] = useState(
+		false
+	);
+	const iframeReference = useRef();
 
-	function fileParser(path, id) {
-		if (files[id].type !== 'directory') {
-			fileSystem[path] = {
-				contents: files[id].contents
-			};
-			delete exports[path];
-		} else if (files[id].child) {
-			files[id].child.forEach(id => {
-				const path = files[id].path;
-				fileParser(path, id);
-			});
-		}
-	}
-
-	const handleEndInstallDependency = () => {
-		if (!dependencyInstalling) setIsChange(true);
+	const handleUpdateFile = () => {
+		if (!isReadyToReceiveMessage) return;
+		const data = {
+			command: 'updateFile',
+			fileId: project.selectedFileId,
+			file: project.files[project.selectedFileId]
+		};
+		iframeReference.current.contentWindow.postMessage(data, '*');
 	};
 
-	const handleParsingProject = () => {
-		const rootPath = files[root].path;
-		if (project) fileParser(rootPath, project.root);
-		setIsChange(true);
-	};
-
-	const handleBuildProject = () => {
-		if (isChange) {
-			setIsChange(false);
-			// 1. save in IDB
-			// 2. postmessage to iframe
-			try {
-				bundler.init();
-				bundler.require('./index.js');
-				setErrorDescription(null);
-			} catch (error) {
-				setErrorDescription(error.stack);
-			}
-		}
-	};
-
-	useEffect(handleEndInstallDependency, [dependencyInstalling]);
-	useEffect(handleParsingProject, [files]);
-	useEffect(handleBuildProject, [isChange]);
+	useEffect(handleUpdateDependency, [dependencyInstalling]);
+	useEffect(handleUpdateFile, [files]);
 
 	return (
 		<Styled.Frame>
-			<Styled.ErrorDisplay errorDescription={errorDescription}>
-				<pre>{errorDescription}</pre>
-			</Styled.ErrorDisplay>
 			<Styled.BrowserV2
-				src={`${COCONUT_SERVER}/123`}
+				ref={iframeReference}
+				src={`/coconut/${projectId}`}
+				onLoad={() => {
+					setIsReadyToReceiveMessage(true);
+				}}
 				{...props}
 			></Styled.BrowserV2>
 		</Styled.Frame>
