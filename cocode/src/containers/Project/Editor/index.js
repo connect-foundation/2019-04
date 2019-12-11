@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import * as Styled from './style';
 
 import FileTabBar from 'components/Project/FileTabBar';
@@ -13,23 +13,20 @@ import {
 
 import useFetch from 'hooks/useFetch';
 import { updateFileAPICreator } from 'apis/File';
-import { forkProjectAPICreator } from 'apis/Project';
 
-import parseProject from './parseProject';
 import { isPressCtrlAndS } from 'utils/keyDownEvent';
 
 // Constatnts
 let timer;
 const DEBOUNCING_TIME = 1000;
 
-function Editor() {
-	const history = useHistory();
+function Editor({ handleForkCoconut }) {
 	const { user } = useContext(UserContext);
 	const { projectId } = useParams();
 	const { project, dispatchProject } = useContext(ProjectContext);
 	const [code, setCode] = useState(project.editingCode);
 	const [isEditorMounted, setIsEditorMounted] = useState(false);
-	const [{ status, data }, setRequest] = useFetch({});
+	const [_, setRequest] = useFetch({});
 
 	const [fileSelectFlag, setFileSelectFlag] = useState(undefined);
 	const { selectedFileId } = project;
@@ -50,21 +47,6 @@ function Editor() {
 		});
 		setRequest(updateFileAPI);
 	};
-
-	const handleForkCoconut = () => {
-		const parsingProject = parseProject(project, user);
-
-		const forkProjectInfoAPI = forkProjectAPICreator(parsingProject);
-		setRequest(forkProjectInfoAPI);
-
-		return project;
-	};
-
-	useEffect(() => {
-		if (status === 201) {
-			history.push(`../project/${data._id}`);
-		}
-	}, [status, data, history]);
 
 	const handleOnKeyDown = e => {
 		if (isPressCtrlAndS(e)) {

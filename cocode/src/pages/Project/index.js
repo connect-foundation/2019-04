@@ -21,6 +21,7 @@ import { reactTemplate } from 'template/react';
 import copyProject from 'template/copyProject';
 import { getProjectInfoAPICreator, forkProjectAPICreator } from 'apis/Project';
 import { LiveStore } from 'stores';
+import parseProject from 'pages/Project/parseProject';
 
 const DEFAULT_CLICKED_TAB_INDEX = 0;
 
@@ -28,12 +29,21 @@ function Project() {
 	const { user } = useContext(UserContext);
 	const history = useHistory();
 	const { projectId } = useParams();
-	const [{ data, loading, error }, setRequest] = useFetch({});
+	const [{ data, loading, error, status }, setRequest] = useFetch({});
 	const [isFetched, setIsFetched] = useState(false);
 	const [clickedTabIndex, setClickedTabIndex] = useState(
 		DEFAULT_CLICKED_TAB_INDEX
 	);
 	const [project, dispatchProject] = useReducer(ProjectReducer, {});
+
+	const handleForkCoconut = () => {
+		const parsingProject = parseProject(project, user);
+		const forkProjectInfoAPI = forkProjectAPICreator(parsingProject);
+		setRequest(forkProjectInfoAPI);
+
+		handleSetProjectState(parsingProject);
+		return project;
+	};
 
 	const handleFetchProject = () => {
 		if (projectId !== 'new') {
@@ -78,6 +88,10 @@ function Project() {
 		if (!isFetched) handleSetProjectState(data);
 	}, [data, isFetched]);
 
+	useEffect(() => {
+		if (status === 201) history.push(`../project/${data._id}`);
+	}, [data, history, status]);
+
 	// //TODO loading 컴포넌트 만들기
 	if (loading) return <p>Loading...</p>;
 	if (error) return <p>다시 시도해주세요.</p>;
@@ -102,7 +116,7 @@ function Project() {
 								split="vertical"
 								defaultSize="40vw"
 							>
-								<Editor />
+								<Editor handleForkCoconut={handleForkCoconut} />
 								<BrowserV2 id="coconut-root" />
 							</SplitPaneContainer>
 						</SplitPaneContainer>

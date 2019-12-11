@@ -1,10 +1,10 @@
 import ObjectID from 'bson-objectid';
 
-function copyProject(project, username) {
+function copyProject(project) {
 	const deepCopyProject = JSON.parse(JSON.stringify(project));
 
 	const idMap = objectIdMapping(deepCopyProject);
-	const projectInfo = setProjectInfo(idMap, deepCopyProject);
+	const projectInfo = updateProjectInfo(idMap, deepCopyProject);
 	const files = mappingNewIdAtProjectFiles(idMap, deepCopyProject);
 
 	return Object.assign(deepCopyProject, { ...projectInfo, files });
