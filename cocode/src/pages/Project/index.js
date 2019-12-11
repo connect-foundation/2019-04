@@ -37,11 +37,11 @@ function Project() {
 	const [project, dispatchProject] = useReducer(ProjectReducer, {});
 
 	const handleForkCoconut = () => {
-		const parsingProject = parseProject(project, user);
-		const forkProjectInfoAPI = forkProjectAPICreator(parsingProject);
+		const parsedProject = parseProject(project, user);
+		const forkProjectInfoAPI = forkProjectAPICreator(parsedProject);
 		setRequest(forkProjectInfoAPI);
 
-		handleSetProjectState(parsingProject);
+		handleSetProjectState(parsedProject);
 		return project;
 	};
 
@@ -62,21 +62,25 @@ function Project() {
 		setIsFetched(true);
 	};
 
-	useEffect(handleFetchProject, []);
+	const handleChangeHistoryAtForked = () => {
+		if (status !== 201) return;
 
-	useEffect(() => {
+		projectId !== 'new'
+			? history.push(`../project/${data._id}`)
+			: history.replace(`../project/${data._id}`);
+	};
+
+	const handleSetProject = () => {
 		if (!data) return;
 
 		if (!isFetched) handleSetProjectState(data);
-	}, [data, isFetched]);
+	};
 
-	useEffect(() => {
-		if (status === 201) {
-			projectId !== 'new'
-				? history.push(`../project/${data._id}`)
-				: history.replace(`../project/${data._id}`);
-		}
-	}, [data, history, projectId, status]);
+	useEffect(handleFetchProject, []);
+
+	useEffect(handleSetProject, [data, isFetched]);
+
+	useEffect(handleChangeHistoryAtForked, [data, history, projectId, status]);
 
 	// //TODO loading 컴포넌트 만들기
 	if (loading) return <p>Loading...</p>;

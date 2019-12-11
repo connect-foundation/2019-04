@@ -49,19 +49,19 @@ function Editor({ handleForkCoconut }) {
 	};
 
 	const handleOnKeyDown = e => {
-		if (isPressCtrlAndS(e)) {
-			e.preventDefault();
-			const { files, selectedFileId } = project;
-			if (files[selectedFileId].isEditing) {
-				if (user.username !== project.author) {
-					handleForkCoconut();
-					return;
-				}
+		if (!isPressCtrlAndS(e)) return;
 
-				handleRequestUpdateCode();
-				dispatchProject(saveFileActionCreator());
-			}
+		e.preventDefault();
+		const { files, selectedFileId } = project;
+		if (!files[selectedFileId].isEditing) return;
+
+		if (user.username !== project.author) {
+			handleForkCoconut();
+			return;
 		}
+
+		handleRequestUpdateCode();
+		dispatchProject(saveFileActionCreator());
 	};
 
 	const handleUpdateCode = () => {
@@ -78,9 +78,8 @@ function Editor({ handleForkCoconut }) {
 	useEffect(handleUpdateCode, [code]);
 	useEffect(handleChangedSelectedFile, [project.selectedFileId]);
 
-	const handleEditorDidMount = () => {
-		setIsEditorMounted(true);
-	};
+	const handleEditorDidMount = () => setIsEditorMounted(true);
+
 	return (
 		<Styled.Editor>
 			<FileTabBar />
