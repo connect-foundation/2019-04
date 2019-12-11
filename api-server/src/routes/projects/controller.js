@@ -61,7 +61,9 @@ async function forkProject(req, res) {
 			if (project) res.sendStatus(409);
 
 			Project.create(newProject).then(() => {
-				File.insertMany(files).then(() => res.sendStatus(201));
+				File.insertMany(files).then(() => {
+					res.status(201).send({ _id: newProject._id });
+				});
 			});
 		})
 		.catch(() => res.sendStatus(500));
