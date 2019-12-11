@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useReducer, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
+import * as Styled from './style';
 
 import ProjectReducer from 'reducers/ProjectReducer';
 
@@ -320,7 +321,12 @@ function Coconut() {
 
 	useEffect(handleMessageFromCocode, [messageFromCocode]);
 
-	return <div id="coconut-root"></div>;
+	return (
+		<>
+			<Styled.ResetStyle />
+			<div id="coconut-root" />
+		</>
+	);
 }
 
 export default Coconut;
