@@ -8,7 +8,8 @@ import {
 	DELETE_FILE,
 	MOVE_FILE,
 	INSTALL_DEPENDENCY,
-	WAITING_INSTALL_DEPENDENCY
+	WAITING_INSTALL_DEPENDENCY,
+	SAVE_FILE
 } from 'actions/types';
 
 import { getFileExtension } from 'utils';
@@ -31,7 +32,8 @@ const fetchProject = (_, { project }) => {
 	Object.assign(convertedFilesObject, {
 		[rootDirectoryId]: {
 			...filesObject[rootDirectoryId],
-			path: rootPath
+			path: rootPath,
+			isEditing: false
 		}
 	});
 
@@ -76,11 +78,14 @@ const updateCode = (state, { changedCode }) => {
 			...state.files,
 			[state.selectedFileId]: {
 				...state.files[state.selectedFileId],
-				contents: changedCode
+				contents: changedCode,
+				isEditing: true
 			}
 		}
+		// editingFiles : [...]
 	};
 };
+
 
 // Select file
 const selectFile = (state, { selectedFileId }) => {
@@ -254,6 +259,21 @@ function registerDependency(state, { moduleName, moduleVersion }) {
 	};
 }
 
+const saveFile = state => {
+	const { files, selectedFileId } = state;
+
+	return {
+		...state,
+		files: {
+			...state.files,
+			[selectedFileId]: {
+				...files[selectedFileId],
+				isEditing: false
+			}
+		}
+	};
+};
+
 function ProjectReducer(state, { type, payload }) {
 	const reducers = {
 		[FETCH_PROJECT]: fetchProject,
@@ -264,7 +284,8 @@ function ProjectReducer(state, { type, payload }) {
 		[DELETE_FILE]: deleteFile,
 		[MOVE_FILE]: moveFile,
 		[INSTALL_DEPENDENCY]: registerDependency,
-		[WAITING_INSTALL_DEPENDENCY]: waitingInstallDependency
+		[WAITING_INSTALL_DEPENDENCY]: waitingInstallDependency,
+		[SAVE_FILE]: saveFile
 	};
 
 	const reducer = reducers[type];

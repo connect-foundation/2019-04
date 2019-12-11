@@ -17,9 +17,11 @@ import { TAB_BAR_THEME } from 'constants/theme';
 
 import UserContext from 'contexts/UserContext';
 import useFetch from 'hooks/useFetch';
-import reactTemplate from 'template/objectIdMapper';
+import { reactTemplate } from 'template/react';
+import copyProject from 'template/copyProject';
 import { getProjectInfoAPICreator, forkProjectAPICreator } from 'apis/Project';
 import { LiveStore } from 'stores';
+import parseProject from 'pages/Project/parseProject';
 
 const DEFAULT_CLICKED_TAB_INDEX = 0;
 
@@ -27,12 +29,21 @@ function Project() {
 	const { user } = useContext(UserContext);
 	const history = useHistory();
 	const { projectId } = useParams();
-	const [{ data, loading, error }, setRequest] = useFetch({});
+	const [{ data, loading, error, status }, setRequest] = useFetch({});
 	const [isFetched, setIsFetched] = useState(false);
 	const [clickedTabIndex, setClickedTabIndex] = useState(
 		DEFAULT_CLICKED_TAB_INDEX
 	);
 	const [project, dispatchProject] = useReducer(ProjectReducer, {});
+
+	const handleForkCoconut = () => {
+		const parsedProject = parseProject(project, user);
+		const forkProjectInfoAPI = forkProjectAPICreator(parsedProject);
+		setRequest(forkProjectInfoAPI);
+
+		handleSetProjectState(parsedProject);
+		return project;
+	};
 
 	const handleFetchProject = () => {
 		if (projectId !== 'new') {
@@ -41,25 +52,8 @@ function Project() {
 			return;
 		}
 
-		const name = prompt('프로젝트 이름을 입력해주세요');
-		if (!name) {
-			history.goBack();
-			return;
-		}
-
-		const project = handleForkNewCoconut(name);
+		const project = copyProject(reactTemplate());
 		handleSetProjectState(project);
-		history.push(`../project/${project._id}`);
-	};
-
-	const handleForkNewCoconut = name => {
-		const project = reactTemplate();
-		project.name = name;
-		project.author = user.username;
-		const forkProjectInfoAPI = forkProjectAPICreator(project);
-		setRequest(forkProjectInfoAPI);
-
-		return project;
 	};
 
 	const handleSetProjectState = project => {
@@ -68,13 +62,25 @@ function Project() {
 		setIsFetched(true);
 	};
 
-	useEffect(handleFetchProject, []);
+	const handleChangeHistoryAtForked = () => {
+		if (status !== 201) return;
 
-	useEffect(() => {
+		projectId !== 'new'
+			? history.push(`../project/${data._id}`)
+			: history.replace(`../project/${data._id}`);
+	};
+
+	const handleSetProject = () => {
 		if (!data) return;
 
 		if (!isFetched) handleSetProjectState(data);
-	}, [data]);
+	};
+
+	useEffect(handleFetchProject, []);
+
+	useEffect(handleSetProject, [data, isFetched]);
+
+	useEffect(handleChangeHistoryAtForked, [data, history, projectId, status]);
 
 	// //TODO loading 컴포넌트 만들기
 	if (loading) return <p>Loading...</p>;
@@ -100,7 +106,7 @@ function Project() {
 								split="vertical"
 								defaultSize="40vw"
 							>
-								<Editor />
+								<Editor handleForkCoconut={handleForkCoconut} />
 								<BrowserV2 id="coconut-root" />
 							</SplitPaneContainer>
 						</SplitPaneContainer>
