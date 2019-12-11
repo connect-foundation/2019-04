@@ -29,8 +29,7 @@ function Editor() {
 	const { project, dispatchProject } = useContext(ProjectContext);
 	const [code, setCode] = useState(project.editingCode);
 	const [isEditorMounted, setIsEditorMounted] = useState(false);
-	const [{ status }, setRequest] = useFetch({});
-	const [tmpProject, setProject] = useState(false);
+	const [{ status, data }, setRequest] = useFetch({});
 
 	const [fileSelectFlag, setFileSelectFlag] = useState(undefined);
 	const { selectedFileId } = project;
@@ -55,7 +54,6 @@ function Editor() {
 	const handleForkCoconut = () => {
 		const parsingProject = parseProject(project, user);
 
-		setProject(parsingProject);
 		const forkProjectInfoAPI = forkProjectAPICreator(parsingProject);
 		setRequest(forkProjectInfoAPI);
 
@@ -64,9 +62,9 @@ function Editor() {
 
 	useEffect(() => {
 		if (status === 201) {
-			history.push(`../project/${tmpProject._id}`);
+			history.push(`../project/${data._id}`);
 		}
-	}, [history, status, tmpProject._id]);
+	}, [status, data, history]);
 
 	const handleOnKeyDown = e => {
 		if (isPressCtrlAndS(e)) {
