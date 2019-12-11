@@ -164,6 +164,7 @@ function Coconut() {
 		if (!needToInstallDependency) return;
 		if (needToInstallDependency.length === 0) {
 			setIsReadyToBuild(true);
+			setNeedToInstallDependency(undefined);
 			return;
 		}
 
@@ -226,6 +227,8 @@ function Coconut() {
 		} catch (error) {
 			console.log(error);
 		}
+
+		setIsReadyToBuild(false);
 	}, [project]);
 
 	const fileParser = useCallback(
@@ -251,7 +254,7 @@ function Coconut() {
 		if (!messageFromCocode) return;
 		const { command } = messageFromCocode;
 
-		const coconutActions = { updateFile };
+		const coconutActions = { updateFile, installDependency };
 		coconutActions[command]();
 	}, [messageFromCocode]);
 
@@ -271,7 +274,40 @@ function Coconut() {
 			project: newProject
 		});
 		dispatchProject(cloneProjectAction);
+
+		window.parent.postMessage('updateFile', '*');
 	}, [project, messageFromCocode]);
+
+	const installDependency = useCallback(() => {
+		const { dependency } = messageFromCocode;
+
+		const successHandler = result => {
+			const { installed, needToInstall } = result;
+
+			Object.entries(installed).forEach(([_, value]) => {
+				Object.entries(value).forEach(([key, value]) => {
+					fileSystem[key] = value;
+				});
+			});
+
+			const data = {
+				command: 'installDependency',
+				dependency
+			};
+			window.parent.postMessage(data, '*');
+			setNeedToInstallDependency(needToInstall);
+		};
+
+		const filterKeys = Object.values({
+			dependency
+		}).map(({ name, version }) => JSON.stringify([name, version]));
+
+		getDataFilterByKeys({
+			idbConnection: dependencyIDBConnection,
+			filterKeys,
+			successHandler
+		});
+	}, [messageFromCocode]);
 
 	useEffect(handleComponentDidMount, []);
 	useEffect(handleCheckProjectData, [projectIDBConnection]);

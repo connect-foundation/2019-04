@@ -15,6 +15,8 @@ import {
 import { getFileExtension } from 'utils';
 import FileImagesSrc from 'constants/fileImagesSrc';
 
+import getUpdatedPackageJSON from 'pages/Project/getUpdatedPackageJSON';
+
 // Fetch project
 const fetchProject = (_, { project }) => {
 	const filesObject = project.files.reduce((acc, cur) => {
@@ -244,19 +246,32 @@ const moveFile = (state, { directoryId, fileId }) => {
 	};
 };
 
-function waitingInstallDependency(state) {
+function waitingInstallDependency(state, { moduleName, moduleVersion }) {
 	return {
 		...state,
-		dependency: {
-			...state.dependency
-		},
-		dependencyInstalling: true
+		dependencyInstalling: { name: moduleName, version: moduleVersion }
 	};
 }
 
 function registerDependency(state, { moduleName, moduleVersion }) {
+	const { newPackageJSONContents, packageJSONFileId } = getUpdatedPackageJSON(
+		state.files,
+		state.root,
+		{
+			name: moduleName,
+			version: moduleVersion
+		}
+	);
+
 	return {
 		...state,
+		files: {
+			...state.files,
+			[packageJSONFileId]: {
+				...state.files[packageJSONFileId],
+				contents: newPackageJSONContents
+			}
+		},
 		dependency: {
 			...state.dependency,
 			[moduleName]: {

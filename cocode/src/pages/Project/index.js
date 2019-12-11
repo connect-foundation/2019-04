@@ -96,7 +96,7 @@ function Project() {
 						<TabContainer />
 						<SplitPaneContainer split="vertical" defaultSize="40vw">
 							<Editor />
-							<BrowserV2 id="coconut-root" />
+							<BrowserV2 />
 						</SplitPaneContainer>
 					</SplitPaneContainer>
 				</Styled.Main>
