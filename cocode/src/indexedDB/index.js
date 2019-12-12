@@ -1,7 +1,7 @@
 const NOT_SUPPORT_WARNING =
 	'이 브라우저에서는 지원하지 않습니다. 크롬으로 접속해주세요!';
 const IDB_PERMISSION_WARNING = 'DB 생성 권한이 없습니다.';
-const HANDLE_INDEXEDDB_ERROR = 'Fail: hadndle indexdb';
+const HANDLE_INDEXEDDB_ERROR = 'Fail: handle indexdb';
 
 function checkSupportBrowser() {
 	if (window.indexedDB) return true;

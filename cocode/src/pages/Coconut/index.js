@@ -245,7 +245,6 @@ function Coconut() {
 		try {
 			bundler.init();
 			const code = bundler.require('./index.js');
-			console.log(exports);
 			eval(code);
 
 			setBuildState(undefined);
