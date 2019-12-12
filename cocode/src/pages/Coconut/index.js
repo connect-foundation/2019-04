@@ -177,7 +177,7 @@ function Coconut() {
 	// After check dependency : install dependency from server
 	const handleInstallDependency = useCallback(() => {
 		if (!needToInstallDependency) return;
-		if (needToInstallDependency.length === 0) {
+		if (!needToInstallDependency.length) {
 			setIsReadyToBuild(true);
 			setNeedToInstallDependency(undefined);
 			return;
@@ -202,7 +202,7 @@ function Coconut() {
 
 		if (!data) return;
 
-		const key = needToInstallDependency[0];
+		const [key] = needToInstallDependency;
 		updateDependencyToIDB(key, data);
 
 		Object.entries(data).forEach(([key, value]) => {

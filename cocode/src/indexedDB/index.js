@@ -27,13 +27,13 @@ function connectToIDB({
 		request.onsuccess = () => resolve(request);
 		request.onerror = () => reject(IDB_PERMISSION_WARNING);
 	})
-		.then(({ result }) => {
-			const connnection = result;
-			connnection.onerror = ({ target }) =>
-				console.log(`Database error: ${target.errorCode}`);
-			successHandler(connnection);
-		})
-		.catch(failHandler);
+	.then(({ result }) => {
+		const connnection = result;
+		connnection.onerror = ({ target }) =>
+			console.log(`Database error: ${target.errorCode}`);
+		successHandler(connnection);
+	})
+	.catch(failHandler);
 }
 
 function getData({
@@ -55,8 +55,8 @@ function getData({
 		request.onsuccess = ({ target }) => resolve(target.result);
 		request.onerror = () => reject(true);
 	})
-		.then(result => successHandler(result))
-		.catch(failHandler);
+	.then(result => successHandler(result))
+	.catch(failHandler);
 }
 
 function updateData({
@@ -79,8 +79,8 @@ function updateData({
 
 		request.onerror = () => reject(true);
 	})
-		.then(result => successHandler(result))
-		.catch(failHandler);
+	.then(result => successHandler(result))
+	.catch(failHandler);
 }
 
 function removeData({
@@ -102,8 +102,8 @@ function removeData({
 
 		request.onerror = () => reject(true);
 	})
-		.then(result => successHandler(result))
-		.catch(failHandler);
+	.then(result => successHandler(result))
+	.catch(failHandler);
 }
 
 function getDataFilterByKeys({
@@ -142,8 +142,8 @@ function getDataFilterByKeys({
 		};
 		cursorRequest.onerror = () => reject(true);
 	})
-		.then(result => successHandler(result))
-		.catch(failHandler);
+	.then(result => successHandler(result))
+	.catch(failHandler);
 }
 
 export {
