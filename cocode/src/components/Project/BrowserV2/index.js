@@ -2,6 +2,8 @@ import React, { useState, useEffect, useContext, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import * as Styled from './style';
 
+import CoconutSpinner from 'components/Common/CoconutSpinner';
+
 import ProjectContext from 'contexts/ProjectContext';
 
 import { installDependencyActionCreator } from 'actions/Project';
@@ -16,6 +18,7 @@ import getUpdatedPackageJSON from 'pages/Project/getUpdatedPackageJSON';
 const MIN_WAIT_TIME = 1500;
 const UPDATE_CODE = 'updateFile';
 const INSTALL_DEPENDENCY = 'installDependency';
+const BUILD_END = 'buildEnd';
 
 function BrowserV2({ ...props }) {
 	const { projectId } = useParams();
@@ -26,6 +29,7 @@ function BrowserV2({ ...props }) {
 		false
 	);
 	const [dependency, setDependency] = useState(undefined);
+	const [isBuildingCoconut, setIsBuildingCoconut] = useState(true);
 	const iframeReference = useRef();
 
 	const { files, root, dependencyInstalling } = project;
@@ -36,6 +40,11 @@ function BrowserV2({ ...props }) {
 
 	const receiveMsgFromChild = e => {
 		const { command } = e.data;
+
+		if (command === BUILD_END) {
+			setIsBuildingCoconut(false);
+			return;
+		}
 
 		if (command !== INSTALL_DEPENDENCY) return;
 
@@ -107,6 +116,12 @@ function BrowserV2({ ...props }) {
 
 	return (
 		<Styled.Frame>
+			{isBuildingCoconut && (
+				<Styled.LoadingOverlay>
+					<CoconutSpinner />
+					<p>Please wait to build complete...</p>
+				</Styled.LoadingOverlay>
+			)}
 			<Styled.BrowserV2
 				ref={iframeReference}
 				src={`/coconut/${projectId}`}

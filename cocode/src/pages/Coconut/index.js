@@ -2,6 +2,9 @@ import React, { useState, useEffect, useReducer, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import * as Styled from './style';
 
+import CoconutSpinner from 'components/Common/CoconutSpinner';
+import Logo from 'components/Common/Logo';
+
 import ProjectReducer from 'reducers/ProjectReducer';
 
 import * as bundler from 'bundler';
@@ -27,6 +30,11 @@ import {
 const COCONUT_IDBNAME = 'Coconut';
 const DEPENDENCY_IDBNAME = 'Dependency';
 
+const initilaBuildState = {
+	state: 'loading',
+	description: 'Please wait to build complete...'
+};
+
 function Coconut() {
 	const { projectId } = useParams();
 
@@ -43,6 +51,8 @@ function Coconut() {
 	const [isReadyToBuild, setIsReadyToBuild] = useState(false);
 
 	const [messageFromCocode, setMessageFromCocode] = useState(undefined);
+
+	const [buildState, setBuildState] = useState(initilaBuildState);
 
 	/* Coconut Build Life cycle */
 	// Component did mount
@@ -104,7 +114,11 @@ function Coconut() {
 	const handleFetchProjectResponse = useCallback(() => {
 		const { data, error } = fetchProjectRequest;
 		if (error) {
-			console.log('error: fail to fetch project');
+			window.parent.postMessage({ command: 'buildEnd' }, '*');
+			setBuildState({
+				state: 'error',
+				description: 'Error: fail to fetch project'
+			});
 			return;
 		}
 
@@ -178,7 +192,11 @@ function Coconut() {
 	const handleInstallDependencyResponse = useCallback(() => {
 		const { data, error } = dependencyRequest;
 		if (error) {
-			console.log('error: fail to install dependency');
+			window.parent.postMessage({ command: 'buildEnd' }, '*');
+			setBuildState({
+				state: 'error',
+				description: 'Error: fail to install dependency'
+			});
 			return;
 		}
 
@@ -213,10 +231,12 @@ function Coconut() {
 	// Build project
 	const handleBuildProject = useCallback(() => {
 		if (!isReadyToBuild) return;
+
 		buildProject();
 	}, [isReadyToBuild]);
 
 	const buildProject = useCallback(() => {
+		setBuildState(initilaBuildState);
 		const { files, root } = project;
 
 		const rootPath = files[root].path;
@@ -224,11 +244,19 @@ function Coconut() {
 
 		try {
 			bundler.init();
-			bundler.require('./index.js');
+			const code = bundler.require('./index.js');
+			console.log(exports);
+			eval(code);
+
+			setBuildState(undefined);
 		} catch (error) {
-			console.log(error);
+			setBuildState({
+				state: 'build error',
+				description: error.stack
+			});
 		}
 
+		window.parent.postMessage({ command: 'buildEnd' }, '*');
 		setIsReadyToBuild(false);
 	}, [project]);
 
@@ -276,7 +304,7 @@ function Coconut() {
 		});
 		dispatchProject(cloneProjectAction);
 
-		window.parent.postMessage('updateFile', '*');
+		window.parent.postMessage({ command: 'buildEnd' }, '*');
 	}, [project, messageFromCocode]);
 
 	const installDependency = useCallback(() => {
@@ -324,6 +352,13 @@ function Coconut() {
 	return (
 		<>
 			<Styled.ResetStyle />
+			{buildState && (
+				<Styled.BuildStateOverlay>
+					{buildState.state === 'loading' && <CoconutSpinner />}
+					{buildState.state === 'error' && <Logo />}
+					<p className="Is-build-error">{buildState.description}</p>
+				</Styled.BuildStateOverlay>
+			)}
 			<div id="coconut-root" />
 		</>
 	);

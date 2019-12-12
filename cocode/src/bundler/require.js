@@ -39,7 +39,10 @@ function require(path) {
 		result = eval(executeCodeTemplate(code));
 	} catch (error) {
 		while (stackLength < pathStack.length) pathStack.pop();
-		result = eval(code);
+		if (path === './index.js') {
+			return executeCodeTemplate(code);
+		}
+		result = eval(executeCodeTemplate(code));
 	}
 
 	exports[newPath] = result;
