@@ -9,11 +9,14 @@ import {
 	MOVE_FILE,
 	INSTALL_DEPENDENCY,
 	WAITING_INSTALL_DEPENDENCY,
+	CLONE_PROJECT,
 	SAVE_FILE
 } from 'actions/types';
 
 import { getFileExtension } from 'utils';
 import FileImagesSrc from 'constants/fileImagesSrc';
+
+import getUpdatedPackageJSON from 'pages/Project/getUpdatedPackageJSON';
 
 // Fetch project
 const fetchProject = (_, { project }) => {
@@ -38,12 +41,13 @@ const fetchProject = (_, { project }) => {
 	});
 
 	const entryId = project.entry;
+	const dependency = getDependencyList(convertedFilesObject, project.root);
 	const fetchedProject = {
 		...project,
 		files: convertedFilesObject,
 		selectedFileId: entryId,
 		editingCode: convertedFilesObject[entryId].contents,
-		dependency: {},
+		dependency,
 		dependencyInstalling: false
 	};
 
@@ -68,6 +72,18 @@ function addParentIdToFiles(prePath, filesObject, directoryId) {
 
 		return { ...files, ...thisFile, ...child };
 	}, result);
+}
+
+function getDependencyList(files, root) {
+	const childOfRoot = files[root].child;
+	const packageJSON = childOfRoot
+		.map(id => files[id])
+		.filter(({ name }) => name === 'package.json')[0].contents;
+	const dependencies = JSON.parse(packageJSON).dependencies;
+
+	return Object.entries(dependencies).reduce((acc, [key, value]) => {
+		return { ...acc, [key]: { name: key, version: value } };
+	}, {});
 }
 
 // Update code
@@ -235,19 +251,32 @@ const moveFile = (state, { directoryId, fileId }) => {
 	};
 };
 
-function waitingInstallDependency(state) {
+function waitingInstallDependency(state, { moduleName, moduleVersion }) {
 	return {
 		...state,
-		dependency: {
-			...state.dependency
-		},
-		dependencyInstalling: true
+		dependencyInstalling: { name: moduleName, version: moduleVersion }
 	};
 }
 
 function registerDependency(state, { moduleName, moduleVersion }) {
+	const { newPackageJSONContents, packageJSONFileId } = getUpdatedPackageJSON(
+		state.files,
+		state.root,
+		{
+			name: moduleName,
+			version: moduleVersion
+		}
+	);
+
 	return {
 		...state,
+		files: {
+			...state.files,
+			[packageJSONFileId]: {
+				...state.files[packageJSONFileId],
+				contents: newPackageJSONContents
+			}
+		},
 		dependency: {
 			...state.dependency,
 			[moduleName]: {
@@ -257,6 +286,10 @@ function registerDependency(state, { moduleName, moduleVersion }) {
 		},
 		dependencyInstalling: false
 	};
+}
+
+function cloneProject(_, { project }) {
+	return project;
 }
 
 const saveFile = state => {
@@ -285,6 +318,7 @@ function ProjectReducer(state, { type, payload }) {
 		[MOVE_FILE]: moveFile,
 		[INSTALL_DEPENDENCY]: registerDependency,
 		[WAITING_INSTALL_DEPENDENCY]: waitingInstallDependency,
+		[CLONE_PROJECT]: cloneProject,
 		[SAVE_FILE]: saveFile
 	};
 

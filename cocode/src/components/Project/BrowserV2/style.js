@@ -24,7 +24,7 @@ const ErrorDisplay = styled.div`
 	}
 `;
 
-const BrowserV2 = styled.div`
+const BrowserV2 = styled.iframe`
 	& {
 		position: absolute;
 
@@ -32,8 +32,33 @@ const BrowserV2 = styled.div`
 		width: 100%;
 
 		background-color: white;
-		color: black;
 	}
 `;
 
-export { Frame, ErrorDisplay, BrowserV2 };
+const LoadingOverlay = styled.section`
+	& {
+		position: fixed;
+		top: 12vh;
+		left: 0;
+		z-index: 100;
+
+		height: 100vh;
+		width: 100vw;
+
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+
+		background-color: black;
+
+		p {
+			margin-top: 2rem;
+
+			font-size: 3rem;
+			font-weight: lighter;
+		}
+	}
+`;
+
+export { Frame, ErrorDisplay, BrowserV2, LoadingOverlay };

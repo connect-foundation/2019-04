@@ -107,7 +107,7 @@ function Project() {
 								defaultSize="40vw"
 							>
 								<Editor handleForkCoconut={handleForkCoconut} />
-								<BrowserV2 id="coconut-root" />
+								<BrowserV2 />
 							</SplitPaneContainer>
 						</SplitPaneContainer>
 					</Styled.Main>

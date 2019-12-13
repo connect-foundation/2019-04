@@ -1,63 +1,135 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
+import { useParams } from 'react-router-dom';
 import * as Styled from './style';
 
-import * as bundler from 'bundler';
+import CoconutSpinner from 'components/Common/CoconutSpinner';
 
 import ProjectContext from 'contexts/ProjectContext';
 
+import { installDependencyActionCreator } from 'actions/Project';
+
+import { updateFileAPICreator } from 'apis/File';
+
+import useFetch from 'hooks/useFetch';
+
+import getUpdatedPackageJSON from 'pages/Project/getUpdatedPackageJSON';
+
+// Constants
+const MIN_WAIT_TIME = 1500;
+const UPDATE_CODE = 'updateFile';
+const INSTALL_DEPENDENCY = 'installDependency';
+const BUILD_END = 'buildEnd';
+
 function BrowserV2({ ...props }) {
-	const { project } = useContext(ProjectContext);
+	const { projectId } = useParams();
+
+	const { project, dispatchProject } = useContext(ProjectContext);
+	const [{ data, error }, setRequest] = useFetch({});
+	const [isReadyToReceiveMessage, setIsReadyToReceiveMessage] = useState(
+		false
+	);
+	const [dependency, setDependency] = useState(undefined);
+	const [isBuildingCoconut, setIsBuildingCoconut] = useState(true);
+	const iframeReference = useRef();
+
 	const { files, root, dependencyInstalling } = project;
-	const [isChange, setIsChange] = useState(false);
-	const [errorDescription, setErrorDescription] = useState(null);
 
-	function fileParser(path, id) {
-		if (files[id].type !== 'directory') {
-			fileSystem[path] = {
-				contents: files[id].contents
-			};
-			delete exports[path];
-		} else if (files[id].child) {
-			files[id].child.forEach(id => {
-				const path = files[id].path;
-				fileParser(path, id);
-			});
+	const handleComponentDidMount = () => {
+		window.addEventListener('message', receiveMsgFromChild);
+	};
+
+	const receiveMsgFromChild = e => {
+		const { command } = e.data;
+
+		if (command === BUILD_END) {
+			setIsBuildingCoconut(false);
+			return;
 		}
-	}
 
-	const handleEndInstallDependency = () => {
-		if (!dependencyInstalling) setIsChange(true);
-	};
+		if (command !== INSTALL_DEPENDENCY) return;
 
-	const handleParsingProject = () => {
-		const rootPath = files[root].path;
-		if (project) fileParser(rootPath, project.root);
-		setIsChange(true);
-	};
+		const { dependency } = e.data;
 
-	const handleBuildProject = () => {
-		if (isChange) {
-			setIsChange(false);
-			try {
-				bundler.init();
-				bundler.require('./index.js');
-				setErrorDescription(null);
-			} catch (error) {
-				setErrorDescription(error.stack);
+		const {
+			newPackageJSONContents,
+			packageJSONFileId
+		} = getUpdatedPackageJSON(files, root, dependency);
+
+		const updateFileAPI = updateFileAPICreator(
+			projectId,
+			packageJSONFileId,
+			{
+				contents: newPackageJSONContents
 			}
-		}
+		);
+		setRequest(updateFileAPI);
+		setDependency(dependency);
 	};
 
-	useEffect(handleEndInstallDependency, [dependencyInstalling]);
-	useEffect(handleParsingProject, [files]);
-	useEffect(handleBuildProject, [isChange]);
+	const handleUpdateDependency = () => {
+		if (!isReadyToReceiveMessage) return;
+		if (!dependencyInstalling) return;
+
+		const dependency = dependencyInstalling;
+		const data = {
+			command: INSTALL_DEPENDENCY,
+			dependency
+		};
+		iframeReference.current.contentWindow.postMessage(data, '*');
+	};
+
+	const handleUpdateFile = () => {
+		if (!isReadyToReceiveMessage) return;
+		const data = {
+			command: UPDATE_CODE,
+			fileId: project.selectedFileId,
+			file: project.files[project.selectedFileId]
+		};
+		iframeReference.current.contentWindow.postMessage(data, '*');
+	};
+
+	const handleSuccessResponse = () => {
+		if (!data) return;
+
+		setDependency(undefined);
+
+		setTimeout(() => {
+			const installDependencyAction = installDependencyActionCreator({
+				moduleName: dependency.name,
+				moduleVersion: dependency.version
+			});
+			dispatchProject(installDependencyAction);
+		}, MIN_WAIT_TIME);
+	};
+
+	const handleErrorResponse = () => {
+		if (!error) return;
+		console.log('error: update package json');
+	};
+
+	useEffect(handleComponentDidMount, []);
+	useEffect(handleUpdateDependency, [dependencyInstalling]);
+	useEffect(handleUpdateFile, [files]);
+
+	useEffect(handleSuccessResponse, [data]);
+	useEffect(handleErrorResponse, [error]);
 
 	return (
 		<Styled.Frame>
-			<Styled.ErrorDisplay errorDescription={errorDescription}>
-				<pre>{errorDescription}</pre>
-			</Styled.ErrorDisplay>
-			<Styled.BrowserV2 {...props}></Styled.BrowserV2>
+			{isBuildingCoconut && (
+				<Styled.LoadingOverlay>
+					<CoconutSpinner />
+					<p>Please wait to build complete...</p>
+				</Styled.LoadingOverlay>
+			)}
+			<Styled.BrowserV2
+				ref={iframeReference}
+				src={`/coconut/${projectId}`}
+				onLoad={() => {
+					setIsReadyToReceiveMessage(true);
+				}}
+				{...props}
+			></Styled.BrowserV2>
 		</Styled.Frame>
 	);
 }
