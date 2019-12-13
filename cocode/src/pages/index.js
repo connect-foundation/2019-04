@@ -6,4 +6,4 @@ import Version1 from './Version1';
 import Coconut from './Coconut';
 import NotFound from './NotFound';
 
-export { Home, DashBoard, Project, History, Version1, Coconut, NotFoun };
+export { Home, DashBoard, Project, History, Version1, Coconut, NotFound };

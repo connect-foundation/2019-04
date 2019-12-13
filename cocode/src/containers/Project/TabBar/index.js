@@ -16,10 +16,10 @@ function TabBar({ theme }) {
 	const handleSetClickedIndex = index => setClickedTabIndex(index);
 
 	const tabIcons = [
-		{
-			name: 'info',
-			icon: Info,
-		},
+		// {
+		// 	name: 'info',
+		// 	icon: Info,
+		// },
 		{
 			name: 'explorer',
 			icon: Explorer
@@ -27,11 +27,11 @@ function TabBar({ theme }) {
 		{
 			name: 'dependency',
 			icon: Dependency
-		},
-		{
-			name: 'live',
-			icon: Live,
 		}
+		// {
+		// 	name: 'live',
+		// 	icon: Live,
+		// }
 	];
 
 	return (
