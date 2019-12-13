@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useContext, useRef } from 'react';
+import React, {
+	useState,
+	useEffect,
+	useContext,
+	useRef,
+	useCallback
+} from 'react';
 import { useParams } from 'react-router-dom';
 import * as Styled from './style';
 
@@ -19,6 +25,7 @@ const MIN_WAIT_TIME = 1500;
 const UPDATE_CODE = 'updateFile';
 const INSTALL_DEPENDENCY = 'installDependency';
 const BUILD_END = 'buildEnd';
+const NEW_PROJECT = 'newProject';
 
 function BrowserV2({ ...props }) {
 	const { projectId } = useParams();
@@ -80,11 +87,13 @@ function BrowserV2({ ...props }) {
 
 	const handleUpdateFile = () => {
 		if (!isReadyToReceiveMessage) return;
+
 		const data = {
 			command: UPDATE_CODE,
 			fileId: project.selectedFileId,
 			file: project.files[project.selectedFileId]
 		};
+
 		iframeReference.current.contentWindow.postMessage(data, '*');
 	};
 
@@ -107,6 +116,19 @@ function BrowserV2({ ...props }) {
 		console.log('error: update package json');
 	};
 
+	const handleIframeOnLoad = useCallback(() => {
+		setIsReadyToReceiveMessage(true);
+
+		if (projectId === 'new') {
+			const data = {
+				command: NEW_PROJECT,
+				project
+			};
+
+			iframeReference.current.contentWindow.postMessage(data, '*');
+		}
+	}, [project]);
+
 	useEffect(handleComponentDidMount, []);
 	useEffect(handleUpdateDependency, [dependencyInstalling]);
 	useEffect(handleUpdateFile, [files]);
@@ -125,9 +147,7 @@ function BrowserV2({ ...props }) {
 			<Styled.BrowserV2
 				ref={iframeReference}
 				src={`/coconut/${projectId}`}
-				onLoad={() => {
-					setIsReadyToReceiveMessage(true);
-				}}
+				onLoad={handleIframeOnLoad}
 				{...props}
 			></Styled.BrowserV2>
 		</Styled.Frame>
