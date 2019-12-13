@@ -18,7 +18,7 @@ import { isPressCtrlAndS } from 'utils/keyDownEvent';
 
 // Constatnts
 let timer;
-const DEBOUNCING_TIME = 1000;
+const DEBOUNCING_TIME = 800;
 
 function Editor({ handleForkCoconut }) {
 	const { user } = useContext(UserContext);
@@ -34,7 +34,9 @@ function Editor({ handleForkCoconut }) {
 	const handleOnChangeCodeInMonaco = (_, changedCode) => {
 		if (timer) clearTimeout(timer);
 
-		timer = setTimeout(setCode(changedCode), DEBOUNCING_TIME);
+		timer = setTimeout(() => {
+			setCode(changedCode);
+		}, DEBOUNCING_TIME);
 	};
 
 	const handleChangedSelectedFile = () => setCode(project.editingCode);

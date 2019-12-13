@@ -27,6 +27,9 @@ import {
 	cloneProjectActionCreator
 } from 'actions/Project';
 
+import { reactTemplate } from 'template/react';
+import copyProject from 'template/copyProject';
+
 const COCONUT_IDBNAME = 'Coconut';
 const DEPENDENCY_IDBNAME = 'Dependency';
 
@@ -87,6 +90,9 @@ function Coconut() {
 	// Check project data in IDB
 	const handleCheckProjectData = useCallback(() => {
 		if (!projectIDBConnection) return;
+		if (projectId === 'new') {
+			return;
+		}
 
 		const successHandler = result => {
 			if (!result) {
@@ -131,7 +137,7 @@ function Coconut() {
 	// After project data fetch
 	const handleProjectFetched = useCallback(() => {
 		if (!project) return;
-		if (messageFromCocode) {
+		if (messageFromCocode && messageFromCocode.command !== 'newProject') {
 			setMessageFromCocode(undefined);
 			buildProject();
 			return;
@@ -231,7 +237,6 @@ function Coconut() {
 	// Build project
 	const handleBuildProject = useCallback(() => {
 		if (!isReadyToBuild) return;
-
 		buildProject();
 	}, [isReadyToBuild]);
 
@@ -282,7 +287,7 @@ function Coconut() {
 		if (!messageFromCocode) return;
 		const { command } = messageFromCocode;
 
-		const coconutActions = { updateFile, installDependency };
+		const coconutActions = { updateFile, installDependency, newProject };
 		coconutActions[command]();
 	}, [messageFromCocode]);
 
@@ -336,6 +341,15 @@ function Coconut() {
 			successHandler
 		});
 	}, [messageFromCocode]);
+
+	const newProject = useCallback(() => {
+		if (project) return;
+
+		const cloneProjectAction = cloneProjectActionCreator({
+			project: messageFromCocode.project
+		});
+		dispatchProject(cloneProjectAction);
+	}, [project, messageFromCocode]);
 
 	useEffect(handleComponentDidMount, []);
 	useEffect(handleCheckProjectData, [projectIDBConnection]);
