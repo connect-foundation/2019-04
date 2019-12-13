@@ -137,7 +137,10 @@ function Coconut() {
 	// After project data fetch
 	const handleProjectFetched = useCallback(() => {
 		if (!project) return;
-		if (messageFromCocode && messageFromCocode.command !== 'newProject') {
+		if (
+			messageFromCocode &&
+			messageFromCocode.command !== 'createNewProject'
+		) {
 			setMessageFromCocode(undefined);
 			buildProject();
 			return;
@@ -249,6 +252,7 @@ function Coconut() {
 
 		try {
 			bundler.init();
+			self.require = bundler.require;
 			const code = bundler.require('./index.js');
 			eval(code);
 
