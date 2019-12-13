@@ -175,6 +175,7 @@ function File({
 				onFocus={selectAllTextAboutFocusedDom}
 				onBlur={handleEditFileNameEnd}
 				onKeyDown={handleKeyDown}
+				isEditing={files[_id].isEditing}
 			>
 				{fileName}
 			</Styled.NameEdit>

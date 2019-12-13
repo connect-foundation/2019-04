@@ -25,7 +25,7 @@ const MIN_WAIT_TIME = 1500;
 const UPDATE_CODE = 'updateFile';
 const INSTALL_DEPENDENCY = 'installDependency';
 const BUILD_END = 'buildEnd';
-const NEW_PROJECT = 'newProject';
+const CREATE_NEW_PROJECT = 'createNewProject';
 
 function BrowserV2({ ...props }) {
 	const { projectId } = useParams();
@@ -121,7 +121,7 @@ function BrowserV2({ ...props }) {
 
 		if (projectId === 'new') {
 			const data = {
-				command: NEW_PROJECT,
+				command: CREATE_NEW_PROJECT,
 				project
 			};
 

@@ -285,10 +285,14 @@ function Coconut() {
 
 	const handleMessageFromCocode = useCallback(() => {
 		if (!messageFromCocode) return;
-		const { command } = messageFromCocode;
 
-		const coconutActions = { updateFile, installDependency, newProject };
-		coconutActions[command]();
+		const { command } = messageFromCocode;
+		const coconutActions = {
+			updateFile,
+			installDependency,
+			createNewProject
+		};
+		coconutActions[command] && coconutActions[command]();
 	}, [messageFromCocode]);
 
 	const updateFile = useCallback(() => {
@@ -342,7 +346,7 @@ function Coconut() {
 		});
 	}, [messageFromCocode]);
 
-	const newProject = useCallback(() => {
+	const createNewProject = useCallback(() => {
 		if (project) return;
 
 		const cloneProjectAction = cloneProjectActionCreator({
