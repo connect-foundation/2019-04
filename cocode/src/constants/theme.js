@@ -68,6 +68,7 @@ const EXPLORER_TAB_CONTAINER_THEME = {
 
 	explorerTabContainerFileBGColor: 'transparent',
 	explorerTabContainerFileTextColor: '#878788',
+	explorerTabContainerEditedFileTextColor: '#c78e00',
 	explorerTabContainerFileHoverTextColor: '#fff',
 	explorerTabContainerFileHoverBGColor: '#2accf944',
 	explorerTabContainerFileNameEditBGColor: '#000',
