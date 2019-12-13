@@ -5,7 +5,8 @@
 	"main": "app.js",
 	"scripts": {
 		"dev": "NODE_ENV=development nodemon --exec babel-node src/app.js",
-		"start": "pm2 start ecosystem.config.js --env production",
+		"start": "NODE_ENV=production nodemon --exec babel-node src/app.js",
+		"start:pm2": "pm2 start ecosystem.config.js --env production",
 		"test": "jest",
 		"ls": "pm2 list",
 		"stop": "pm2 stop app",
