@@ -9,7 +9,8 @@ import {
 	MOVE_FILE,
 	INSTALL_DEPENDENCY,
 	WAITING_INSTALL_DEPENDENCY,
-	CLONE_PROJECT
+	CLONE_PROJECT,
+	SAVE_FILE
 } from 'actions/types';
 
 import { getFileExtension } from 'utils';
@@ -34,7 +35,8 @@ const fetchProject = (_, { project }) => {
 	Object.assign(convertedFilesObject, {
 		[rootDirectoryId]: {
 			...filesObject[rootDirectoryId],
-			path: rootPath
+			path: rootPath,
+			isEditing: false
 		}
 	});
 
@@ -92,11 +94,14 @@ const updateCode = (state, { changedCode }) => {
 			...state.files,
 			[state.selectedFileId]: {
 				...state.files[state.selectedFileId],
-				contents: changedCode
+				contents: changedCode,
+				isEditing: true
 			}
 		}
+		// editingFiles : [...]
 	};
 };
+
 
 // Select file
 const selectFile = (state, { selectedFileId }) => {
@@ -287,6 +292,21 @@ function cloneProject(_, { project }) {
 	return project;
 }
 
+const saveFile = state => {
+	const { files, selectedFileId } = state;
+
+	return {
+		...state,
+		files: {
+			...state.files,
+			[selectedFileId]: {
+				...files[selectedFileId],
+				isEditing: false
+			}
+		}
+	};
+};
+
 function ProjectReducer(state, { type, payload }) {
 	const reducers = {
 		[FETCH_PROJECT]: fetchProject,
@@ -298,7 +318,8 @@ function ProjectReducer(state, { type, payload }) {
 		[MOVE_FILE]: moveFile,
 		[INSTALL_DEPENDENCY]: registerDependency,
 		[WAITING_INSTALL_DEPENDENCY]: waitingInstallDependency,
-		[CLONE_PROJECT]: cloneProject
+		[CLONE_PROJECT]: cloneProject,
+		[SAVE_FILE]: saveFile
 	};
 
 	const reducer = reducers[type];

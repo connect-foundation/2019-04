@@ -8,7 +8,8 @@ import {
 	MOVE_FILE,
 	INSTALL_DEPENDENCY,
 	WAITING_INSTALL_DEPENDENCY,
-	CLONE_PROJECT
+	CLONE_PROJECT,
+  SAVE_FILE
 } from './types';
 
 function fetchProjectActionCreator(payload) {
@@ -51,6 +52,10 @@ function cloneProjectActionCreator(payload) {
 	return { type: CLONE_PROJECT, payload };
 }
 
+function saveFileActionCreator(payload) {
+	return { type: SAVE_FILE, payload };
+}
+
 export {
 	updateCodeActionCreator,
 	fetchProjectActionCreator,
@@ -61,5 +66,6 @@ export {
 	moveFileActionCreator,
 	installDependencyActionCreator,
 	waitingInstallDependencyActionCreator,
-	cloneProjectActionCreator
+	cloneProjectActionCreator,
+	saveFileActionCreator
 };

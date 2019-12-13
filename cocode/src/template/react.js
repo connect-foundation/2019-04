@@ -133,59 +133,63 @@ function getTemplate(file) {
 }
 
 const reactTemplate = () => ({
-	_id: '',
+	_id: '5dd61901353f4858e1b5a9d0',
 	name: 'react template',
 	description: 'this is react template',
 	author: 'New user',
-	root: '',
-	entry: 'index.js',
+	root: '5dd553be4561ae2bae9cb463',
+	entry: '5dd553be4561ae2bae9cb45d',
 	files: [
 		{
-			_id: '',
-			projectId: '',
+			_id: '5dd553be4561ae2bae9cb463',
+			projectId: '5dd61901353f4858e1b5a9d0',
 			name: 'root',
 			type: 'directory',
-			child: ['src', 'package.json']
+			child: ['5dd553be4561ae2bae9cb45f', '5dd553be4561ae2bae9cb462']
 		},
 		{
-			_id: '',
-			projectId: '',
+			_id: '5dd553be4561ae2bae9cb45f',
+			projectId: '5dd61901353f4858e1b5a9d0',
 			name: 'src',
 			type: 'directory',
-			child: ['index.js', 'Apple.js', 'Component']
+			child: [
+				'5dd553be4561ae2bae9cb45d',
+				'5dd553be4561ae2bae9cb45e',
+				'5dd553be4561ae2bae9cb461'
+			]
 		},
 		{
-			_id: '',
+			_id: '5dd553be4561ae2bae9cb45d',
 			name: 'index.js',
-			projectId: '',
+			projectId: '5dd61901353f4858e1b5a9d0',
 			type: 'js',
 			contents: getTemplate('version1')
 		},
 		{
-			_id: '',
+			_id: '5dd553be4561ae2bae9cb45e',
 			name: 'Apple.js',
-			projectId: '',
+			projectId: '5dd61901353f4858e1b5a9d0',
 			type: 'js',
 			contents: getTemplate('Apple')
 		},
 		{
-			_id: '',
-			projectId: '',
+			_id: '5dd553be4561ae2bae9cb461',
+			projectId: '5dd61901353f4858e1b5a9d0',
 			name: 'Component',
 			type: 'directory',
-			child: ['Banana.js']
+			child: ['5dd553be4561ae2bae9cb460']
 		},
 		{
-			_id: '',
+			_id: '5dd553be4561ae2bae9cb460',
 			name: 'Banana.js',
 			projectId: '5dd61901353f4858e1b5a9d0',
 			type: 'js',
 			contents: getTemplate('Banana')
 		},
 		{
-			_id: '',
+			_id: '5dd553be4561ae2bae9cb462',
 			name: 'package.json',
-			projectId: '',
+			projectId: '5dd61901353f4858e1b5a9d0',
 			type: 'npm',
 			contents: getTemplate('package')
 		}

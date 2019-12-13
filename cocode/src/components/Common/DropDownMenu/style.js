@@ -20,6 +20,7 @@ const DropDownList = styled.ul`
 		
 		margin: 0;
 		padding: 0;
+		z-index: 5;
 	}
 `;
 
