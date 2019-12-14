@@ -1,6 +1,11 @@
 import { Project, File } from '../../models';
 
 async function preloadProject(req, res, next, projectId) {
+	if (projectId === 'new') {
+		req.project = { _id: projectId };
+		return next();
+	}
+
 	Project.findById(projectId)
 		.then(project => {
 			if (!project) return res.sendStatus(404);
