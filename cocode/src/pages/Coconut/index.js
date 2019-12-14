@@ -27,9 +27,6 @@ import {
 	cloneProjectActionCreator
 } from 'actions/Project';
 
-import { reactTemplate } from 'template/react';
-import copyProject from 'template/copyProject';
-
 const COCONUT_IDBNAME = 'Coconut';
 const DEPENDENCY_IDBNAME = 'Dependency';
 
@@ -37,6 +34,8 @@ const initilaBuildState = {
 	state: 'loading',
 	description: 'Please wait to build complete...'
 };
+
+const BUILD_END = 'buildEnd';
 
 function Coconut() {
 	const { projectId } = useParams();
@@ -120,7 +119,7 @@ function Coconut() {
 	const handleFetchProjectResponse = useCallback(() => {
 		const { data, error } = fetchProjectRequest;
 		if (error) {
-			window.parent.postMessage({ command: 'buildEnd' }, '*');
+			window.parent.postMessage({ command: BUILD_END }, '*');
 			setBuildState({
 				state: 'error',
 				description: 'Error: fail to fetch project'
@@ -137,14 +136,6 @@ function Coconut() {
 	// After project data fetch
 	const handleProjectFetched = useCallback(() => {
 		if (!project) return;
-		if (
-			messageFromCocode &&
-			messageFromCocode.command !== 'createNewProject'
-		) {
-			setMessageFromCocode(undefined);
-			buildProject();
-			return;
-		}
 
 		const successHandler = connection => {
 			setDependencyIDBConnection(connection);
@@ -200,8 +191,9 @@ function Coconut() {
 	// Response from server, when install dependency
 	const handleInstallDependencyResponse = useCallback(() => {
 		const { data, error } = dependencyRequest;
+
 		if (error) {
-			window.parent.postMessage({ command: 'buildEnd' }, '*');
+			window.parent.postMessage({ command: BUILD_END }, '*');
 			setBuildState({
 				state: 'error',
 				description: 'Error: fail to install dependency'
@@ -252,9 +244,7 @@ function Coconut() {
 
 		try {
 			bundler.init();
-			self.require = bundler.require;
-			const code = bundler.require('./index.js');
-			eval(code);
+			bundler.require('./index.js');
 
 			setBuildState(undefined);
 		} catch (error) {
@@ -264,7 +254,7 @@ function Coconut() {
 			});
 		}
 
-		window.parent.postMessage({ command: 'buildEnd' }, '*');
+		window.parent.postMessage({ command: BUILD_END }, '*');
 		setIsReadyToBuild(false);
 	}, [project]);
 
@@ -293,69 +283,27 @@ function Coconut() {
 		const { command } = messageFromCocode;
 		const coconutActions = {
 			updateFile,
-			installDependency,
 			createNewProject
 		};
 		coconutActions[command] && coconutActions[command]();
 	}, [messageFromCocode]);
 
 	const updateFile = useCallback(() => {
-		const { files } = project;
-		const { fileId, file } = messageFromCocode;
+		const { project } = messageFromCocode;
 
-		const newProject = {
-			...project,
-			files: {
-				...files,
-				[fileId]: file
-			}
-		};
+		fileSystem = {};
 
-		const cloneProjectAction = cloneProjectActionCreator({
-			project: newProject
-		});
+		const cloneProjectAction = cloneProjectActionCreator({ project });
 		dispatchProject(cloneProjectAction);
 
-		window.parent.postMessage({ command: 'buildEnd' }, '*');
+		window.parent.postMessage({ command: BUILD_END }, '*');
 	}, [project, messageFromCocode]);
-
-	const installDependency = useCallback(() => {
-		const { dependency } = messageFromCocode;
-
-		const successHandler = result => {
-			const { installed, needToInstall } = result;
-
-			Object.entries(installed).forEach(([_, value]) => {
-				Object.entries(value).forEach(([key, value]) => {
-					fileSystem[key] = value;
-				});
-			});
-
-			const data = {
-				command: 'installDependency',
-				dependency
-			};
-			window.parent.postMessage(data, '*');
-			setNeedToInstallDependency(needToInstall);
-		};
-
-		const filterKeys = Object.values({
-			dependency
-		}).map(({ name, version }) => JSON.stringify([name, version]));
-
-		getDataFilterByKeys({
-			idbConnection: dependencyIDBConnection,
-			filterKeys,
-			successHandler
-		});
-	}, [messageFromCocode]);
 
 	const createNewProject = useCallback(() => {
 		if (project) return;
+		const { project } = messageFromCocode;
 
-		const cloneProjectAction = cloneProjectActionCreator({
-			project: messageFromCocode.project
-		});
+		const cloneProjectAction = cloneProjectActionCreator({ project });
 		dispatchProject(cloneProjectAction);
 	}, [project, messageFromCocode]);
 

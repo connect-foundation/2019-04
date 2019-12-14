@@ -23,8 +23,6 @@ import getUpdatedPackageJSON from 'pages/Project/getUpdatedPackageJSON';
 // Constants
 const MIN_WAIT_TIME = 1500;
 const UPDATE_CODE = 'updateFile';
-const INSTALL_DEPENDENCY = 'installDependency';
-const BUILD_END = 'buildEnd';
 const CREATE_NEW_PROJECT = 'createNewProject';
 
 function BrowserV2({ ...props }) {
@@ -46,16 +44,35 @@ function BrowserV2({ ...props }) {
 	};
 
 	const receiveMsgFromChild = e => {
-		const { command } = e.data;
+		const { command, dependency } = e.data;
 
-		if (command === BUILD_END) {
-			setIsBuildingCoconut(false);
+		const cocodeActions = { buildEnd };
+		cocodeActions[command] && cocodeActions[command](dependency);
+	};
+
+	const buildEnd = () => setIsBuildingCoconut(false);
+
+	const endInstallDependency = useCallback(dependency => {
+		setTimeout(() => {
+			const installDependencyAction = installDependencyActionCreator({
+				moduleName: dependency.name,
+				moduleVersion: dependency.version
+			});
+			dispatchProject(installDependencyAction);
+		}, MIN_WAIT_TIME);
+	});
+
+	const handleUpdateDependency = () => {
+		if (!isReadyToReceiveMessage) return;
+		if (!dependencyInstalling) return;
+
+		const dependency = dependencyInstalling;
+		setDependency(dependency);
+
+		if (projectId === 'new') {
+			endInstallDependency(dependency);
 			return;
 		}
-
-		if (command !== INSTALL_DEPENDENCY) return;
-
-		const { dependency } = e.data;
 
 		const {
 			newPackageJSONContents,
@@ -70,19 +87,6 @@ function BrowserV2({ ...props }) {
 			}
 		);
 		setRequest(updateFileAPI);
-		setDependency(dependency);
-	};
-
-	const handleUpdateDependency = () => {
-		if (!isReadyToReceiveMessage) return;
-		if (!dependencyInstalling) return;
-
-		const dependency = dependencyInstalling;
-		const data = {
-			command: INSTALL_DEPENDENCY,
-			dependency
-		};
-		iframeReference.current.contentWindow.postMessage(data, '*');
 	};
 
 	const handleUpdateFile = () => {
@@ -90,8 +94,7 @@ function BrowserV2({ ...props }) {
 
 		const data = {
 			command: UPDATE_CODE,
-			fileId: project.selectedFileId,
-			file: project.files[project.selectedFileId]
+			project
 		};
 
 		iframeReference.current.contentWindow.postMessage(data, '*');
@@ -100,15 +103,7 @@ function BrowserV2({ ...props }) {
 	const handleSuccessResponse = () => {
 		if (!data) return;
 
-		setDependency(undefined);
-
-		setTimeout(() => {
-			const installDependencyAction = installDependencyActionCreator({
-				moduleName: dependency.name,
-				moduleVersion: dependency.version
-			});
-			dispatchProject(installDependencyAction);
-		}, MIN_WAIT_TIME);
+		endInstallDependency(dependency);
 	};
 
 	const handleErrorResponse = () => {

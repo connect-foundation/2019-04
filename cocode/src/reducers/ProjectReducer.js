@@ -102,7 +102,6 @@ const updateCode = (state, { changedCode }) => {
 	};
 };
 
-
 // Select file
 const selectFile = (state, { selectedFileId }) => {
 	return {
@@ -160,7 +159,7 @@ const updateFileName = (state, { selectedFileId, changedName }) => {
 	const updatedPath = `${parentPath}/${changedName}`;
 
 	const changedChildFiles = files[selectedFileId].child
-		? updatePathOfChild(parentPath, files, files[selectedFileId].child)
+		? updatePathOfChild(updatedPath, files, files[selectedFileId].child)
 		: {};
 
 	return {
