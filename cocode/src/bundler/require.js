@@ -24,7 +24,8 @@ const executeCodeTemplate = code => /*javascript*/ `
 })()`;
 
 function require(path) {
-	if (path === '.') throw Error('Recursive path parsing error');
+	if (path === '.' || path === './')
+		throw Error('Recursive path parsing error');
 	const [newPath, newPathParent] = pathParser(path);
 
 	if (exports[newPath]) return exports[newPath];
@@ -39,9 +40,6 @@ function require(path) {
 		result = eval(executeCodeTemplate(code));
 	} catch (error) {
 		while (stackLength < pathStack.length) pathStack.pop();
-		if (path === './index.js') {
-			return executeCodeTemplate(code);
-		}
 		result = eval(executeCodeTemplate(code));
 	}
 
