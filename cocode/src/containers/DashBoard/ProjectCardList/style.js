@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 const Main = styled.main`
+	height: 100%;
 	padding: 3rem;
 `;
 
@@ -9,6 +10,7 @@ const Title = styled.h2`
 	font-size: 2.5rem;
 	font-weight: 300;
 	padding-left: 3.5rem;
+	padding-bottom: 1rem;
 `;
 
 const CoconutCount = styled.span`
@@ -22,12 +24,13 @@ const CardList = styled.section`
 		flex-flow: row wrap;
 		align-content: flex-start;
 		justify-content: flex-start;
-
-		width: 100vw;
-		padding: 0;
+		height: 80%;
+		width: 100%;
+		padding-bottom: 3rem;
+		overflow: auto;
 	}
 	& > * {
-		margin: 3.5rem;
+		margin: 3rem;
 	}
 `;
 

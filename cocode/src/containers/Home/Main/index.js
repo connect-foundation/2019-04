@@ -28,7 +28,7 @@ function Description() {
 	return (
 		<Styled.Description>
 			<Title />
-			<Link to="/project">
+			<Link to="/project/new">
 				<OpenButton />
 			</Link>
 		</Styled.Description>

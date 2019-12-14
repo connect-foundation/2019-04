@@ -3,8 +3,14 @@
 </p>
 
 <br>
+
 ---
 
+<p align="middle">
+<!-- tag -->
+  <a href="https://github.com/connect-foundation/2019-04/releases" target="_blank">
+    <img src="https://img.shields.io/github/v/release/connect-foundation/2019-04">
+  </a>
 <!-- doc -->
   <a href="https://github.com/connect-foundation/2019-04/wiki" target="_blank">
     <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
@@ -21,8 +27,15 @@
   <a href="https://travis-ci.org/connect-foundation/2019-04">
     <img alt="pr tracking" src="https://travis-ci.org/connect-foundation/2019-04.svg?branch=master"/>
   </a>
-
+</p>
 <br>
+<br>
+
+### 🔥 [팀 Wiki](https://github.com/connect-foundation/2019-04/wiki)
+### 🔥 [인프라 구성 보러가기](https://github.com/connect-foundation/2019-04/wiki/인프라-구성도)
+### 🔥 [우리 팀의 Git flow & CI/CD 전략](https://github.com/connect-foundation/2019-04/wiki/Git-flow-&-CI-CD)
+### 🔥 [DB설계](https://github.com/connect-foundation/2019-04/wiki/DB-modeling)
+
 <br>
 
 ## :house_with_garden: Home page
@@ -43,9 +56,9 @@ http://www.cocode.site
 ## 📌 서비스 구성
 ```bash
 🥥 cocode            # 전체 service를 제공하는 client
-🥥 coconut           # client side build 기능을 수행하는 client
+🥥 coconut           # client side build 기능을 수행하는 client(추후 구현 예정)
 🥥 api-server        # API server
-🥥 live-server       # 라이브 기능 제공 server
+🥥 live-server       # 라이브 기능 제공 server(추후 구현 예정)
 ```
 <br>
 

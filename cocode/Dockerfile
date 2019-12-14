@@ -8,6 +8,8 @@ RUN yarn install --silent
 RUN yarn global add react-scripts@2.1.3 --silent
 
 COPY . /usr/src/app
+RUN yarn init:modules
+
 RUN yarn build
 
 ### 

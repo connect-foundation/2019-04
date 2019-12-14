@@ -26,6 +26,10 @@ const ProjectTitle = styled.h2`
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
+
+	&[contenteditable='true'] br {
+		display: none;
+	}
 `;
 
 const ProjectDescription = styled.div`
@@ -44,7 +48,7 @@ const ProjectDescription = styled.div`
 `;
 
 const ProjectTimeLabel = styled.span`
-	font-size: ${PROJECT_CARD_THEME.cardDescriptFontSize};
+	font-size: ${PROJECT_CARD_THEME.cardDescriptionFontSize};
 	padding: 0;
 `;
 

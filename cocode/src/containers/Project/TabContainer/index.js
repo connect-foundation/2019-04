@@ -10,10 +10,14 @@ import DependencyTab from '../DependencyTab';
 function TabContainer() {
 	const { clickedTabIndex } = useContext(ProjectContext);
 
+	// const tapMapping = {
+	// 	0: <InfoTab />,
+	// 	1: <ExplorerTab />,
+	// 	2: <DependencyTab />
+	// };
 	const tapMapping = {
-		0: <InfoTab />,
-		1: <ExplorerTab />,
-		2: <DependencyTab />
+		0: <ExplorerTab />,
+		1: <DependencyTab />
 	};
 
 	const renderTab = () => tapMapping[clickedTabIndex];
@@ -22,11 +26,7 @@ function TabContainer() {
 		renderTab();
 	}, [clickedTabIndex]);
 
-	return (
-		<Styled.Container>
-			{renderTab()}
-		</Styled.Container>
-	);
+	return <Styled.Container>{renderTab()}</Styled.Container>;
 }
 
 export default TabContainer;

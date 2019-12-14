@@ -5,22 +5,22 @@ const DEFAULT_THEME = {
 	blackOpaqueColor: '#000000b3',
 	textColor: '#ffffff',
 
-	exceptHeaderHeignt: '88vh',
-	headerHeignt: '12vh'
+	exceptHeaderHeight: '88vh',
+	headerHeight: '12vh'
 };
 
 const DROPDOWN_THEME = {
 	dropdownButtonColor: '#2b2b2b',
 	dropdownButtonHoverColor: '#4b4b4b',
-	dropdownButtonBorderColor: '#383838',
+	dropdownButtonBorderColor: '#383838'
 };
 
 const BROWSER_THEME = {
 	browserHeaderBGColor: '#1d2022',
-	adressInputBGColor: '#000',
-	adressInputTextColor: '#fff',
+	addressInputBGColor: '#000',
+	addressInputTextColor: '#fff',
 
-	browserHeignt: '88vh'
+	browserHeight: '88vh'
 };
 
 const TAB_CONTAINER_THEME = {
@@ -43,7 +43,7 @@ const PROJECT_CARD_THEME = {
 	cardWidth: '21rem',
 	cardBackgroundColor: '#FFFFFF',
 	cardTitleFontSize: '1.5rem',
-	cardDescriptFontSize: '1.25rem',
+	cardDescriptionFontSize: '1.25rem',
 	cardTextColor: '#161419',
 	buttonBackgroundColor: '#232e36',
 	buttonDotColor: '#7c7c7c',
@@ -73,6 +73,8 @@ const EXPLORER_TAB_CONTAINER_THEME = {
 	explorerTabContainerFileNameEditBGColor: '#000',
 	explorerTabContainerFileEditBGColor: 'rgba(55, 65, 64, 0.314)',
 	explorerTabContainerSelectedFileBGColor: '#2accf944',
+	explorerTabContainerFileDropZoneOverBGColor: '#2accf922',
+	explorerTabContainerFileDropZoneNotOverBGColor: 'none',
 
 	explorerTabContainerIconHoverColor: '#fff',
 	explorerTabContainerIconColor: '#878788',
@@ -88,10 +90,24 @@ const INFO_TAB_THEME = {
 	infoModifySVGSize: '1rem',
 	infoModifySVGFilter: 'invert(0.455)',
 	infoModifySVGFilterHover: 'invert(0.9)',
+	infoFocusBGColor: '#161719',
+	infoProjectFontSize: '1rem',
 	infoProjectNameFontSize: '1.5rem',
 	infoProjectDescriptionFontSize: '1.35rem',
 	infoProjectDescriptionFontStyle: 'italic',
 	infoProjectAuthorFontSize: '1.2rem'
+};
+
+const FILE_TAB_THEME = {
+	fileTabDefaultBGColor: '#111518',
+	fileTabClickedBGColor: '#1E2022',
+	fileTabFontSize: '0.8rem',
+	fileTabCloseButtonSize: '0.8rem'
+};
+
+const MONACO_THEME = {
+	editorMainColor: '#1E2022',
+	editorCurrentLineColor: '#2a2f32'
 };
 
 export {
@@ -103,5 +119,7 @@ export {
 	PROJECT_CARD_THEME,
 	DEPENDENCY_TAB_THEME,
 	INFO_TAB_THEME,
-	EXPLORER_TAB_CONTAINER_THEME
+	EXPLORER_TAB_CONTAINER_THEME,
+	FILE_TAB_THEME,
+	MONACO_THEME
 };

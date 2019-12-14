@@ -45,29 +45,27 @@ const Info = styled.div`
 	}
 
 	& > div {
-		padding: 0.2rem 0;
+		padding: 0.5rem;
 		word-wrap: break-word;
 		overflow-wrap: break-word;
 		color: ${({ theme }) => theme.textColor};
 	}
 
 	*:focus {
-		outline-color: #aaa;
-		outline-style: solid;
-		outline-width: 1px;
+		background-color: ${INFO_TAB_THEME.infoFocusBGColor};
 	}
 
 	.name {
-		font-size: ${INFO_TAB_THEME.infoProjectNameFontSize};
+		font-size: ${INFO_TAB_THEME.infoProjectFontSize};
 	}
 
 	.description {
 		font-style: ${INFO_TAB_THEME.infoProjectDescriptionFontStyle};
-		font-size: ${INFO_TAB_THEME.infoProjectDescriptionFontSize};
+		font-size: ${INFO_TAB_THEME.infoProjectFontSize};
 	}
 
 	.author {
-		font-size: ${INFO_TAB_THEME.infoProjectAuthorFontSize};
+		font-size: ${INFO_TAB_THEME.infoProjectFontSize};
 	}
 `;
 
@@ -82,6 +80,7 @@ const InfoTitleTab = styled.div`
 
 	& > * {
 		color: ${TAB_CONTAINER_THEME.tabContainerTitleColor};
+		font-weight: 400;
 	}
 `;
 
