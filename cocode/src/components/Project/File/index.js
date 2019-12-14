@@ -67,7 +67,11 @@ function File({
 	// Variables
 	const successHandler = {
 		[DELETE_FILE]: handleDeleteFile,
-		[UPDATE_FILE_NAME]: handleEditFileName
+		[UPDATE_FILE_NAME]: () => {
+			const changedName = nameEditReferenece.current.textContent;
+			setFileName(changedName);
+			handleEditFileName(changedName);
+		}
 	};
 
 	// Functions
@@ -92,19 +96,13 @@ function File({
 		const updateFileId = _id;
 
 		if (isNotChangeableFileName({ files, parentId, changedName })) {
-			const originFileName = files[updateFileId].name;
-			currentTarget.textContent = originFileName;
+			currentTarget.textContent = fileName;
 			return;
 		}
 
 		const updateFileAPI = updateFileAPICreator(projectId, updateFileId, {
 			name: changedName
 		});
-
-		successHandler[UPDATE_FILE_NAME] = () => {
-			setFileName(changedName);
-			handleEditFileName(changedName);
-		};
 
 		setRequest(updateFileAPI);
 		setRequestedAPI(UPDATE_FILE_NAME);

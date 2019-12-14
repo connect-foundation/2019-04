@@ -4,7 +4,7 @@ import { transformCode } from './core';
 
 const executeCodeTemplate = code => /*javascript*/ `
 (() => {
-	const exports = {};
+	let exports = {};
 	try {
 		${code}
 		return Object.keys(exports).length ? exports : module.exports;
