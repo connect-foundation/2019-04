@@ -1,4 +1,5 @@
 import {
+	UPDATE_PROJECT_INFO,
 	UPDATE_CODE,
 	FETCH_PROJECT,
 	SELECT_FILE,
@@ -11,6 +12,10 @@ import {
 	CLONE_PROJECT,
   SAVE_FILE
 } from './types';
+
+function updateProjectInfoActionCreator(payload) {
+	return { type: UPDATE_PROJECT_INFO, payload };
+}
 
 function fetchProjectActionCreator(payload) {
 	return { type: FETCH_PROJECT, payload };
@@ -57,6 +62,7 @@ function saveFileActionCreator(payload) {
 }
 
 export {
+	updateProjectInfoActionCreator,
 	updateCodeActionCreator,
 	fetchProjectActionCreator,
 	selectFileActionCreator,
