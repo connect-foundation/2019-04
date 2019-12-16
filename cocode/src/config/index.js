@@ -13,6 +13,16 @@ const COCONUT_SERVER =
 		? process.env.PROD_COCONUT_SERVER_IP
 		: process.env.DEV_COCONUT_SERVER_IP;
 
+const LIVE_SERVER =
+	process.env.NODE_ENV === 'production'
+		? process.env.PROD_LIVE_SERVER_IP
+		: process.env.DEV_LIVE_SERVER_IP;
+
+const COCODE_SERVER =
+	process.env.NODE_ENV === 'production'
+		? process.env.PROD_COCODE_SERVER_IP
+		: process.env.DEV_COCODE_SERVER_IP;
+
 const DEFAULT_REQUEST_OPTION = {
 	withCredentials: true,
 	mode: 'cors',
@@ -32,4 +42,11 @@ const DEPENDENCY = {
 	modules: `${DEPENDENCY_SERVER}/modules`
 };
 
-export { DEFAULT_REQUEST_OPTION, API, DEPENDENCY, COCONUT_SERVER };
+export {
+	DEFAULT_REQUEST_OPTION,
+	API,
+	DEPENDENCY,
+	COCONUT_SERVER,
+	LIVE_SERVER,
+	COCODE_SERVER
+};
