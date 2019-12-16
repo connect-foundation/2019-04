@@ -18,7 +18,7 @@ FROM nginx:1.13.9-alpine
 RUN rm -rf /etc/nginx/conf.d
 COPY nginx /etc/nginx
 
-COPY --from=builder /usr/src/app/public /usr/share/nginx/html
+COPY --from=builder /usr/src/app/build /usr/share/nginx/html
 
 EXPOSE 8080:8080
 CMD ["nginx", "-g", "daemon off;"]
