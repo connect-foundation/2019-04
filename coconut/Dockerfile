@@ -20,5 +20,5 @@ COPY nginx /etc/nginx
 
 COPY --from=builder /usr/src/app/public /usr/share/nginx/html
 
-EXPOSE 80
+EXPOSE 8080:8080
 CMD ["nginx", "-g", "daemon off;"]
