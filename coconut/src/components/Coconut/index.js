@@ -5,18 +5,31 @@ import * as Styled from './style';
 import CoconutSpinner from 'components/CoconutSpinner';
 import Logo from 'components/Logo';
 
-import { useConnectToIDB, useUpdateProject, useUpdateDependency } from 'hooks';
+import {
+	useConnectToIDB,
+	useUpdateProject,
+	useUpdateDependency,
+	useBuildProject
+} from 'hooks';
 
 import ProjectReducer from 'reducers/ProjectReducer';
 
 const PROJECT_IDBNAME = 'Coconut';
 const DEPENDENCY_IDBNAME = 'Dependency';
 
+const BUILD_END = 'buildEnd';
+
 const initilaBuildState = {
 	success: false,
 	loading: true,
 	error: false,
 	description: 'Please wait to load project...'
+};
+
+const successBuildState = {
+	...initilaBuildState,
+	success: true,
+	loading: false
 };
 
 const loadProjectFailState = {
@@ -33,6 +46,13 @@ const loadDependencyFailState = {
 	description: 'Fail to load dependency...'
 };
 
+const buildProjectFailState = errorPhrase => ({
+	success: false,
+	loading: false,
+	error: true,
+	description: errorPhrase
+});
+
 function Coconut() {
 	const { projectId } = useParams();
 
@@ -43,7 +63,6 @@ function Coconut() {
 		projectIDBName: PROJECT_IDBNAME,
 		dependencyIDBName: DEPENDENCY_IDBNAME
 	});
-
 	const { projectIDB, dependencyIDB } = iDBConnectionState;
 	const [projectState] = useUpdateProject(
 		projectIDB,
@@ -51,10 +70,10 @@ function Coconut() {
 		project,
 		dispatchProject
 	);
-
 	const [dependencyState, installDependency] = useUpdateDependency(
 		dependencyIDB
 	);
+	const [buildResult, buildProject] = useBuildProject();
 
 	const handleConnectToIDB = useCallback(() => {
 		const { loading, error } = iDBConnectionState;
@@ -90,11 +109,26 @@ function Coconut() {
 			setBuildState(loadDependencyFailState);
 			return;
 		}
-	}, [dependencyState]);
+
+		buildProject(project);
+	}, [dependencyState, buildProject, project]);
+
+	const handleBuildProject = useCallback(() => {
+		if (!buildResult) return;
+
+		const { error } = buildResult;
+		const resultBuildState = error
+			? buildProjectFailState(error)
+			: successBuildState;
+		setBuildState(resultBuildState);
+
+		window.parent.postMessage({ command: BUILD_END }, '*');
+	}, [buildResult]);
 
 	useEffect(handleConnectToIDB, [iDBConnectionState]);
 	useEffect(handleUpdateProject, [projectState]);
 	useEffect(handleUpdateDependency, [dependencyState]);
+	useEffect(handleBuildProject, [buildResult]);
 
 	return (
 		<>
