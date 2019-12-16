@@ -16,7 +16,7 @@ function ToastItem({ id, close, type, message, time }) {
 				...toastState,
 				isWillDisappear: true
 			});
-		}, time || 3000);
+		}, time || 5000);
 	}, []);
 
 	useEffect(() => {
