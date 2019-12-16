@@ -50,17 +50,15 @@ function Info({
 	};
 
 	const handleOnKeyDown = event => {
-		if (event.keyCode === KEY_CODE_ENTER) {
-			handleOnSubmit(event);
-			event.preventDefault();
-		}
+		if (event.keyCode !== KEY_CODE_ENTER) return;
+		handleOnSubmit(event);
+		event.preventDefault();
 	};
 
 	useEffect(() => {
-		if (status === UPDATED_OK) {
-			const payload = { [title]: value };
-			dispatchProject(updateProjectInfoActionCreator(payload));
-		}
+		if (status !== UPDATED_OK) return;
+		const payload = { [title]: value };
+		dispatchProject(updateProjectInfoActionCreator(payload));
 	}, [status]);
 
 	return (
@@ -99,6 +97,12 @@ function InfoTab() {
 	const { name, description, author } = project;
 	const { projectId } = useParams();
 
+	const infoItems = [
+		{ title: 'name', content: name },
+		{ title: 'description', content: description },
+		{ title: 'author', content: author }
+	];
+
 	const handleDeleteCoconut = () => {
 		const acceptDeleteThisCoconut = confirm(ACCEPT_DELETE_NOTIFICATION);
 		if (!acceptDeleteThisCoconut) return;
@@ -115,33 +119,19 @@ function InfoTab() {
 				<Styled.Title>{INFO_TAB_TITLE}</Styled.Title>
 			</Styled.TabHeader>
 			<Styled.TabBody>
-				<Info
-					title="name"
-					content={name}
-					project={project}
-					projectId={projectId}
-					status={status}
-					setRequest={setRequest}
-					dispatchProject={dispatchProject}
-				/>
-				<Info
-					title="description"
-					content={description}
-					project={project}
-					projectId={projectId}
-					status={status}
-					setRequest={setRequest}
-					dispatchProject={dispatchProject}
-				/>
-				<Info
-					title="author"
-					content={author}
-					project={project}
-					projectId={projectId}
-					status={status}
-					setRequest={setRequest}
-					dispatchProject={dispatchProject}
-				/>
+				{infoItems.map(({ title, content }, index) => {
+					return (
+						<Info
+							key={'info' + index}
+							title={title}
+							content={content}
+							projectId={projectId}
+							status={status}
+							setRequest={setRequest}
+							dispatchProject={dispatchProject}
+						/>
+					);
+				})}
 				<Styled.Button onClick={handleDeleteCoconut}>
 					Delete Coconut
 				</Styled.Button>
