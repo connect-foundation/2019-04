@@ -41,7 +41,7 @@ function ToastItem({ id, close, type, message, time }) {
 	return (
 		<>
 			{toastState.isAppear && (
-				<Styled.Toasts
+				<Styled.ToastItem
 					error={error}
 					isWillDisappear={toastState.isWillDisappear}
 				>
@@ -49,7 +49,7 @@ function ToastItem({ id, close, type, message, time }) {
 					<Styled.MessageContainer>
 						<Styled.Text> {message} </Styled.Text>
 					</Styled.MessageContainer>
-				</Styled.Toasts>
+				</Styled.ToastItem>
 			)}
 		</>
 	);

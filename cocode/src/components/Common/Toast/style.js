@@ -23,17 +23,32 @@ const fadeOut = keyframes`
 	}
 `;
 
-const Toasts = styled.div`
+const ToastsWrapper = styled.div`
+	bottom: 1em;
+	right: 1em;
+	position: fixed;
+	z-index: 9999;
+	max-height: 100vh;
+	min-width: 30vh;
+	text-align: right;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	overflow: hidden;
+	background-color: rgba(255, 0, 0, 0);
+`;
+
+const ToastItem = styled.div`
 	width: 25rem;
 	visibility: visible;
-	background-color: rgb(14,18,34);
+	background-color: rgb(14, 18, 34);
 	padding: 3rem 0.3rem;
 	margin-bottom: 1rem;
 	cursor: pointer;
 	position: relative;
 
 	animation-name: ${({ isWillDisappear }) =>
-	isWillDisappear ? fadeOut : fadeIn};
+		isWillDisappear ? fadeOut : fadeIn};
 	animation-duration: 1s;
 	animation-fill-mode: both;
 
@@ -125,4 +140,4 @@ const Text = styled.div`
 	font-size: 1rem;
 `;
 
-export { Toasts, Text, MessageContainer, InfoIcon, Close };
+export { ToastsWrapper, ToastItem, Text, MessageContainer, InfoIcon, Close };
