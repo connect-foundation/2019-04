@@ -5,7 +5,7 @@ import * as Styled from './style';
 import CoconutSpinner from 'components/CoconutSpinner';
 import Logo from 'components/Logo';
 
-import { useConnectToIDB, useUpdateProject } from 'hooks';
+import { useConnectToIDB, useUpdateProject, useUpdateDependency } from 'hooks';
 
 import ProjectReducer from 'reducers/ProjectReducer';
 
@@ -26,6 +26,13 @@ const loadProjectFailState = {
 	description: 'Fail to load project...'
 };
 
+const loadDependencyFailState = {
+	success: false,
+	loading: false,
+	error: true,
+	description: 'Fail to load dependency...'
+};
+
 function Coconut() {
 	const { projectId } = useParams();
 
@@ -43,6 +50,10 @@ function Coconut() {
 		projectId,
 		project,
 		dispatchProject
+	);
+
+	const [dependencyState, installDependency] = useUpdateDependency(
+		dependencyIDB
 	);
 
 	const handleConnectToIDB = useCallback(() => {
@@ -65,10 +76,25 @@ function Coconut() {
 			setBuildState(loadProjectFailState);
 			return;
 		}
-	}, [projectState]);
+
+		const { dependency } = project;
+		installDependency(dependency);
+	}, [projectState, project, installDependency]);
+
+	const handleUpdateDependency = useCallback(() => {
+		if (!dependencyState) return;
+
+		const { loading, error } = dependencyState;
+		if (loading) return;
+		if (error) {
+			setBuildState(loadDependencyFailState);
+			return;
+		}
+	}, [dependencyState]);
 
 	useEffect(handleConnectToIDB, [iDBConnectionState]);
 	useEffect(handleUpdateProject, [projectState]);
+	useEffect(handleUpdateDependency, [dependencyState]);
 
 	return (
 		<>
