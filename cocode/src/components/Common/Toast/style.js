@@ -1,5 +1,5 @@
 import styled, { keyframes } from 'styled-components';
-import { DEFAULT_THEME } from 'constants/theme';
+import { DEFAULT_THEME, TOAST_THEME } from 'constants/theme';
 
 const fadeIn = keyframes`
 	from {
@@ -24,27 +24,26 @@ const fadeOut = keyframes`
 `;
 
 const ToastsWrapper = styled.div`
-	bottom: 1em;
-	right: 1em;
-	position: fixed;
-	z-index: 9999;
-	max-height: 100vh;
-	min-width: 30vh;
-	text-align: right;
 	display: flex;
 	flex-direction: column;
 	align-items: flex-end;
 	overflow: hidden;
-	background-color: rgba(255, 0, 0, 0);
+	position: fixed;
+
+	max-height: 100vh;
+	min-width: 30vh;
+	bottom: 1rem;
+	right: 1rem;
+
+	z-index: 9999;
 `;
 
 const ToastItem = styled.div`
 	width: 25rem;
 	visibility: visible;
-	background-color: rgb(14, 18, 34);
-	padding: 3rem 0.3rem;
+	background-color: ${TOAST_THEME.toastBGColor};
+	padding: 2.8rem 0.3rem;
 	margin-bottom: 1rem;
-	cursor: pointer;
 	position: relative;
 
 	animation-name: ${({ isWillDisappear }) =>
@@ -55,7 +54,8 @@ const ToastItem = styled.div`
 	border-style: solid;
 	border-left-width: 0.3rem;
 	border-radius: 0.2rem;
-	border-color: ${props => (props.error ? 'red' : DEFAULT_THEME.mainColor)};
+	border-color: ${props =>
+		props.error ? TOAST_THEME.toastErrorDeco : DEFAULT_THEME.mainColor};
 `;
 
 const MessageContainer = styled.div`
@@ -63,7 +63,6 @@ const MessageContainer = styled.div`
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	height: 80%;
 	width: 80%;
 `;
 
@@ -73,11 +72,8 @@ const InfoIcon = styled.span`
 		top: 20%;
 		left: 5%;
 		text-align: center;
-		font-weight: 100;
-		line-height: 1.6;
 		width: 1.3rem;
 		height: 1.3rem;
-		border: 0;
 		background-color: ${DEFAULT_THEME.mainColor};
 		border-radius: 50%;
 	}
@@ -89,12 +85,12 @@ const InfoIcon = styled.span`
 		width: 0.2rem;
 		left: 44%;
 		border-radius: 0.1rem;
-		background-color: rgba(34, 32, 31, 0.55);
+		background-color: ${TOAST_THEME.toastBGColor};
 	}
 
 	&:before {
 		top: 25%;
-		height: 0.15rem;
+		height: 0.17rem;
 	}
 	&:after {
 		top: 43%;
@@ -106,7 +102,7 @@ const Close = styled.span`
 	& {
 		position: absolute;
 		top: 20%;
-		left: 3%;
+		left: 8%;
 		width: 1.3rem;
 		height: 1.3rem;
 		opacity: 0.3;
@@ -118,7 +114,7 @@ const Close = styled.span`
 		content: ' ';
 		height: 1.3rem;
 		width: 0.1rem;
-		background-color: red;
+		background-color: ${TOAST_THEME.toastErrorDeco};
 	}
 
 	&:before {
