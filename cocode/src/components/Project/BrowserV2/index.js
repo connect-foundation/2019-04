@@ -20,10 +20,11 @@ import useFetch from 'hooks/useFetch';
 
 import getUpdatedPackageJSON from 'pages/Project/getUpdatedPackageJSON';
 
+import { COCONUT_SERVER } from 'config';
+
 // Constants
 const MIN_WAIT_TIME = 1500;
-const UPDATE_CODE = 'updateFile';
-const CREATE_NEW_PROJECT = 'createNewProject';
+const UPDATE_PROJECT = 'updateProject';
 
 function BrowserV2({ ...props }) {
 	const { projectId } = useParams();
@@ -93,7 +94,7 @@ function BrowserV2({ ...props }) {
 		if (!isReadyToReceiveMessage) return;
 
 		const data = {
-			command: UPDATE_CODE,
+			command: UPDATE_PROJECT,
 			project
 		};
 
@@ -116,7 +117,7 @@ function BrowserV2({ ...props }) {
 
 		if (projectId === 'new') {
 			const data = {
-				command: CREATE_NEW_PROJECT,
+				command: UPDATE_PROJECT,
 				project
 			};
 
@@ -141,7 +142,7 @@ function BrowserV2({ ...props }) {
 			)}
 			<Styled.BrowserV2
 				ref={iframeReference}
-				src={`/coconut/${projectId}`}
+				src={`${COCONUT_SERVER}/${projectId}`}
 				onLoad={handleIframeOnLoad}
 				{...props}
 			></Styled.BrowserV2>
