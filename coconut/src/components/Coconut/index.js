@@ -9,7 +9,8 @@ import {
 	useConnectToIDB,
 	useUpdateProject,
 	useUpdateDependency,
-	useBuildProject
+	useBuildProject,
+	useCommunicateCocode
 } from 'hooks';
 
 import ProjectReducer from 'reducers/ProjectReducer';
@@ -59,6 +60,7 @@ function Coconut() {
 	const [buildState, setBuildState] = useState(initilaBuildState);
 	const [project, dispatchProject] = useReducer(ProjectReducer, undefined);
 
+	const [sendToCocode] = useCommunicateCocode(dispatchProject);
 	const [iDBConnectionState, closeConnections] = useConnectToIDB({
 		projectIDBName: PROJECT_IDBNAME,
 		dependencyIDBName: DEPENDENCY_IDBNAME
@@ -122,8 +124,8 @@ function Coconut() {
 			: successBuildState;
 		setBuildState(resultBuildState);
 
-		window.parent.postMessage({ command: BUILD_END }, '*');
-	}, [buildResult]);
+		sendToCocode({ command: BUILD_END });
+	}, [buildResult, sendToCocode]);
 
 	useEffect(handleConnectToIDB, [iDBConnectionState]);
 	useEffect(handleUpdateProject, [projectState]);

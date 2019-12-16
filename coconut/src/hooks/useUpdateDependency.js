@@ -30,7 +30,10 @@ function useUpdateDependency(idbConnection) {
 	const [needToInstall, setNeedToInstall] = useState(undefined);
 	const [response, setRequest] = useFetch({});
 
-	const installDependency = dependency => setDependency(dependency);
+	const installDependency = dependency => {
+		setDependencyState(undefined);
+		setDependency(dependency);
+	};
 
 	const updateDependencyToIDB = useCallback(
 		(key, value) => {
@@ -70,6 +73,7 @@ function useUpdateDependency(idbConnection) {
 			JSON.stringify([name, version])
 		);
 
+		setDependency(undefined);
 		getDataFilterByKeys({ idbConnection, filterKeys })
 			.then(handleSuccessToGetDependency)
 			.catch(handleFailToGetDependency);
