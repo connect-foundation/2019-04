@@ -36,6 +36,15 @@ function isProtectedFile({ files, root, entry, fileId }) {
 	return false;
 }
 
+function isFileNotMoveable({ files, fileId, newParentId }) {
+	const fileName = files[fileId].name;
+	const childsOfNewParent = files[newParentId].child;
+
+	return childsOfNewParent
+		.map(id => files[id].name)
+		.some(name => name === fileName);
+}
+
 function Directory({
 	id,
 	childIds,
@@ -52,7 +61,9 @@ function Directory({
 	} = useContext(ProjectContext);
 	const [isNewFileCreating, setIsNewFileCreating] = useState(false);
 	const [isFileInDropZone, setIsFileInDropZone] = useState(false);
-	const [toggleDirectoryOpen, setToggleDirectoryOpen] = useState(depth === 1);
+	const [toggleDirectoryOpen, setToggleDirectoryOpen] = useState(
+		depth === 1 || files[id].name === 'src'
+	);
 	const [createFileType, setCreateFileType] = useState(null);
 
 	const [requestedAPI, setRequestedAPI] = useState(null);
@@ -68,12 +79,18 @@ function Directory({
 	const isDirectory = ({ type }) => type === 'directory';
 	const isFile = ({ type }) => type !== 'directory';
 	const isSelected = id => selectedFileId === id;
+	const isNotPackageJSON = ({ name }) => name !== 'package.json';
 
 	// Variables
 	const directoryList = childIds
 		? childIds.map(fileIdToFile).filter(isDirectory)
 		: [];
-	const fileList = childIds ? childIds.map(fileIdToFile).filter(isFile) : [];
+	const fileList = childIds
+		? childIds
+				.map(fileIdToFile)
+				.filter(isFile)
+				.filter(isNotPackageJSON)
+		: [];
 
 	// Evnet handler
 	const handleToggleDirectory = () =>
@@ -93,7 +110,11 @@ function Directory({
 	const handleDragLeave = () => setIsFileInDropZone(false);
 	const handleDrop = fileId => {
 		setIsFileInDropZone(false);
-		if (fileId === id || isProtectedFile({ files, root, entry, fileId }))
+		if (
+			fileId === id ||
+			isProtectedFile({ files, root, entry, fileId }) ||
+			isFileNotMoveable({ files, fileId, newParentId: id })
+		)
 			return alert(WARNING_PREVENT_MOVE_NOTIFICATION);
 
 		requestMoveFile(fileId);

@@ -5,7 +5,8 @@ import { ThemeProvider } from 'styled-components';
 import { DEFAULT_THEME } from 'constants/theme';
 
 import GlobalStyle from 'components/Common/GlobalStyle';
-import { Home, DashBoard, Project, History } from 'pages';
+
+import { Home, DashBoard, Project, History, Coconut, NotFound } from 'pages';
 
 import UserContext from 'contexts/UserContext';
 import useFetch from 'hooks/useFetch';
@@ -28,7 +29,9 @@ function App() {
 						<Route exact path="/" component={Home} />
 						<Route path="/dashboard" component={DashBoard} />
 						<Route path="/project/:projectId" component={Project} />
+						<Route path="/coconut/:projectId" component={Coconut} />
 						<Route path="/history" component={History} />
+						<Route component={NotFound} />
 					</Switch>
 				</ThemeProvider>
 			</Router>

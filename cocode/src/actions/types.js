@@ -13,11 +13,21 @@ const UPDATE_FILE_NAME = 'updateFileName';
 const DELETE_FILE = 'deleteFile';
 const MOVE_FILE = 'moveFile';
 const INSTALL_DEPENDENCY = 'installDependency';
+const WAITING_INSTALL_DEPENDENCY = 'waitingInstallDependency';
+const CLONE_PROJECT = 'cloneProject';
+const SAVE_FILE = 'saveFile';
 
 //DashBoard
 const FETCH_COCONUT = 'fetchCoconut';
 const UPDATE_COCONUT_NAME = 'updateCoconutName';
 const DELETE_COCONUT = 'deleteCoconut';
+
+//Live
+const FETCH_LIVE = 'fetchLive';
+const LIVE_ON = 'liveOn';
+const LIVE_OFF = 'liveOff';
+const LIVE_JOIN_USER = 'liveJoinUser';
+const LIVE_LEFT_USER = 'liveLeftUser';
 
 export {
 	API_READY,
@@ -32,7 +42,15 @@ export {
 	DELETE_FILE,
 	MOVE_FILE,
 	INSTALL_DEPENDENCY,
+	WAITING_INSTALL_DEPENDENCY,
+	CLONE_PROJECT,
 	FETCH_COCONUT,
 	UPDATE_COCONUT_NAME,
-	DELETE_COCONUT
+	DELETE_COCONUT,
+	FETCH_LIVE,
+	LIVE_ON,
+	LIVE_OFF,
+	LIVE_JOIN_USER,
+	LIVE_LEFT_USER,
+	SAVE_FILE
 };

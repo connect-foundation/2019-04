@@ -6,7 +6,10 @@ import {
 	CREATE_FILE,
 	DELETE_FILE,
 	MOVE_FILE,
-	INSTALL_DEPENDENCY
+	INSTALL_DEPENDENCY,
+	WAITING_INSTALL_DEPENDENCY,
+	CLONE_PROJECT,
+  SAVE_FILE
 } from './types';
 
 function fetchProjectActionCreator(payload) {
@@ -41,6 +44,18 @@ function installDependencyActionCreator(payload) {
 	return { type: INSTALL_DEPENDENCY, payload };
 }
 
+function waitingInstallDependencyActionCreator(payload) {
+	return { type: WAITING_INSTALL_DEPENDENCY, payload };
+}
+
+function cloneProjectActionCreator(payload) {
+	return { type: CLONE_PROJECT, payload };
+}
+
+function saveFileActionCreator(payload) {
+	return { type: SAVE_FILE, payload };
+}
+
 export {
 	updateCodeActionCreator,
 	fetchProjectActionCreator,
@@ -49,5 +64,8 @@ export {
 	createFileActionCreator,
 	deleteFileActionCreator,
 	moveFileActionCreator,
-	installDependencyActionCreator
+	installDependencyActionCreator,
+	waitingInstallDependencyActionCreator,
+	cloneProjectActionCreator,
+	saveFileActionCreator
 };

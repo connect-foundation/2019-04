@@ -5,37 +5,38 @@ import * as Styled from './style';
 import FileTabBar from 'components/Project/FileTabBar';
 import MonacoEditor from 'components/Project/MonacoEditor';
 
-import ProjectContext from 'contexts/ProjectContext';
-import { updateCodeActionCreator } from 'actions/Project';
+import { UserContext, ProjectContext } from 'contexts';
+import {
+	updateCodeActionCreator,
+	saveFileActionCreator
+} from 'actions/Project';
 
 import useFetch from 'hooks/useFetch';
-
 import { updateFileAPICreator } from 'apis/File';
 
-let timer;
+import { isPressCtrlAndS } from 'utils/keyDownEvent';
 
-function Editor() {
+// Constatnts
+let timer;
+const DEBOUNCING_TIME = 800;
+
+function Editor({ handleForkCoconut }) {
+	const { user } = useContext(UserContext);
 	const { projectId } = useParams();
 	const { project, dispatchProject } = useContext(ProjectContext);
 	const [code, setCode] = useState(project.editingCode);
 	const [isEditorMounted, setIsEditorMounted] = useState(false);
 	const [_, setRequest] = useFetch({});
 
+	const [fileSelectFlag, setFileSelectFlag] = useState(undefined);
 	const { selectedFileId } = project;
 
-	const debouncedHandlerUpdateCode = changedCode => () => {
-		setCode(changedCode);
-
-		const updateCodeAction = updateCodeActionCreator({
-			changedCode: changedCode
-		});
-		dispatchProject(updateCodeAction);
-	};
-
-	const handleUpdateCode = (_, changedCode) => {
+	const handleOnChangeCodeInMonaco = (_, changedCode) => {
 		if (timer) clearTimeout(timer);
 
-		timer = setTimeout(debouncedHandlerUpdateCode(changedCode), 300);
+		timer = setTimeout(() => {
+			setCode(changedCode);
+		}, DEBOUNCING_TIME);
 	};
 
 	const handleChangedSelectedFile = () => setCode(project.editingCode);
@@ -44,24 +45,53 @@ function Editor() {
 		if (!isEditorMounted) return;
 
 		const updateFileAPI = updateFileAPICreator(projectId, selectedFileId, {
-			contents: code
+			contents: project.editingCode
 		});
 		setRequest(updateFileAPI);
 	};
 
+	const handleOnKeyDown = e => {
+		if (!isPressCtrlAndS(e)) return;
+
+		e.preventDefault();
+		const { files, selectedFileId } = project;
+		if (!files[selectedFileId].isEditing) return;
+
+		if (user.username !== project.author) {
+			handleForkCoconut();
+			return;
+		}
+
+		handleRequestUpdateCode();
+		dispatchProject(saveFileActionCreator());
+	};
+
+	const handleUpdateCode = () => {
+		if (fileSelectFlag !== selectedFileId) {
+			setFileSelectFlag(selectedFileId);
+			return;
+		}
+		const updateCodeAction = updateCodeActionCreator({
+			changedCode: code
+		});
+		dispatchProject(updateCodeAction);
+	};
+
+	useEffect(handleUpdateCode, [code]);
 	useEffect(handleChangedSelectedFile, [project.selectedFileId]);
-	useEffect(handleRequestUpdateCode, [code]);
 
 	const handleEditorDidMount = () => setIsEditorMounted(true);
+
 	return (
 		<Styled.Editor>
 			<FileTabBar />
 			<MonacoEditor
 				isFilesEmpty={!project.selectedFileId}
 				code={code}
-				handleUpdateCode={handleUpdateCode}
+				handleUpdateCode={handleOnChangeCodeInMonaco}
 				handleEditorDidMount={handleEditorDidMount}
 				className="Stretch-width"
+				onKeyDown={handleOnKeyDown}
 			/>
 		</Styled.Editor>
 	);

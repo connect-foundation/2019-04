@@ -2,12 +2,34 @@ import { pathStack } from './global';
 import { pathParser } from './pathParser';
 import { transformCode } from './core';
 
-function require(path) {
-	if (path.length < 3) throw Error('path error');
-	const [newPath, newPathParent] = pathParser(path);
-	if (exports[newPath]) {
-		return exports[newPath];
+const executeCodeTemplate = code => /*javascript*/ `
+(() => {
+	let exports = {};
+	try {
+		${code}
+		return Object.keys(exports).length ? exports : module.exports;
+	} catch (e) {
+		const ignoreErrorList = [
+			'Cannot redefine property',
+			'Cannot read property',
+			'Cannot set property default of #<Object> which has only a getter'
+		];
+		const errorType = e.message;
+		const isExistInIgnoreList = ignoreErrorList.some(ignoreError =>
+			errorType.startsWith(ignoreError)
+		);
+
+		if(!isExistInIgnoreList) throw e;
 	}
+})()`;
+
+function require(path) {
+	if (path === '.' || path === './')
+		throw Error('Recursive path parsing error');
+	const [newPath, newPathParent] = pathParser(path);
+
+	if (exports[newPath]) return exports[newPath];
+
 	pathStack.push(newPathParent);
 	const code = transformCode(fileSystem[newPath].contents).value;
 
@@ -15,20 +37,14 @@ function require(path) {
 	let stackLength = 0;
 	try {
 		stackLength = pathStack.length;
-		result = eval(`
-	(() =>{const exports = {};
-	try {
-		${code}
-		return Object.keys(exports).length ? exports : module.exports 
-	}catch(e) {}
-	})()`);
+		result = eval(executeCodeTemplate(code));
 	} catch (error) {
 		while (stackLength < pathStack.length) pathStack.pop();
-		result = eval(code);
+		result = eval(executeCodeTemplate(code));
 	}
+
 	exports[newPath] = result;
 	pathStack.pop();
-
 	return result;
 }
 
