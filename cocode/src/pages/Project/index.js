@@ -8,6 +8,7 @@ import TabContainer from 'containers/Project/TabContainer';
 import Editor from 'containers/Project/Editor';
 import BrowserV2 from 'components/Project/BrowserV2';
 import { SplitPaneContainer } from 'components/Common/SplitPane';
+import addToast from 'components/Common/Toast';
 
 import ProjectReducer from 'reducers/ProjectReducer';
 import ProjectContext from 'contexts/ProjectContext';
@@ -63,11 +64,17 @@ function Project() {
 	};
 
 	const handleChangeHistoryAtForked = () => {
+		if (status === 409) {
+			addToast.error('already forked! enjoy Coconut ');
+		}
+
 		if (status !== 201) return;
 
 		projectId !== 'new'
 			? history.push(`../project/${data._id}`)
 			: history.replace(`../project/${data._id}`);
+
+		addToast.info('Forked Coconut, Success !');
 	};
 
 	const handleSetProject = () => {
@@ -78,9 +85,9 @@ function Project() {
 
 	useEffect(handleFetchProject, []);
 
-	useEffect(handleSetProject, [data, isFetched]);
+	useEffect(handleSetProject, [data]);
 
-	useEffect(handleChangeHistoryAtForked, [data, history, projectId, status]);
+	useEffect(handleChangeHistoryAtForked, [status]);
 
 	// //TODO loading 컴포넌트 만들기
 	if (loading) return <p>Loading...</p>;
