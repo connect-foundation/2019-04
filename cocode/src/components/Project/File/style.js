@@ -1,6 +1,18 @@
 import styled from 'styled-components';
 import { EXPLORER_TAB_CONTAINER_THEME } from 'constants/theme';
 
+const {
+	explorerTabContainerFileTextWeight,
+	explorerTabContainerFileEditBGColor,
+	explorerTabContainerFileBGColor,
+	explorerTabContainerFileHoverBGColor,
+	explorerTabContainerFileHoverTextColor,
+	explorerTabContainerFileTextSize,
+	explorerTabContainerEditedFileTextColor,
+	explorerTabContainerFileTextColor,
+	explorerTabContainerFileNameEditBGColor
+} = EXPLORER_TAB_CONTAINER_THEME;
+
 const File = styled.article`
 	& {
 		display: flex;
@@ -10,14 +22,14 @@ const File = styled.article`
 		padding: 0.4rem;
 		padding-left: ${({ depth }) => `${depth}rem`};
 
-		font-weight: ${EXPLORER_TAB_CONTAINER_THEME.explorerTabContainerFileTextWeight};
+		font-weight: ${explorerTabContainerFileTextWeight};
 
 		cursor: pointer;
 
 		background-color: ${({ toggleEdit }) =>
 			toggleEdit
-				? EXPLORER_TAB_CONTAINER_THEME.explorerTabContainerFileEditBGColor
-				: EXPLORER_TAB_CONTAINER_THEME.explorerTabContainerFileBGColor};
+				? explorerTabContainerFileEditBGColor
+				: explorerTabContainerFileBGColor};
 	}
 
 	.Side-icons-visibility {
@@ -25,10 +37,10 @@ const File = styled.article`
 	}
 
 	&:hover {
-		background-color: ${EXPLORER_TAB_CONTAINER_THEME.explorerTabContainerFileHoverBGColor};
+		background-color: ${explorerTabContainerFileHoverBGColor};
 
 		h1 {
-			color: ${EXPLORER_TAB_CONTAINER_THEME.explorerTabContainerFileHoverTextColor};
+			color: ${explorerTabContainerFileHoverTextColor};
 		}
 
 		.Side-icons-visibility {
@@ -42,7 +54,7 @@ const Icon = styled.img`
 		margin-right: 0.5rem;
 
 		width: ${EXPLORER_TAB_CONTAINER_THEME.explorerTabContainerFileTextSize};
-		height: ${EXPLORER_TAB_CONTAINER_THEME.explorerTabContainerFileTextSize};
+		height: ${explorerTabContainerFileTextSize};
 	}
 `;
 
@@ -52,15 +64,18 @@ const NameEdit = styled.div`
 
 		padding-left: 0.25rem;
 
-		font-size: ${EXPLORER_TAB_CONTAINER_THEME.explorerTabContainerFileTextSize};
-		color: ${EXPLORER_TAB_CONTAINER_THEME.explorerTabContainerFileTextColor};
+		font-size: ${explorerTabContainerFileTextSize};
+		color: ${({ isEditing }) =>
+			isEditing
+				? explorerTabContainerEditedFileTextColor
+				: explorerTabContainerFileTextColor};
 
 		overflow: hidden;
 		white-space: nowrap;
 	}
 
 	&[contentEditable='true'] {
-		background-color: ${EXPLORER_TAB_CONTAINER_THEME.explorerTabContainerFileNameEditBGColor};
+		background-color: ${explorerTabContainerFileNameEditBGColor};
 	}
 `;
 

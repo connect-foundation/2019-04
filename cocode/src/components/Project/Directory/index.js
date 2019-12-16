@@ -61,7 +61,9 @@ function Directory({
 	} = useContext(ProjectContext);
 	const [isNewFileCreating, setIsNewFileCreating] = useState(false);
 	const [isFileInDropZone, setIsFileInDropZone] = useState(false);
-	const [toggleDirectoryOpen, setToggleDirectoryOpen] = useState(depth === 1);
+	const [toggleDirectoryOpen, setToggleDirectoryOpen] = useState(
+		depth === 1 || files[id].name === 'src'
+	);
 	const [createFileType, setCreateFileType] = useState(null);
 
 	const [requestedAPI, setRequestedAPI] = useState(null);
@@ -77,12 +79,18 @@ function Directory({
 	const isDirectory = ({ type }) => type === 'directory';
 	const isFile = ({ type }) => type !== 'directory';
 	const isSelected = id => selectedFileId === id;
+	const isNotPackageJSON = ({ name }) => name !== 'package.json';
 
 	// Variables
 	const directoryList = childIds
 		? childIds.map(fileIdToFile).filter(isDirectory)
 		: [];
-	const fileList = childIds ? childIds.map(fileIdToFile).filter(isFile) : [];
+	const fileList = childIds
+		? childIds
+				.map(fileIdToFile)
+				.filter(isFile)
+				.filter(isNotPackageJSON)
+		: [];
 
 	// Evnet handler
 	const handleToggleDirectory = () =>

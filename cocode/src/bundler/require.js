@@ -4,7 +4,7 @@ import { transformCode } from './core';
 
 const executeCodeTemplate = code => /*javascript*/ `
 (() => {
-	const exports = {};
+	let exports = {};
 	try {
 		${code}
 		return Object.keys(exports).length ? exports : module.exports;
@@ -24,7 +24,8 @@ const executeCodeTemplate = code => /*javascript*/ `
 })()`;
 
 function require(path) {
-	if (path === '.') throw Error('Recursive path parsing error');
+	if (path === '.' || path === './')
+		throw Error('Recursive path parsing error');
 	const [newPath, newPathParent] = pathParser(path);
 
 	if (exports[newPath]) return exports[newPath];
@@ -39,7 +40,7 @@ function require(path) {
 		result = eval(executeCodeTemplate(code));
 	} catch (error) {
 		while (stackLength < pathStack.length) pathStack.pop();
-		result = eval(code);
+		result = eval(executeCodeTemplate(code));
 	}
 
 	exports[newPath] = result;
