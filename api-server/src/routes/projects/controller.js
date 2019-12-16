@@ -1,6 +1,11 @@
 import { Project, File } from '../../models';
 
 async function preloadProject(req, res, next, projectId) {
+	if (projectId === 'new') {
+		req.project = { _id: projectId };
+		return next();
+	}
+
 	Project.findById(projectId)
 		.then(project => {
 			if (!project) return res.sendStatus(404);
@@ -61,7 +66,9 @@ async function forkProject(req, res) {
 			if (project) res.sendStatus(409);
 
 			Project.create(newProject).then(() => {
-				File.insertMany(files).then(() => res.sendStatus(201));
+				File.insertMany(files).then(() => {
+					res.status(201).send({ _id: newProject._id });
+				});
 			});
 		})
 		.catch(() => res.sendStatus(500));
