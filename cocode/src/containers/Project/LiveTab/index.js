@@ -1,13 +1,13 @@
 import React, { useContext } from 'react';
 import * as Styled from './style';
 import { LiveContext } from 'contexts';
-import LiveOn from './LiveOn';
-import LiveOff from './LiveOff';
 
 import { liveOffActionCreator, fetchLiveActionCreator } from 'actions/Live';
+import LiveOffTab from 'containers/Project/LiveOffTab';
+import LiveOnTab from 'containers/Project/LiveOnTab';
 import avatar from 'components/Common/UserProfile/avatar.jpeg';
 
-const TAB_TATILE = 'LIVE';
+const TAB_TITLE = 'LIVE';
 
 const dummy = {
 	url: 'https://cocode.com/live/',
@@ -26,7 +26,7 @@ const dummy = {
 		}
 	],
 	owner: {
-		username: 'lallaheeee',
+		username: 'hzoou',
 		avatar
 	}
 };
@@ -40,14 +40,14 @@ function LiveTab() {
 	};
 	return (
 		<>
-			<Styled.Title>{TAB_TATILE}</Styled.Title>
-			<Styled.Wrapper>
+			<Styled.Title>{TAB_TITLE}</Styled.Title>
+			<div>
 				{url ? (
-					<LiveOn onClick={handleTurnLive} />
+					<LiveOnTab onClick={handleTurnLive} />
 				) : (
-					<LiveOff onClick={handleTurnLive} />
+					<LiveOffTab onClick={handleTurnLive} />
 				)}
-			</Styled.Wrapper>
+			</div>
 		</>
 	);
 }

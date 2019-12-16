@@ -18,7 +18,7 @@ function LiveUserProfile({ username, avatar }) {
 
 function LiveUsers({ owner: { username, avatar }, participants = [] }) {
 	return (
-		<>
+		<Styled.Container>
 			<Styled.Title>OWNERS</Styled.Title>
 			<LiveUserProfile username={username} avatar={avatar} />
 			<Styled.Title>USERS</Styled.Title>
@@ -31,7 +31,7 @@ function LiveUsers({ owner: { username, avatar }, participants = [] }) {
 					/>
 				);
 			})}
-		</>
+		</Styled.Container>
 	);
 }
 
