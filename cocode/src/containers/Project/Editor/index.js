@@ -57,7 +57,7 @@ function Editor({ handleForkCoconut }) {
 		const { files, selectedFileId } = project;
 		if (!files[selectedFileId].isEditing) return;
 
-		if (user.username !== project.author) {
+		if (!user || user.username !== project.author) {
 			handleForkCoconut();
 			return;
 		}
