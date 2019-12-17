@@ -77,6 +77,10 @@ const GlobalStyle = createGlobalStyle`
 	img {
 		-webkit-user-drag: none;
 	}
+	
+	div, span{
+		user-select: none;
+	}
 `;
 
 export default GlobalStyle;
