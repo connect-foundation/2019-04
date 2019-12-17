@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import * as Styled from './style';
 
+const DEFAULT_APPEAR_TIME = 5000;
+const DEFAULT_DISAPPEAR_ANIMATION_TIME = 500;
+
 function ToastItem({ id, close, type, message, time }) {
 	const [toastState, setToastState] = useState({
 		isAppear: true,
@@ -9,41 +12,47 @@ function ToastItem({ id, close, type, message, time }) {
 	});
 
 	const error = type === 'error';
+	const { isAppear, isWillDisappear, isDidDisappear } = toastState;
 
-	useEffect(() => {
+	const handleStartTimerForDisplay = () => {
 		setTimeout(() => {
 			setToastState({
 				...toastState,
 				isWillDisappear: true
 			});
-		}, time || 5000);
-	}, []);
+		}, time || DEFAULT_APPEAR_TIME);
+	};
 
-	useEffect(() => {
-		if (toastState.isWillDisappear)
-			setTimeout(() => {
-				setToastState({
-					...toastState,
-					isDidDisappear: true
-				});
-			}, 500);
-	}, [toastState.isWillDisappear]);
+	const handleDelayTimeForAnimation = () => {
+		if (!isWillDisappear) return;
 
-	useEffect(() => {
-		if (!toastState.isDidDisappear) return;
+		setTimeout(() => {
+			setToastState({
+				...toastState,
+				isDidDisappear: true
+			});
+		}, DEFAULT_DISAPPEAR_ANIMATION_TIME);
+	};
+
+	const handleExceptMeFromParent = () => {
+		if (!isDidDisappear) return;
 		close(id);
 		setToastState({
 			...toastState,
 			isAppear: false
 		});
-	}, [toastState.isDidDisappear]);
+	};
+
+	useEffect(handleStartTimerForDisplay, []);
+	useEffect(handleDelayTimeForAnimation, [isWillDisappear]);
+	useEffect(handleExceptMeFromParent, [isDidDisappear]);
 
 	return (
 		<>
-			{toastState.isAppear && (
+			{isAppear && (
 				<Styled.ToastItem
 					error={error}
-					isWillDisappear={toastState.isWillDisappear}
+					isWillDisappear={isWillDisappear}
 				>
 					{error ? <Styled.Close /> : <Styled.InfoIcon />}
 					<Styled.MessageContainer>

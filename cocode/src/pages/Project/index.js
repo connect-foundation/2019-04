@@ -23,6 +23,7 @@ import copyProject from 'template/copyProject';
 import { getProjectInfoAPICreator, forkProjectAPICreator } from 'apis/Project';
 import { LiveStore } from 'stores';
 import parseProject from 'pages/Project/parseProject';
+import { CREATED, CONFLICT } from 'constants/statusCode';
 
 const DEFAULT_CLICKED_TAB_INDEX = 0;
 
@@ -64,11 +65,11 @@ function Project() {
 	};
 
 	const handleChangeHistoryAtForked = () => {
-		if (status === 409) {
+		if (status === CONFLICT) {
 			addToast.error('already forked! enjoy Coconut ');
 		}
 
-		if (status !== 201) return;
+		if (status !== CREATED) return;
 
 		projectId !== 'new'
 			? history.push(`../project/${data._id}`)

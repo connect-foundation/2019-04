@@ -1,7 +1,10 @@
 import styled, { keyframes } from 'styled-components';
 import { DEFAULT_THEME, TOAST_THEME } from 'constants/theme';
 
-const fadeIn = keyframes`
+const { mainColor } = DEFAULT_THEME;
+const { toastErrorDeco, toastBGColor } = TOAST_THEME;
+
+const fadeInFromRight = keyframes`
 	from {
 		opacity: 0;
 		transform: translate3d(100%, 0, 0);
@@ -12,7 +15,7 @@ const fadeIn = keyframes`
 	}
 `;
 
-const fadeOut = keyframes`
+const fadeOutToLeft = keyframes`
 	to {
 		opacity: 0;
 		transform: translate3d(100%, 0, 0);
@@ -41,21 +44,20 @@ const ToastsWrapper = styled.div`
 const ToastItem = styled.div`
 	width: 25rem;
 	visibility: visible;
-	background-color: ${TOAST_THEME.toastBGColor};
+	background-color: ${toastBGColor};
 	padding: 2.8rem 0.3rem;
 	margin-bottom: 1rem;
 	position: relative;
 
 	animation-name: ${({ isWillDisappear }) =>
-		isWillDisappear ? fadeOut : fadeIn};
+		isWillDisappear ? fadeOutToLeft : fadeInFromRight};
 	animation-duration: 1s;
 	animation-fill-mode: both;
 
 	border-style: solid;
 	border-left-width: 0.3rem;
 	border-radius: 0.2rem;
-	border-color: ${props =>
-		props.error ? TOAST_THEME.toastErrorDeco : DEFAULT_THEME.mainColor};
+	border-color: ${({ error }) => (error ? toastErrorDeco : mainColor)};
 `;
 
 const MessageContainer = styled.div`
@@ -74,7 +76,7 @@ const InfoIcon = styled.span`
 		text-align: center;
 		width: 1.3rem;
 		height: 1.3rem;
-		background-color: ${DEFAULT_THEME.mainColor};
+		background-color: ${mainColor};
 		border-radius: 50%;
 	}
 
@@ -85,7 +87,7 @@ const InfoIcon = styled.span`
 		width: 0.2rem;
 		left: 44%;
 		border-radius: 0.1rem;
-		background-color: ${TOAST_THEME.toastBGColor};
+		background-color: ${toastBGColor};
 	}
 
 	&:before {
@@ -114,7 +116,7 @@ const Close = styled.span`
 		content: ' ';
 		height: 1.3rem;
 		width: 0.1rem;
-		background-color: ${TOAST_THEME.toastErrorDeco};
+		background-color: ${toastErrorDeco};
 	}
 
 	&:before {

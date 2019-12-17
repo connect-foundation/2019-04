@@ -15,12 +15,11 @@ function addToast(message, options) {
 	ReactDOM.render(<ToastContainer toast={newToast} />, toastElement);
 }
 
-const types = ['info', 'error'];
-types.forEach(
-	type =>
-		(addToast[type] = (message, options) => {
-			addToast(message, { ...options, type });
-		})
-);
+const setAddToastFunctionAtToastTypeProperty = type =>
+	(addToast[type] = (message, options) =>
+		addToast(message, { ...options, type }));
+
+const TOAST_TYPES = ['info', 'error'];
+TOAST_TYPES.forEach(setAddToastFunctionAtToastTypeProperty);
 
 export default addToast;
