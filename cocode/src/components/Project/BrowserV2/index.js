@@ -1,7 +1,14 @@
-import React, { useState, useEffect, useContext, useRef } from 'react';
+import React, {
+	useState,
+	useEffect,
+	useContext,
+	useRef,
+	useCallback
+} from 'react';
 import { useParams } from 'react-router-dom';
 import * as Styled from './style';
 
+import addToast from 'components/Common/Toast';
 import CoconutSpinner from 'components/Common/CoconutSpinner';
 
 import ProjectContext from 'contexts/ProjectContext';
@@ -15,6 +22,8 @@ import useFetch from 'hooks/useFetch';
 import getUpdatedPackageJSON from 'pages/Project/getUpdatedPackageJSON';
 
 import { COCONUT_SERVER } from 'config';
+
+import * as NOTIFICATION from 'constants/notificationMessage';
 
 // Constants
 const MIN_WAIT_TIME = 1500;
@@ -103,7 +112,7 @@ function BrowserV2({ ...props }) {
 
 	const handleErrorResponse = () => {
 		if (!error) return;
-		console.log('error: update package json');
+		addToast.error(NOTIFICATION.FAIL_INSTALL_DEPENDENCY);
 	};
 
 	const handleIframeOnLoad = useCallback(() => {

@@ -3,6 +3,8 @@ import { useState, useEffect, useContext, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import * as Styled from './style';
 
+import addToast from 'components/Common/Toast';
+
 import ProjectContext from 'contexts/ProjectContext';
 import { createFileActionCreator } from 'actions/Project';
 
@@ -11,6 +13,7 @@ import { changeDivEditable } from 'utils/domControl';
 
 import FileImagesSrc from 'constants/fileImagesSrc';
 import { KEY_CODE_ENTER } from 'constants/keyCode';
+import * as NOTIFICATION from 'constants/notificationMessage';
 
 import useFetch from 'hooks/useFetch';
 
@@ -37,6 +40,7 @@ function NewFile({ depth, type, parentId, handleEndCreateFile }) {
 		const name = e.currentTarget.textContent;
 		if (isDuplicatedFileName(name)) {
 			e.preventDefault();
+			addToast.error(NOTIFICATION.FILE_IS_DUPLICATED);
 			return;
 		}
 
@@ -77,6 +81,7 @@ function NewFile({ depth, type, parentId, handleEndCreateFile }) {
 
 	const handleErrorResponse = () => {
 		if (!error) return;
+		addToast.error(NOTIFICATION.FAIL_TO_CREATE_FILE);
 		changeDivEditable(fileNameInputReferenece.current, false);
 	};
 

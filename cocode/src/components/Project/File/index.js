@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import * as Styled from './style';
 
+import addToast from 'components/Common/Toast';
 import {
 	EditIcon,
 	DeleteIcon,
@@ -16,6 +17,7 @@ import {
 
 import FileImagesSrc from 'constants/fileImagesSrc';
 import { KEY_CODE_ENTER } from 'constants/keyCode';
+import * as NOTIFICATION from 'constants/notificationMessage';
 
 import useFetch from 'hooks/useFetch';
 
@@ -26,9 +28,11 @@ import { DELETE_FILE, UPDATE_FILE_NAME } from 'actions/types';
 import ProjectContext from 'contexts/ProjectContext';
 
 // Constants
-const ACCEPT_DELETE_NOTIFICATION = '이 파일을 지우시겠습니까?';
-const WARNING_PREVENT_NOTIFICATION =
-	'해당 파일은 이름을 변경하거나 삭제할 수 없습니다.';
+const ANSWER_DELETE_FILE = '이 파일을 지우시겠습니까?';
+const API_NOTIFICATION = {
+	[DELETE_FILE]: NOTIFICATION.FAIL_TO_DELETE_FILE,
+	[UPDATE_FILE_NAME]: NOTIFICATION.FAIL_TO_UPDATE_FILE_NAME
+};
 
 function isNotChangeableFileName({ files, changedName, parentId }) {
 	const childsOfParent = files[parentId].child;
@@ -74,16 +78,15 @@ function File({
 		}
 	};
 
-	// Functions
-	const checkThisFileIsProtected = () =>
-		isProtectedFile && !alert(WARNING_PREVENT_NOTIFICATION);
-
 	// Event handlers
 	const handleClick = () => handleSelectFile(_id);
 
 	const handleEditFileNameStart = e => {
 		e.stopPropagation();
-		if (checkThisFileIsProtected()) return;
+		if (isProtectedFile) {
+			addToast.error(NOTIFICATION.FILE_IS_NOT_EDITABLE);
+			return;
+		}
 
 		changeDivEditable(nameEditReferenece.current, true);
 		setToggleEdit(true);
@@ -97,6 +100,7 @@ function File({
 
 		if (isNotChangeableFileName({ files, parentId, changedName })) {
 			currentTarget.textContent = fileName;
+			addToast.error(NOTIFICATION.FILE_IS_DUPLICATED);
 			return;
 		}
 
@@ -110,9 +114,12 @@ function File({
 
 	const handleDeleteFileButtonClick = e => {
 		e.stopPropagation();
-		if (checkThisFileIsProtected()) return;
+		if (isProtectedFile) {
+			addToast.error(NOTIFICATION.FILE_IS_NOT_EDITABLE);
+			return;
+		}
 
-		const acceptDeleteThisFile = confirm(ACCEPT_DELETE_NOTIFICATION);
+		const acceptDeleteThisFile = confirm(NOTIFICATION.CONFIRM_DELETE_FILE);
 		if (!acceptDeleteThisFile) return;
 
 		const deleteFileId = _id;
@@ -151,7 +158,9 @@ function File({
 	};
 
 	const handleErrorResponse = () => {
-		error && setRequestedAPI(null);
+		if (!error) return;
+		addToast.error(API_NOTIFICATION[requestedAPI]);
+		setRequestedAPI(null);
 	};
 
 	useEffect(handleSetFileState, [data]);
