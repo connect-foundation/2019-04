@@ -71,7 +71,7 @@ const MessageContainer = styled.div`
 const InfoIcon = styled.span`
 	& {
 		position: absolute;
-		top: 20%;
+		top: 36%;
 		left: 5%;
 		text-align: center;
 		width: 1.3rem;
@@ -103,7 +103,7 @@ const InfoIcon = styled.span`
 const Close = styled.span`
 	& {
 		position: absolute;
-		top: 20%;
+		top: 36%;
 		left: 8%;
 		width: 1.3rem;
 		height: 1.3rem;
