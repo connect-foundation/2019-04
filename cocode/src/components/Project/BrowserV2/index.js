@@ -1,10 +1,4 @@
-import React, {
-	useState,
-	useEffect,
-	useContext,
-	useRef,
-	useCallback
-} from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import * as Styled from './style';
 
@@ -144,7 +138,7 @@ function BrowserV2({ ...props }) {
 				src={`${COCONUT_SERVER}/${projectId}`}
 				onLoad={handleIframeOnLoad}
 				{...props}
-			></Styled.BrowserV2>
+			/>
 		</Styled.Frame>
 	);
 }
