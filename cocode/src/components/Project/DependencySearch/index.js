@@ -8,6 +8,9 @@ import { KEY_CODE_ENTER } from 'constants/keyCode';
 import { getDenpendencyListAPICreator } from 'apis/Project';
 import useFetch from 'hooks/useFetch';
 
+let timer;
+const DEBOUNCING_TIME = 200;
+
 function DependencySearch() {
 	const searchInput = useRef(false);
 	const [{ data, loading }, setRequest] = useFetch({});
@@ -18,8 +21,12 @@ function DependencySearch() {
 		setRequest(getDenpendencyListAPICreator(name));
 	};
 
-	const handleKeyDown = e => {
-		if (e.keyCode === KEY_CODE_ENTER) handleSearchTypingEnd();
+	const handleKeyDown = () => {
+		if (timer) clearTimeout(timer);
+
+		timer = setTimeout(() => {
+			handleSearchTypingEnd();
+		}, DEBOUNCING_TIME);
 	};
 
 	useEffect(() => {
