@@ -115,14 +115,13 @@ function BrowserV2({ ...props }) {
 	const handleIframeOnLoad = useCallback(() => {
 		setIsReadyToReceiveMessage(true);
 
-		if (projectId === 'new') {
-			const data = {
-				command: UPDATE_PROJECT,
-				project
-			};
+		if (projectId !== 'new') return;
+		const data = {
+			command: UPDATE_PROJECT,
+			project
+		};
 
-			iframeReference.current.contentWindow.postMessage(data, '*');
-		}
+		iframeReference.current.contentWindow.postMessage(data, '*');
 	}, [project]);
 
 	useEffect(handleComponentDidMount, []);
