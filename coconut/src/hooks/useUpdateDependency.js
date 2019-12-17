@@ -36,17 +36,7 @@ function useUpdateDependency(idbConnection) {
 	};
 
 	const updateDependencyToIDB = useCallback(
-		(key, value) => {
-			const successHandler = () => {
-				/* Whatever is success or fail, Not mind */
-			};
-			IndexedDB.updateData({
-				idbConnection,
-				key,
-				value,
-				successHandler
-			});
-		},
+		(key, value) => IndexedDB.updateData({ idbConnection, key, value }),
 		[idbConnection]
 	);
 
@@ -56,9 +46,9 @@ function useUpdateDependency(idbConnection) {
 		const handleSuccessToGetDependency = result => {
 			const { installed, needToInstall } = result;
 
-			Object.entries(installed).forEach(([_, value]) => {
-				Object.entries(value).forEach(([key, value]) => {
-					window.fileSystem[key] = value;
+			Object.entries(installed).forEach(([_, modules]) => {
+				Object.entries(modules).forEach(([path, content]) => {
+					window.fileSystem[path] = content;
 				});
 			});
 
@@ -69,8 +59,12 @@ function useUpdateDependency(idbConnection) {
 			setDependencyState(getDataFailState);
 		};
 
-		const filterKeys = Object.values(dependency).map(({ name, version }) =>
-			JSON.stringify([name, version])
+		const filterKeys = Object.values(dependency).reduce(
+			(object, { name, version }) => {
+				object[JSON.stringify([name, version])] = true;
+				return object;
+			},
+			{}
 		);
 
 		setDependency(undefined);
@@ -105,8 +99,8 @@ function useUpdateDependency(idbConnection) {
 		const [key] = needToInstall;
 		updateDependencyToIDB(key, data);
 
-		Object.entries(data).forEach(([key, value]) => {
-			window.fileSystem[key] = value;
+		Object.entries(data).forEach(([path, content]) => {
+			window.fileSystem[path] = content;
 		});
 		setNeedToInstall(needToInstall.slice(1));
 	}, [response, needToInstall, updateDependencyToIDB]);

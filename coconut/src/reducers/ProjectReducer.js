@@ -63,8 +63,8 @@ function getDependencyList(files, root) {
 		.filter(({ name }) => name === 'package.json')[0].contents;
 	const dependencies = JSON.parse(packageJSON).dependencies;
 
-	return Object.entries(dependencies).reduce((acc, [key, value]) => {
-		return { ...acc, [key]: { name: key, version: value } };
+	return Object.entries(dependencies).reduce((acc, [name, version]) => {
+		return { ...acc, [name]: { name, version } };
 	}, {});
 }
 

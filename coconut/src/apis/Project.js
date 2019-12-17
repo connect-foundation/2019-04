@@ -7,23 +7,4 @@ function getProjectInfoAPICreator(projectId) {
 	};
 }
 
-function forkProjectAPICreator(data) {
-	return {
-		url: `${API.projects}`,
-		method: 'post',
-		data
-	};
-}
-
-function getDenpendencyListAPICreator(name) {
-	return {
-		url: `${API.dependency(name)}`,
-		method: 'get'
-	};
-}
-
-export {
-	getProjectInfoAPICreator,
-	forkProjectAPICreator,
-	getDenpendencyListAPICreator
-};
+export { getProjectInfoAPICreator };

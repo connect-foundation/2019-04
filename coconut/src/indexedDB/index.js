@@ -3,6 +3,27 @@ const NOT_SUPPORT_WARNING =
 const IDB_PERMISSION_WARNING = 'DB 생성 권한이 없습니다.';
 const HANDLE_INDEXEDDB_ERROR = 'Fail: handle indexdb';
 
+const handleAccessToIDB = ({
+	idbConnection,
+	method,
+	args,
+	strategy = 'readonly'
+}) => (resolve, reject) => {
+	if (!idbConnection) reject(true);
+
+	const idbName = idbConnection.name;
+	const transaction = idbConnection.transaction([idbName], strategy);
+
+	transaction.oncomplete = () => resolve(true);
+	transaction.onerror = () => reject(HANDLE_INDEXEDDB_ERROR);
+
+	const objectStore = transaction.objectStore(idbName);
+	const request = objectStore[method](...args);
+
+	request.onsuccess = ({ target }) => resolve(target.result);
+	request.onerror = () => reject(true);
+};
+
 function checkSupportBrowser() {
 	if (window.indexedDB) return true;
 
@@ -25,66 +46,35 @@ function connectToIDB({ idbName, version = 1 }) {
 }
 
 function getData({ idbConnection, key }) {
-	return new Promise((resolve, reject) => {
-		const idbName = idbConnection.name;
-		const transaction = idbConnection.transaction([idbName]);
-
-		transaction.oncomplete = () => resolve(true);
-		transaction.onerror = () => reject(HANDLE_INDEXEDDB_ERROR);
-
-		const objectStore = transaction.objectStore(idbName);
-		const request = objectStore.get(key);
-
-		request.onsuccess = ({ target }) => resolve(target.result);
-		request.onerror = () => reject(true);
-	});
+	return new Promise(
+		handleAccessToIDB({
+			idbConnection,
+			method: 'get',
+			args: [key]
+		})
+	);
 }
 
-function updateData({
-	idbConnection,
-	strategy = 'readwrite',
-	key,
-	value,
-	successHandler,
-	failHandler = error => console.log(error)
-}) {
-	return new Promise((resolve, reject) => {
-		const idbName = idbConnection.name;
-		const transaction = idbConnection.transaction([idbName], strategy);
-
-		transaction.oncomplete = () => resolve(true);
-		transaction.onerror = () => reject(HANDLE_INDEXEDDB_ERROR);
-
-		const objectStore = transaction.objectStore(idbName);
-		const request = objectStore.put(value, key);
-
-		request.onerror = () => reject(true);
-	})
-		.then(result => successHandler(result))
-		.catch(failHandler);
+function updateData({ idbConnection, key, value }) {
+	return new Promise(
+		handleAccessToIDB({
+			idbConnection,
+			method: 'put',
+			args: [value, key],
+			strategy: 'readwrite'
+		})
+	);
 }
 
-function removeData({
-	idbConnection,
-	strategy = 'readwrite',
-	key,
-	successHandler,
-	failHandler = error => console.log(error)
-}) {
-	return new Promise((resolve, reject) => {
-		const idbName = idbConnection.name;
-		const transaction = idbConnection.transaction([idbName], strategy);
-
-		transaction.oncomplete = () => resolve(true);
-		transaction.onerror = () => reject(HANDLE_INDEXEDDB_ERROR);
-
-		const objectStore = transaction.objectStore(idbName);
-		const request = objectStore.delete(key);
-
-		request.onerror = () => reject(true);
-	})
-		.then(result => successHandler(result))
-		.catch(failHandler);
+function removeData({ idbConnection, key }) {
+	return new Promise(
+		handleAccessToIDB({
+			idbConnection,
+			method: 'delete',
+			args: [key],
+			strategy: 'readwrite'
+		})
+	);
 }
 
 function getDataFilterByKeys({ idbConnection, filterKeys }) {
@@ -99,19 +89,21 @@ function getDataFilterByKeys({ idbConnection, filterKeys }) {
 		const cursorRequest = objectStore.openCursor();
 
 		const result = {};
-		let cloneFilterKeys = filterKeys.map(item => item);
+		let cloneFilterKeys = { ...filterKeys };
 
 		cursorRequest.onsuccess = ({ target }) => {
 			const cursor = target.result;
-			if (!cursor || cloneFilterKeys.length === 0) {
-				resolve({ installed: result, needToInstall: cloneFilterKeys });
+
+			const leftKeys = Object.keys(cloneFilterKeys);
+			if (!cursor || !leftKeys.length) {
+				resolve({ installed: result, needToInstall: leftKeys });
 				return;
 			}
 
 			const { key, value } = cursor;
-			const isExist = cloneFilterKeys.some(item => key === item);
+			const isExist = cloneFilterKeys[key];
 			if (isExist) {
-				cloneFilterKeys = cloneFilterKeys.filter(item => key !== item);
+				delete cloneFilterKeys[key];
 				result[key] = value;
 			}
 			cursor.continue();
