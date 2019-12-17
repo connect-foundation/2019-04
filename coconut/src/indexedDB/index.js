@@ -120,7 +120,7 @@ function getDataFilterByKeys({ idbConnection, filterKeys }) {
 	});
 }
 
-export {
+export default {
 	checkSupportBrowser,
 	connectToIDB,
 	getData,

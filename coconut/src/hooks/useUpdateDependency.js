@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 
-import { updateData, getDataFilterByKeys } from 'indexedDB';
+import IndexedDB from 'indexedDB';
 
 import { useFetch } from 'hooks';
 
@@ -40,7 +40,7 @@ function useUpdateDependency(idbConnection) {
 			const successHandler = () => {
 				/* Whatever is success or fail, Not mind */
 			};
-			updateData({
+			IndexedDB.updateData({
 				idbConnection,
 				key,
 				value,
@@ -74,7 +74,7 @@ function useUpdateDependency(idbConnection) {
 		);
 
 		setDependency(undefined);
-		getDataFilterByKeys({ idbConnection, filterKeys })
+		IndexedDB.getDataFilterByKeys({ idbConnection, filterKeys })
 			.then(handleSuccessToGetDependency)
 			.catch(handleFailToGetDependency);
 	}, [idbConnection, dependency]);

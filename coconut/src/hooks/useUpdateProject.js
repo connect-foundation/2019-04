@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 
-import { getData } from 'indexedDB';
+import IndexedDB from 'indexedDB';
 
 import { useFetch } from 'hooks';
 
@@ -53,7 +53,7 @@ function useUpdateProject(idbConnection, projectId, project, dispatchProject) {
 			setProjectState(getDataFailState);
 		};
 
-		getData({ idbConnection, key: projectId })
+		IndexedDB.getData({ idbConnection, key: projectId })
 			.then(handleSuccessToGetProjectData)
 			.catch(handleFailToGetProjectData);
 	}, [idbConnection, projectId, fetchProject]);

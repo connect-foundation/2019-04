@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 
-import { checkSupportBrowser, connectToIDB } from 'indexedDB';
+import IndexedDB from 'indexedDB';
 
 const initialState = {
 	success: false,
@@ -34,13 +34,15 @@ function useConnectToIDB({ projectIDBName, dependencyIDBName }) {
 	}, [connectionState]);
 
 	const handleConnectToIDB = () => {
-		if (!checkSupportBrowser()) {
+		if (!IndexedDB.checkSupportBrowser()) {
 			setConnectionState(connectionFailState);
 			return;
 		}
 
-		const projectIDBRequest = connectToIDB({ idbName: projectIDBName });
-		const dependencyIDBRequest = connectToIDB({
+		const projectIDBRequest = IndexedDB.connectToIDB({
+			idbName: projectIDBName
+		});
+		const dependencyIDBRequest = IndexedDB.connectToIDB({
 			idbName: dependencyIDBName
 		});
 
