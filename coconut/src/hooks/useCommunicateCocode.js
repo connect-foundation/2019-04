@@ -22,8 +22,6 @@ function useCommunicateCocode(dispatchProject) {
 
 	const receiveMsgFromCocode = useCallback(
 		({ data }) => {
-			console.log('receive message');
-			console.log(data);
 			const { command } = data;
 			if (!command) return;
 
