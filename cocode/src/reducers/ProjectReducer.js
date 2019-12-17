@@ -1,5 +1,6 @@
 // 참고: https://github.com/dal-lab/frontend-tdd-examples/blob/master/6-todo-redux/src/reducers.js
 import {
+	UPDATE_PROJECT_INFO,
 	UPDATE_CODE,
 	FETCH_PROJECT,
 	SELECT_FILE,
@@ -9,7 +10,6 @@ import {
 	MOVE_FILE,
 	INSTALL_DEPENDENCY,
 	WAITING_INSTALL_DEPENDENCY,
-	CLONE_PROJECT,
 	SAVE_FILE
 } from 'actions/types';
 
@@ -17,6 +17,13 @@ import { getFileExtension } from 'utils';
 import FileImagesSrc from 'constants/fileImagesSrc';
 
 import getUpdatedPackageJSON from 'pages/Project/getUpdatedPackageJSON';
+
+const updateProjectInfo = (state, payload) => {
+	return {
+		...state,
+		...payload
+	};
+};
 
 // Fetch project
 const fetchProject = (_, { project }) => {
@@ -102,7 +109,6 @@ const updateCode = (state, { changedCode }) => {
 	};
 };
 
-
 // Select file
 const selectFile = (state, { selectedFileId }) => {
 	return {
@@ -160,7 +166,7 @@ const updateFileName = (state, { selectedFileId, changedName }) => {
 	const updatedPath = `${parentPath}/${changedName}`;
 
 	const changedChildFiles = files[selectedFileId].child
-		? updatePathOfChild(parentPath, files, files[selectedFileId].child)
+		? updatePathOfChild(updatedPath, files, files[selectedFileId].child)
 		: {};
 
 	return {
@@ -288,10 +294,6 @@ function registerDependency(state, { moduleName, moduleVersion }) {
 	};
 }
 
-function cloneProject(_, { project }) {
-	return project;
-}
-
 const saveFile = state => {
 	const { files, selectedFileId } = state;
 
@@ -309,6 +311,7 @@ const saveFile = state => {
 
 function ProjectReducer(state, { type, payload }) {
 	const reducers = {
+		[UPDATE_PROJECT_INFO]: updateProjectInfo,
 		[FETCH_PROJECT]: fetchProject,
 		[UPDATE_CODE]: updateCode,
 		[SELECT_FILE]: selectFile,
@@ -318,7 +321,6 @@ function ProjectReducer(state, { type, payload }) {
 		[MOVE_FILE]: moveFile,
 		[INSTALL_DEPENDENCY]: registerDependency,
 		[WAITING_INSTALL_DEPENDENCY]: waitingInstallDependency,
-		[CLONE_PROJECT]: cloneProject,
 		[SAVE_FILE]: saveFile
 	};
 
