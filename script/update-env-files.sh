@@ -1,2 +1,2 @@
 #!/bin/sh
-tar cvf env.tar cocode/.env api-server/.env
+tar cvf env.tar cocode/.env coconut/.env api-server/.env
