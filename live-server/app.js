@@ -58,9 +58,15 @@ io.on('connection', socket => {
         }
     };
 
+    const handleCloseSocket = () => { // 호스트가 라이브를 중지한 경우
+        rooms[socket.room] = null;
+        io.sockets.in(socket.room).emit('close');
+    };
+
     socket.emit('connected');
     socket.on('createRoom', HandleCreateRoom);
     socket.on('disconnect', handleDisconnect);
+    socket.on('close', handleCloseSocket);
 });
 
 io.listen(port);
