@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import * as Styled from './style';
+import { UserContext } from 'contexts';
 
 function LiveUserProfile({ username, avatar }) {
+	const { user } = useContext(UserContext);
+
 	return (
 		<Styled.UserProfile>
 			<Styled.UserAvatar src={avatar} alt="프로필" />
 			<Styled.UserName>{username}</Styled.UserName>
+			{user.username === username && (
+				<Styled.SelfLabel>(you)</Styled.SelfLabel>
+			)}
 		</Styled.UserProfile>
 	);
 }
