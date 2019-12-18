@@ -39,7 +39,8 @@ function Project() {
 	const [project, dispatchProject] = useReducer(ProjectReducer, {});
 
 	const handleForkCoconut = () => {
-		const parsedProject = parseProject(project, user);
+		const username = user ? user.username : 'anonymous';
+		const parsedProject = parseProject(project, username);
 		const forkProjectInfoAPI = forkProjectAPICreator(parsedProject);
 		setRequest(forkProjectInfoAPI);
 
