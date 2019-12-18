@@ -13,7 +13,6 @@ const FILE_IS_NOT_REMOVABLE = 'This file is not removable';
 const CONFIRM_DELETE_FILE = 'Are you delete this file?';
 const CONFIRM_DELETE_COCONUT = 'Are you delete this coconut?';
 
-const LOADING_UPDATE_PROJECT_CARD = 'Please wait to update coconut...';
 const LOADING_DASHBOARD = 'Please wait to fetch coconuts';
 
 export {
@@ -29,6 +28,5 @@ export {
 	FILE_IS_NOT_REMOVABLE,
 	CONFIRM_DELETE_FILE,
 	CONFIRM_DELETE_COCONUT,
-	LOADING_UPDATE_PROJECT_CARD,
 	LOADING_DASHBOARD,
 };

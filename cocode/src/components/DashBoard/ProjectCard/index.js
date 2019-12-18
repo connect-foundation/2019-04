@@ -9,7 +9,6 @@ import React, {
 import { useHistory } from 'react-router-dom';
 import * as Styled from './style';
 import DropDownMenu from 'components/Common/DropDownMenu';
-import CoconutSpinner from 'components/Common/CoconutSpinner';
 import addToast from 'components/Common/Toast';
 
 import {
@@ -31,7 +30,6 @@ import moment from 'moment';
 import { KEY_CODE_ENTER } from 'constants/keyCode';
 import {
 	CONFIRM_DELETE_COCONUT,
-	LOADING_UPDATE_PROJECT_CARD,
 	FAIL_TO_UPDATE_PROJECT_CARD
 } from 'constants/notificationMessage';
 
@@ -42,17 +40,6 @@ function MenuButton({ onClick }) {
 			<Styled.ProjectMenuButtonDot />
 			<Styled.ProjectMenuButtonDot />
 		</Styled.ProjectMenuButton>
-	);
-}
-
-function LoadingDisplay() {
-	return (
-		<Styled.SpinnerContainer>
-			<CoconutSpinner />
-			<Styled.LoadingPhrase>
-				{LOADING_UPDATE_PROJECT_CARD}
-			</Styled.LoadingPhrase>
-		</Styled.SpinnerContainer>
 	);
 }
 
@@ -122,7 +109,10 @@ function ProjectCard({ _id, name, updatedAt }) {
 	};
 
 	const handleAlertError = useCallback(() => {
-		if (error) addToast.error(FAIL_TO_UPDATE_PROJECT_CARD);
+		if (!error) return;
+
+		addToast.error(FAIL_TO_UPDATE_PROJECT_CARD);
+		nameInput.current.textContent = name;
 	});
 
 	useEffect(handleUseAPI, [loading, status]);
@@ -130,7 +120,6 @@ function ProjectCard({ _id, name, updatedAt }) {
 
 	return (
 		<Styled.ProjectArticle onClick={handleClickOpen}>
-			{loading && <LoadingDisplay />}
 			<Styled.ProjectTitle
 				ref={nameInput}
 				onFocus={selectAllTextAboutFocusedDom}

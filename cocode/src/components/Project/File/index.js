@@ -28,7 +28,6 @@ import { DELETE_FILE, UPDATE_FILE_NAME } from 'actions/types';
 import ProjectContext from 'contexts/ProjectContext';
 
 // Constants
-const ANSWER_DELETE_FILE = '이 파일을 지우시겠습니까?';
 const API_NOTIFICATION = {
 	[DELETE_FILE]: NOTIFICATION.FAIL_TO_DELETE_FILE,
 	[UPDATE_FILE_NAME]: NOTIFICATION.FAIL_TO_UPDATE_FILE_NAME
@@ -115,7 +114,7 @@ function File({
 	const handleDeleteFileButtonClick = e => {
 		e.stopPropagation();
 		if (isProtectedFile) {
-			addToast.error(NOTIFICATION.FILE_IS_NOT_EDITABLE);
+			addToast.error(NOTIFICATION.FILE_IS_NOT_REMOVABLE);
 			return;
 		}
 

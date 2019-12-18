@@ -75,32 +75,6 @@ const ProjectMenuButtonDot = styled.div`
 	border-radius: 50%;
 `;
 
-const SpinnerContainer = styled.div`
-	& {
-		position: absolute;
-		top: 0;
-		left: 0;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-
-		width: 100%;
-		height: 100%;
-
-		border-radius: 1rem;
-		background-color: rgba(0, 0, 0, 0.7);
-	}
-`;
-
-const LoadingPhrase = styled.p`
-	& {
-		margin-top: 1rem;
-
-		font-size: 1rem;
-		font-weight: lighter;
-	}
-`;
 
 export {
 	ProjectArticle,
@@ -109,6 +83,4 @@ export {
 	ProjectTimeLabel,
 	ProjectMenuButton,
 	ProjectMenuButtonDot,
-	SpinnerContainer,
-	LoadingPhrase
 };
