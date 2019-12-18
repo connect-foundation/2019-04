@@ -67,4 +67,4 @@ io.on('connection', socket => {
     socket.on('close', handleCloseSocket);
 });
 
-io.listen(port);
+io.listen(PORT);
