@@ -42,8 +42,25 @@ io.on('connection', socket => {
         io.in(socket.room).emit('joinUser', { participants });
     };
 
+    const handleDisconnect = () => {
+        const room = rooms[socket.room];
+        if (!room) return;
+        const { host, participants } = room;
+        const { user: { username }} = socket;
+        socket.leave(socket.room);
+
+        if (host.username === username) { // 호스트가 연결이 끊긴 경우
+            rooms[socket.room] = null;
+            io.sockets.in(socket.room).emit('close');
+        } else { // 게스트가 연결이 끊긴 경우
+            participants.splice(indexOfUser(participants, username), 1);
+            io.in(socket.room).emit('leaveUser', { participants });
+        }
+    };
+
     socket.emit('connected');
     socket.on('createRoom', HandleCreateRoom);
+    socket.on('disconnect', handleDisconnect);
 });
 
 io.listen(port);
