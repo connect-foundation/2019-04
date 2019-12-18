@@ -8,6 +8,7 @@ import React, {
 import { useParams } from 'react-router-dom';
 import * as Styled from './style';
 
+import addToast from 'components/Common/Toast';
 import CoconutSpinner from 'components/Common/CoconutSpinner';
 
 import ProjectContext from 'contexts/ProjectContext';
@@ -20,10 +21,13 @@ import useFetch from 'hooks/useFetch';
 
 import getUpdatedPackageJSON from 'pages/Project/getUpdatedPackageJSON';
 
+import { COCONUT_SERVER } from 'config';
+
+import * as NOTIFICATION from 'constants/notificationMessage';
+
 // Constants
 const MIN_WAIT_TIME = 1500;
-const UPDATE_CODE = 'updateFile';
-const CREATE_NEW_PROJECT = 'createNewProject';
+const UPDATE_PROJECT = 'updateProject';
 
 function BrowserV2({ ...props }) {
 	const { projectId } = useParams();
@@ -93,7 +97,7 @@ function BrowserV2({ ...props }) {
 		if (!isReadyToReceiveMessage) return;
 
 		const data = {
-			command: UPDATE_CODE,
+			command: UPDATE_PROJECT,
 			project
 		};
 
@@ -108,20 +112,19 @@ function BrowserV2({ ...props }) {
 
 	const handleErrorResponse = () => {
 		if (!error) return;
-		console.log('error: update package json');
+		addToast.error(NOTIFICATION.FAIL_INSTALL_DEPENDENCY);
 	};
 
 	const handleIframeOnLoad = useCallback(() => {
 		setIsReadyToReceiveMessage(true);
 
-		if (projectId === 'new') {
-			const data = {
-				command: CREATE_NEW_PROJECT,
-				project
-			};
+		if (projectId !== 'new') return;
+		const data = {
+			command: UPDATE_PROJECT,
+			project
+		};
 
-			iframeReference.current.contentWindow.postMessage(data, '*');
-		}
+		iframeReference.current.contentWindow.postMessage(data, '*');
 	}, [project]);
 
 	useEffect(handleComponentDidMount, []);
@@ -141,10 +144,10 @@ function BrowserV2({ ...props }) {
 			)}
 			<Styled.BrowserV2
 				ref={iframeReference}
-				src={`/coconut/${projectId}`}
+				src={`${COCONUT_SERVER}/${projectId}`}
 				onLoad={handleIframeOnLoad}
 				{...props}
-			></Styled.BrowserV2>
+			/>
 		</Styled.Frame>
 	);
 }

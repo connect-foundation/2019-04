@@ -10,7 +10,6 @@ import {
 	MOVE_FILE,
 	INSTALL_DEPENDENCY,
 	WAITING_INSTALL_DEPENDENCY,
-	CLONE_PROJECT,
 	SAVE_FILE
 } from 'actions/types';
 
@@ -295,10 +294,6 @@ function registerDependency(state, { moduleName, moduleVersion }) {
 	};
 }
 
-function cloneProject(_, { project }) {
-	return project;
-}
-
 const saveFile = state => {
 	const { files, selectedFileId } = state;
 
@@ -326,7 +321,6 @@ function ProjectReducer(state, { type, payload }) {
 		[MOVE_FILE]: moveFile,
 		[INSTALL_DEPENDENCY]: registerDependency,
 		[WAITING_INSTALL_DEPENDENCY]: waitingInstallDependency,
-		[CLONE_PROJECT]: cloneProject,
 		[SAVE_FILE]: saveFile
 	};
 

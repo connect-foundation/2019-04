@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import * as Styled from './style';
 
+import addToast from 'components/Common/Toast';
 import DropZone from 'components/Common/DropZone';
 import File from 'components/Project/File';
 import NewFile from 'components/Project/NewFile';
@@ -9,6 +10,7 @@ import NewFile from 'components/Project/NewFile';
 import ProjectContext from 'contexts/ProjectContext';
 
 import { EXPLORER_TAB_CONTAINER_THEME } from 'constants/theme';
+import * as NOTIFICATION from 'constants/notificationMessage';
 
 import useFetch from 'hooks/useFetch';
 
@@ -20,7 +22,6 @@ const {
 	explorerTabContainerFileDropZoneOverBGColor,
 	explorerTabContainerFileDropZoneNotOverBGColor
 } = EXPLORER_TAB_CONTAINER_THEME;
-const WARNING_PREVENT_MOVE_NOTIFICATION = '해당 파일은 이동시킬 수 없습니다.';
 
 // src 디렉토리의 index.js, src 디렉토리, package.json은 삭제불가
 function isProtectedFile({ files, root, entry, fileId }) {
@@ -115,12 +116,17 @@ function Directory({
 			isProtectedFile({ files, root, entry, fileId }) ||
 			isFileNotMoveable({ files, fileId, newParentId: id })
 		)
-			return alert(WARNING_PREVENT_MOVE_NOTIFICATION);
+			return addToast.error(NOTIFICATION.FILE_IS_NOT_MOVABLE);
 
 		requestMoveFile(fileId);
 	};
 
 	const requestMoveFile = fileId => {
+		if (projectId === 'new') {
+			handleMoveFile(id, fileId);
+			return;
+		}
+
 		const oldParentId = files[fileId].parentId;
 
 		const updateFileAPI = updateFileAPICreator(projectId, fileId, {
@@ -138,7 +144,9 @@ function Directory({
 	};
 
 	const handleErrorResponse = () => {
-		error && setRequestedAPI(null);
+		if (!error) return;
+		addToast.error(NOTIFICATION.FAIL_TO_MOVE_FILE);
+		setRequestedAPI(null);
 	};
 
 	useEffect(handleSetFileState, [data]);

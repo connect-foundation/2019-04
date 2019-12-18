@@ -8,6 +8,7 @@ import TabContainer from 'containers/Project/TabContainer';
 import Editor from 'containers/Project/Editor';
 import BrowserV2 from 'components/Project/BrowserV2';
 import { SplitPaneContainer } from 'components/Common/SplitPane';
+import addToast from 'components/Common/Toast';
 
 import ProjectReducer from 'reducers/ProjectReducer';
 import ProjectContext from 'contexts/ProjectContext';
@@ -21,6 +22,7 @@ import { reactTemplate } from 'template/react';
 import copyProject from 'template/copyProject';
 import { getProjectInfoAPICreator, forkProjectAPICreator } from 'apis/Project';
 import parseProject from 'pages/Project/parseProject';
+import { CREATED, CONFLICT } from 'constants/statusCode';
 
 const DEFAULT_CLICKED_TAB_INDEX = 0;
 
@@ -36,7 +38,8 @@ function Project() {
 	const [project, dispatchProject] = useReducer(ProjectReducer, {});
 
 	const handleForkCoconut = () => {
-		const parsedProject = parseProject(project, user);
+		const username = user ? user.username : 'anonymous';
+		const parsedProject = parseProject(project, username);
 		const forkProjectInfoAPI = forkProjectAPICreator(parsedProject);
 		setRequest(forkProjectInfoAPI);
 
@@ -62,11 +65,17 @@ function Project() {
 	};
 
 	const handleChangeHistoryAtForked = () => {
-		if (status !== 201) return;
+		if (status === CONFLICT) {
+			addToast.error('already forked! enjoy Coconut ');
+		}
+
+		if (status !== CREATED) return;
 
 		projectId !== 'new'
 			? history.push(`../project/${data._id}`)
 			: history.replace(`../project/${data._id}`);
+
+		addToast.info('Forked Coconut, Success !');
 	};
 
 	const handleSetProject = () => {
@@ -77,9 +86,9 @@ function Project() {
 
 	useEffect(handleFetchProject, []);
 
-	useEffect(handleSetProject, [data, isFetched]);
+	useEffect(handleSetProject, [data]);
 
-	useEffect(handleChangeHistoryAtForked, [data, history, projectId, status]);
+	useEffect(handleChangeHistoryAtForked, [status]);
 
 	// //TODO loading 컴포넌트 만들기
 	if (loading) return <p>Loading...</p>;

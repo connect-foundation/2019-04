@@ -14,7 +14,6 @@ import {
 	DashBoard,
 	Project,
 	History,
-	Coconut,
 	NotFound,
 	Live
 } from 'pages';
@@ -36,7 +35,6 @@ function App() {
 						<Route exact path="/" component={Home} />
 						<Route path="/dashboard" component={DashBoard} />
 						<Route path="/project/:projectId" component={Project} />
-						<Route path="/coconut/:projectId" component={Coconut} />
 						<LiveStore>
 							<Route path="/live/:projectId" component={Live} />
 						</LiveStore>

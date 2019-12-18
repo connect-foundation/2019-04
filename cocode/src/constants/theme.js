@@ -121,6 +121,11 @@ const MONACO_THEME = {
 	editorCurrentLineColor: '#2a2f32'
 };
 
+const TOAST_THEME = {
+	toastBGColor: '#0E1222',
+	toastErrorDeco: 'rgba(233,42,61,0.98)'
+};
+
 export {
 	DEFAULT_THEME,
 	DROPDOWN_THEME,
@@ -133,5 +138,6 @@ export {
 	EXPLORER_TAB_CONTAINER_THEME,
 	FILE_TAB_THEME,
 	MONACO_THEME,
-	LIVE_TAB_THEME
+	LIVE_TAB_THEME,
+	TOAST_THEME
 };

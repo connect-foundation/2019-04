@@ -1,6 +1,6 @@
 import copyProject from 'template/copyProject';
 
-const parseProject = (project, user) => {
+const parseProject = (project, username) => {
 	const { dependency, entry, name, root, _id } = project;
 	const projectInfo = JSON.parse(
 		JSON.stringify({ dependency, entry, name, root, _id })
@@ -10,11 +10,11 @@ const parseProject = (project, user) => {
 		const { child, name, projectId, type, _id, contents } = file;
 		files.push({ child, name, projectId, type, _id, contents });
 	});
-	const parsingProject = copyProject({ ...projectInfo, files });
+	const parsedProject = copyProject({ ...projectInfo, files });
 
-	parsingProject.author = user.username;
+	parsedProject.author = username;
 
-	return parsingProject;
+	return parsedProject;
 };
 
 export default parseProject;
