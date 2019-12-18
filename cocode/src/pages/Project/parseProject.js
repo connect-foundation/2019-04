@@ -10,11 +10,11 @@ const parseProject = (project, username) => {
 		const { child, name, projectId, type, _id, contents } = file;
 		files.push({ child, name, projectId, type, _id, contents });
 	});
-	const parsingProject = copyProject({ ...projectInfo, files });
+	const parsedProject = copyProject({ ...projectInfo, files });
 
-	parsingProject.author = username;
+	parsedProject.author = username;
 
-	return parsingProject;
+	return parsedProject;
 };
 
 export default parseProject;
