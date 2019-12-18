@@ -1,49 +1,44 @@
 import {
-	FETCH_LIVE,
 	LIVE_ON,
 	LIVE_OFF,
 	LIVE_JOIN_USER,
-	LIVE_LEFT_USER
+	LIVE_LEAVE_USER
 } from 'actions/types';
 
-const fetchLive = (state, { url, participants, owner }) => ({
-	...state,
-	url,
-	participants,
-	owner
-});
+const liveOn = (state, { url, socket, project, owner }) => {
+	return ({
+		...state,
+		url,
+		socket,
+		project,
+		owner,
+		participants: []
+	});
+};
 
-const liveOn = (state, { owner }) => ({
+const liveOff = (state) => ({
 	...state,
-	owner,
-	participants: []
-});
-
-const liveOff = () => ({
-	url: null,
+	socket: null,
 	owner: undefined,
 	participants: []
 });
 
-const joinUser = (state, { joinUser }) => ({
+const joinUser = (state, { participants }) => ({
 	...state,
-	participants: [...state.participants, joinUser]
+	participants,
 });
 
-const leftUser = (state, { leftUser }) => ({
+const leaveUser = (state, { participants }) => ({
 	...state,
-	participants: state.participants.filter(
-		({ username }) => username !== leftUser.username
-	)
+	participants,
 });
 
 function LiveReducer(state, { type, payload }) {
 	const reducers = {
-		[FETCH_LIVE]: fetchLive,
 		[LIVE_ON]: liveOn,
 		[LIVE_OFF]: liveOff,
 		[LIVE_JOIN_USER]: joinUser,
-		[LIVE_LEFT_USER]: leftUser
+		[LIVE_LEAVE_USER]: leaveUser
 	};
 
 	const reducer = reducers[type];

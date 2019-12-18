@@ -100,12 +100,13 @@ const INFO_TAB_THEME = {
 };
 
 const LIVE_TAB_THEME = {
-	liveButtonBGColorHover: '#C74040B2',
-	liveButtonBGColor: '#880000',
+	liveButtonBGColorHover: '#880000',
+	liveButtonBGColor: '#880000ba',
 	liveFontColor: '#bcbcbc',
 	liveStatusLabelColor: '#c74040b3',
 	liveLinkBGColor: '#000000',
-	liveSelfLabelColor: '#333333'
+	liveSelfLabelColor: '#676767',
+	liveCircleBGColor: '#ffffff'
 };
 
 const FILE_TAB_THEME = {

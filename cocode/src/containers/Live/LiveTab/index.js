@@ -1,7 +1,7 @@
 import React from 'react';
 import * as Styled from './style';
 
-import LiveOffTab from 'containers/Project/LiveOffTab';
+import LiveOnTab from 'containers/Live/LiveOnTab';
 
 const TAB_TITLE = 'LIVE';
 
@@ -10,7 +10,7 @@ function LiveTab() {
 		<>
 			<Styled.Title>{TAB_TITLE}</Styled.Title>
 			<div>
-					<LiveOffTab />
+				<LiveOnTab />
 			</div>
 		</>
 	);

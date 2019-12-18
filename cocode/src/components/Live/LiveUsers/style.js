@@ -1,6 +1,12 @@
 import styled from 'styled-components';
 import { TAB_CONTAINER_THEME, LIVE_TAB_THEME } from 'constants/theme';
 
+const Container = styled.div`
+	& {
+		margin: 1rem 0;
+	}
+`;
+
 const Title = styled.h1`
 	& {
 		color: ${TAB_CONTAINER_THEME.tabContainerTitleColor};
@@ -12,13 +18,14 @@ const Title = styled.h1`
 const UserProfile = styled.div`
 	& {
 		display: flex;
+		margin: 0.7rem 0;
 	}
 `;
 
 const UserName = styled.div`
 	& {
 		align-self: center;
-		margin-left: 0.4rem;
+		margin-left: 0.5rem;
 		font-weight: 100;
 		font-size: 1rem;
 	}
@@ -38,4 +45,11 @@ const SelfLabel = styled(UserName)`
 	}
 `;
 
-export { Title, UserProfile, UserName, UserAvatar, SelfLabel };
+export {
+	Container,
+	Title,
+	UserProfile,
+	UserName,
+	UserAvatar,
+	SelfLabel
+};

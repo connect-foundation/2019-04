@@ -16,11 +16,13 @@ function LiveUserProfile({ username, avatar }) {
 	);
 }
 
-function LiveUsers({ owner: { username, avatar }, participants = [] }) {
+function LiveUsers({ owner, participants }) {
+	if (!participants.length) participants = [];
+
 	return (
-		<>
+		<Styled.Container>
 			<Styled.Title>OWNERS</Styled.Title>
-			<LiveUserProfile username={username} avatar={avatar} />
+			<LiveUserProfile username={owner.username} avatar={owner.avatar} />
 			<Styled.Title>USERS</Styled.Title>
 			{participants.map(({ username, avatar }, index) => {
 				return (
@@ -31,7 +33,7 @@ function LiveUsers({ owner: { username, avatar }, participants = [] }) {
 					/>
 				);
 			})}
-		</>
+		</Styled.Container>
 	);
 }
 
