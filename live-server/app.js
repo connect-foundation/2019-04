@@ -1,5 +1,5 @@
 const io = require('socket.io')();
-const port = 3040;
+const PORT = 3040;
 
 const rooms = {};
 
@@ -9,14 +9,13 @@ io.on('connection', socket => {
     const indexOfUser = (participants, username) =>
         participants.findIndex(participant => participant.username === username);
 
-    const HandleCreateRoom = ({ projectId, user, project }) => {
+    const handleCreateRoom = ({ projectId, user, project }) => {
         socket.user = user;
         socket.room = projectId;
         socket.join(projectId);
 
         if (rooms[projectId]) { // 방에 참여하는 경우
-            const room = rooms[socket.room];
-            const { host, participants } = room;
+            const { host, participants } = rooms[socket.room];
             const { user: { username }} = socket;
 
             // 호스트 혹은 이미 접속한 사람이 재접속했을 때 참가자에 추가되는 것을 방지
@@ -24,28 +23,27 @@ io.on('connection', socket => {
                 participants.push(socket.user);
 
             // 본인에게 알리기
-            io.to(socket.id).emit('alreadyExistRoom', { host, project });
+            socket.emit('alreadyExistRoom', { host, project });
         } else { // 방을 생성하는 경우
-            rooms[projectId] = {};
-            rooms[projectId]['host'] = user;
-            rooms[projectId]['project'] = project;
-            rooms[projectId]['participants'] = [];
+            rooms[projectId] = {
+                host: user,
+                project,
+                participants: []
+            };
 
             // 본인에게 알리기
-            io.to(socket.id).emit('successCreatedRoom', { project });
+            socket.emit('successCreatedRoom', { project });
         }
 
-        const room = rooms[socket.room];
-        const { participants } = room;
+        const { participants } = rooms[socket.room];
 
         // 해당 방에 있는 사람들에게 알리기
         io.in(socket.room).emit('joinUser', { participants });
     };
 
     const handleDisconnect = () => {
-        const room = rooms[socket.room];
-        if (!room) return;
-        const { host, participants } = room;
+        if (!rooms[socket.room]) return;
+        const { host, participants } = rooms[socket.room];
         const { user: { username }} = socket;
         socket.leave(socket.room);
 
@@ -64,7 +62,7 @@ io.on('connection', socket => {
     };
 
     socket.emit('connected');
-    socket.on('createRoom', HandleCreateRoom);
+    socket.on('createRoom', handleCreateRoom);
     socket.on('disconnect', handleDisconnect);
     socket.on('close', handleCloseSocket);
 });
