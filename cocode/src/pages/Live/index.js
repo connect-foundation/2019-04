@@ -19,8 +19,12 @@ import { SplitPaneContainer } from 'components/Common/SplitPane';
 import { LiveContext, ProjectContext, UserContext } from 'contexts';
 import ProjectReducer from 'reducers/ProjectReducer';
 import { fetchProjectActionCreator } from 'actions/Project';
+import {
+	liveOnActionCreator,
+} from 'actions/Live';
 
 import { TAB_BAR_THEME } from 'constants/theme';
+import { COCODE_SERVER } from 'config';
 import useFetch from 'hooks/useFetch';
 import { getProjectInfoAPICreator } from 'apis/Project';
 
@@ -30,7 +34,7 @@ let socket;
 function Live() {
 	const { projectId } = useParams();
 	const { user } = useContext(UserContext);
-	const { liveServer } = useContext(LiveContext);
+	const { liveServer, dispatchLive } = useContext(LiveContext);
 	const [{ data, loading, error }, setRequest] = useFetch({});
 	const [isFetched, setIsFetched] = useState(false);
 	const [isConnected, setIsConnected] = useState(false);
@@ -59,11 +63,37 @@ function Live() {
 		socket.emit('createRoom', { user, projectId, project });
 	};
 
+	const handleAlreadyExistRoom = ({ host, project, participants }) => {
+		dispatchLive(
+			liveOnActionCreator({
+				socket,
+				url: `${COCODE_SERVER}/live/${projectId}`,
+				owner: host,
+				project,
+				participants
+			})
+		);
+	};
+
+	const handleSuccessCreatedRoom = ({ project, participants }) => {
+		dispatchLive(
+			liveOnActionCreator({
+				socket,
+				url: `${COCODE_SERVER}/live/${projectId}`,
+				owner: user,
+				project,
+				participants
+			})
+		);
+	};
+
 	const handleConnectSocket = useCallback(() => {
 		if (!Object.keys(project).length || isConnected || !user) return;
 		setIsConnected(true);
 		socket = io(liveServer);
 		socket.on('connected', handleConnected);
+		socket.on('alreadyExistRoom', handleAlreadyExistRoom);
+		socket.on('successCreatedRoom', handleSuccessCreatedRoom);
 	}, [project]);
 
 	useEffect(handleFetchProject, []);
