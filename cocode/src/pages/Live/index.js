@@ -21,6 +21,7 @@ import ProjectReducer from 'reducers/ProjectReducer';
 import { fetchProjectActionCreator } from 'actions/Project';
 import {
 	liveOnActionCreator,
+	liveJoinUserActionCreator,
 } from 'actions/Live';
 
 import { TAB_BAR_THEME } from 'constants/theme';
@@ -87,6 +88,14 @@ function Live() {
 		);
 	};
 
+	const handleJoinUser = ({ participants }) => {
+		dispatchLive(
+			liveJoinUserActionCreator({
+				participants
+			})
+		);
+	};
+
 	const handleConnectSocket = useCallback(() => {
 		if (!Object.keys(project).length || isConnected || !user) return;
 		setIsConnected(true);
@@ -94,6 +103,7 @@ function Live() {
 		socket.on('connected', handleConnected);
 		socket.on('alreadyExistRoom', handleAlreadyExistRoom);
 		socket.on('successCreatedRoom', handleSuccessCreatedRoom);
+		socket.on('joinUser', handleJoinUser);
 	}, [project]);
 
 	useEffect(handleFetchProject, []);
