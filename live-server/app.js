@@ -3,7 +3,10 @@ const PORT = 3040;
 
 const rooms = {};
 
+const userName = ['basil', 'unknown', 'yuk', 'lallaheee', 'hzoou'];
+
 io.on('connection', socket => {
+    console.log('someone connectted');
     const isNotHost = (host, username) => host.username !== username;
     const isFirstVisit = (participants, username) => indexOfUser(participants, username) === -1;
     const indexOfUser = (participants, username) =>
@@ -13,14 +16,18 @@ io.on('connection', socket => {
         socket.user = user;
         socket.room = projectId;
         socket.join(projectId);
+        
 
         if (rooms[projectId]) { // 방에 참여하는 경우
             const { host, participants } = rooms[socket.room];
             const { user: { username }} = socket;
 
             // 호스트 혹은 이미 접속한 사람이 재접속했을 때 참가자에 추가되는 것을 방지
-            if (isNotHost(host, username) && isFirstVisit(participants, username))
+            if (isNotHost(host, username) && isFirstVisit(participants, username)) {
+                if(!socket.user) socket.user = userName.pop();
                 participants.push(socket.user);
+            }
+                
 
             // 본인에게 알리기
             socket.emit('alreadyExistRoom', { host, project });
@@ -61,10 +68,20 @@ io.on('connection', socket => {
         io.sockets.in(socket.room).emit('close');
     };
 
+    const handleOnChange = operation => {
+        io.in(socket.room).emit('change', socket.id, operation)
+    }
+
+    const handleOnMoveCursor = position => {
+        socket.broadcast.emit('moveCursor', socket.user.username, position);
+    }
+
     socket.emit('connected');
     socket.on('createRoom', handleCreateRoom);
     socket.on('disconnect', handleDisconnect);
     socket.on('close', handleCloseSocket);
+    socket.on('change', handleOnChange);
+    socket.on('moveCursor', handleOnMoveCursor);
 });
 
 io.listen(PORT);
