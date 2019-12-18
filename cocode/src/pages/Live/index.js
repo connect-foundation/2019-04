@@ -21,6 +21,7 @@ import ProjectReducer from 'reducers/ProjectReducer';
 import { fetchProjectActionCreator } from 'actions/Project';
 import {
 	liveOnActionCreator,
+	liveOffActionCreator,
 	liveJoinUserActionCreator,
 	liveLeaveUserActionCreator
 } from 'actions/Live';
@@ -105,6 +106,11 @@ function Live() {
 		);
 	};
 
+	const handleCloseSocket = () => {
+		socket.close();
+		dispatchLive(liveOffActionCreator());
+	};
+
 	const handleConnectSocket = useCallback(() => {
 		if (!Object.keys(project).length || isConnected || !user) return;
 		setIsConnected(true);
@@ -114,6 +120,7 @@ function Live() {
 		socket.on('successCreatedRoom', handleSuccessCreatedRoom);
 		socket.on('joinUser', handleJoinUser);
 		socket.on('leaveUser', handleLeaveUser);
+		socket.on('close', handleCloseSocket);
 	}, [project]);
 
 	useEffect(handleFetchProject, []);
