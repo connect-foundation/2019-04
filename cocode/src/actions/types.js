@@ -5,6 +5,7 @@ const API_SUCCESS = 'API_SUCCESS';
 const API_FAIL = 'API_FAILURE';
 
 // Project
+const UPDATE_PROJECT_INFO = 'updateProjectInfo';
 const UPDATE_CODE = 'updateCode';
 const FETCH_PROJECT = 'fetchProject';
 const SELECT_FILE = 'selectFile';
@@ -14,7 +15,6 @@ const DELETE_FILE = 'deleteFile';
 const MOVE_FILE = 'moveFile';
 const INSTALL_DEPENDENCY = 'installDependency';
 const WAITING_INSTALL_DEPENDENCY = 'waitingInstallDependency';
-const CLONE_PROJECT = 'cloneProject';
 const SAVE_FILE = 'saveFile';
 
 //DashBoard
@@ -34,6 +34,7 @@ export {
 	API_LOADING,
 	API_SUCCESS,
 	API_FAIL,
+	UPDATE_PROJECT_INFO,
 	UPDATE_CODE,
 	FETCH_PROJECT,
 	SELECT_FILE,
@@ -43,7 +44,6 @@ export {
 	MOVE_FILE,
 	INSTALL_DEPENDENCY,
 	WAITING_INSTALL_DEPENDENCY,
-	CLONE_PROJECT,
 	FETCH_COCONUT,
 	UPDATE_COCONUT_NAME,
 	DELETE_COCONUT,

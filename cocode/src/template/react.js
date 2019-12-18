@@ -89,9 +89,6 @@ const template = {
 		'  "browserslist": [">0.2%", "not dead", "not ie <= 11", "not op_mini all"]\n' +
 		'}\n',
 	version1:
-		'// react, react-dom 라이브러리를 좌측 탭에서 설치해주세여.\n' +
-		'// 원하시는 라이브러리를 입력하고 enter를 누르시면 검색됩니다.\n' +
-		'// + 버튼을 누르면 dependency가 설치됩니다!\n' +
 		'import React, { useState } from "react";\n' +
 		'import ReactDOM from "react-dom";\n' +
 		'\n' +
@@ -107,6 +104,8 @@ const template = {
 		'\n' +
 		'ReactDOM.render(<App />, document.getElementById("coconut-root"));\n',
 	Apple:
+		'import React from "react";\n' +
+		'\n' +
 		'function Apple() {\n' +
 		'	return(\n' +
 		'		<>\n' +
@@ -117,6 +116,8 @@ const template = {
 		'\n' +
 		'export default Apple;\n',
 	Banana:
+		'import React from "react";\n' +
+		'\n' +
 		'function Banana() {\n' +
 		'	return(\n' +
 		'		<>\n' +

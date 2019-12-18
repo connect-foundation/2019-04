@@ -6,6 +6,7 @@ const ProjectArticle = styled.article`
 		display: flex;
 		flex-direction: column;
 		justify-content: space-around;
+		position: relative;
 
 		height: ${PROJECT_CARD_THEME.cardHeight};
 		width: ${PROJECT_CARD_THEME.cardWidth};
@@ -74,11 +75,12 @@ const ProjectMenuButtonDot = styled.div`
 	border-radius: 50%;
 `;
 
+
 export {
 	ProjectArticle,
 	ProjectTitle,
 	ProjectDescription,
 	ProjectTimeLabel,
 	ProjectMenuButton,
-	ProjectMenuButtonDot
+	ProjectMenuButtonDot,
 };

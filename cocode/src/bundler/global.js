@@ -1,3 +1,0 @@
-const pathStack = [];
-
-export { pathStack };

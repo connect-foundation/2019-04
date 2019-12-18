@@ -1,4 +1,5 @@
 import {
+	UPDATE_PROJECT_INFO,
 	UPDATE_CODE,
 	FETCH_PROJECT,
 	SELECT_FILE,
@@ -8,9 +9,12 @@ import {
 	MOVE_FILE,
 	INSTALL_DEPENDENCY,
 	WAITING_INSTALL_DEPENDENCY,
-	CLONE_PROJECT,
-  SAVE_FILE
+	SAVE_FILE
 } from './types';
+
+function updateProjectInfoActionCreator(payload) {
+	return { type: UPDATE_PROJECT_INFO, payload };
+}
 
 function fetchProjectActionCreator(payload) {
 	return { type: FETCH_PROJECT, payload };
@@ -48,15 +52,12 @@ function waitingInstallDependencyActionCreator(payload) {
 	return { type: WAITING_INSTALL_DEPENDENCY, payload };
 }
 
-function cloneProjectActionCreator(payload) {
-	return { type: CLONE_PROJECT, payload };
-}
-
 function saveFileActionCreator(payload) {
 	return { type: SAVE_FILE, payload };
 }
 
 export {
+	updateProjectInfoActionCreator,
 	updateCodeActionCreator,
 	fetchProjectActionCreator,
 	selectFileActionCreator,
@@ -66,6 +67,5 @@ export {
 	moveFileActionCreator,
 	installDependencyActionCreator,
 	waitingInstallDependencyActionCreator,
-	cloneProjectActionCreator,
 	saveFileActionCreator
 };

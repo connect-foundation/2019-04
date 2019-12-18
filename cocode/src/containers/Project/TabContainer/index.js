@@ -12,10 +12,10 @@ function TabContainer() {
 	const { clickedTabIndex } = useContext(ProjectContext);
 
 	const tapMapping = {
-		// 0: <InfoTab />,
-		0: <ExplorerTab />,
-		1: <DependencyTab />
-		// 3: <LiveTab/>
+		0: <InfoTab />,
+		1: <ExplorerTab />,
+		2: <DependencyTab />,
+		3: <LiveTab/>
 	};
 
 	const renderTab = () => tapMapping[clickedTabIndex];
