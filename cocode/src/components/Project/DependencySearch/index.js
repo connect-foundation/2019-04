@@ -4,9 +4,11 @@ import * as Styled from './style';
 import CoconutSpinner from 'components/Common/CoconutSpinner';
 import DependencySearchItem from 'components/Project/DependencySearchItem';
 
-import { KEY_CODE_ENTER } from 'constants/keyCode';
 import { getDenpendencyListAPICreator } from 'apis/Project';
 import useFetch from 'hooks/useFetch';
+import * as _ from 'lodash';
+
+const DEBOUNCING_DELAY = 200;
 
 function DependencySearch() {
 	const searchInput = useRef(false);
@@ -18,9 +20,7 @@ function DependencySearch() {
 		setRequest(getDenpendencyListAPICreator(name));
 	};
 
-	const handleKeyDown = e => {
-		if (e.keyCode === KEY_CODE_ENTER) handleSearchTypingEnd();
-	};
+	const handleKeyDown = _.debounce(handleSearchTypingEnd, DEBOUNCING_DELAY);
 
 	useEffect(() => {
 		data && setDependencySearchList(data);
