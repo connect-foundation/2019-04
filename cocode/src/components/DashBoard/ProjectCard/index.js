@@ -95,7 +95,7 @@ function ProjectCard({ _id, name, updatedAt }) {
 	]);
 
 	const handleUseAPI = () => {
-		if (loading) return;
+		if (loading || error) return;
 
 		if (modifying && data) {
 			setModifying(false);
@@ -112,7 +112,14 @@ function ProjectCard({ _id, name, updatedAt }) {
 		if (!error) return;
 
 		addToast.error(FAIL_TO_UPDATE_PROJECT_CARD);
-		nameInput.current.textContent = name;
+
+		if (modifying) {
+			setModifying(false);
+			nameInput.current.textContent = name;
+		}
+		if (deleting) {
+			setDeleting(false);
+		}
 	});
 
 	useEffect(handleUseAPI, [loading, status]);
