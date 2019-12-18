@@ -5,5 +5,6 @@ import History from './History';
 import Version1 from './Version1';
 import Coconut from './Coconut';
 import NotFound from './NotFound';
+import Live from './Live';
 
-export { Home, DashBoard, Project, History, Version1, Coconut, NotFound };
+export { Home, DashBoard, Project, History, Version1, Coconut, NotFound, Live };

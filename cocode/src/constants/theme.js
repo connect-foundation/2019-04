@@ -105,7 +105,7 @@ const LIVE_TAB_THEME = {
 	liveFontColor: '#bcbcbc',
 	liveStatusLabelColor: '#c74040b3',
 	liveLinkBGColor: '#000000',
-	liveSelfLabelColor: '#333333',
+	liveSelfLabelColor: '#676767',
 	liveCircleBGColor: '#ffffff'
 };
 
