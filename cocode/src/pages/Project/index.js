@@ -37,14 +37,18 @@ function Project() {
 	);
 	const [project, dispatchProject] = useReducer(ProjectReducer, {});
 
-	const handleForkCoconut = () => {
+	const isNotMyProject = !user || user.username !== project.author;
+
+	const forkCoconut = () => {
+		if (!isNotMyProject) return false;
+
 		const username = user ? user.username : 'anonymous';
 		const parsedProject = parseProject(project, username);
 		const forkProjectInfoAPI = forkProjectAPICreator(parsedProject);
 		setRequest(forkProjectInfoAPI);
 
 		handleSetProjectState(parsedProject);
-		return project;
+		return true;
 	};
 
 	const handleFetchProject = () => {
@@ -100,7 +104,8 @@ function Project() {
 				project,
 				dispatchProject,
 				clickedTabIndex,
-				setClickedTabIndex
+				setClickedTabIndex,
+				forkCoconut
 			}}
 		>
 			<Header />
@@ -109,11 +114,8 @@ function Project() {
 					<TabBar theme={TAB_BAR_THEME} />
 					<SplitPaneContainer split="vertical" defaultSize="20vw">
 						<TabContainer />
-						<SplitPaneContainer
-							split="vertical"
-							defaultSize="40vw"
-						>
-							<Editor handleForkCoconut={handleForkCoconut} />
+						<SplitPaneContainer split="vertical" defaultSize="40vw">
+							<Editor/>
 							<BrowserV2 />
 						</SplitPaneContainer>
 					</SplitPaneContainer>
