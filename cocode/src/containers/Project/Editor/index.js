@@ -50,6 +50,8 @@ function Editor({ handleForkCoconut }) {
 		setRequest(updateFileAPI);
 	};
 
+	const isNotMyProject = !user || user.username !== project.author;
+
 	const handleOnKeyDown = e => {
 		if (!isPressCtrlAndS(e)) return;
 
@@ -57,7 +59,7 @@ function Editor({ handleForkCoconut }) {
 		const { files, selectedFileId } = project;
 		if (!files[selectedFileId].isEditing) return;
 
-		if (user.username !== project.author) {
+		if (isNotMyProject) {
 			handleForkCoconut();
 			return;
 		}
