@@ -6,7 +6,9 @@ import { pathStack } from './global';
 function transformCode(code) {
 	try {
 		const result = babel.transform(code, {
-			presets: [presetEnv, presetReact]
+			presets: [presetEnv, presetReact],
+			compact: true,
+			minified: true
 		});
 		return {
 			state: true,
