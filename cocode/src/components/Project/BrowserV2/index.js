@@ -9,7 +9,6 @@ import { useParams } from 'react-router-dom';
 import * as Styled from './style';
 
 import addToast from 'components/Common/Toast';
-import CoconutSpinner from 'components/Common/CoconutSpinner';
 
 import { ProjectContext } from 'contexts';
 
@@ -38,23 +37,9 @@ function BrowserV2({ ...props }) {
 		false
 	);
 	const [dependency, setDependency] = useState(undefined);
-	const [isBuildingCoconut, setIsBuildingCoconut] = useState(true);
 	const iframeReference = useRef();
 
 	const { files, root, dependencyInstalling } = project;
-
-	const handleComponentDidMount = () => {
-		window.addEventListener('message', receiveMsgFromChild);
-	};
-
-	const receiveMsgFromChild = e => {
-		const { command, dependency } = e.data;
-
-		const cocodeActions = { buildEnd };
-		cocodeActions[command] && cocodeActions[command](dependency);
-	};
-
-	const buildEnd = () => setIsBuildingCoconut(false);
 
 	const endInstallDependency = useCallback(dependency => {
 		setTimeout(() => {
@@ -127,7 +112,6 @@ function BrowserV2({ ...props }) {
 		iframeReference.current.contentWindow.postMessage(data, '*');
 	}, [project]);
 
-	useEffect(handleComponentDidMount, []);
 	useEffect(handleUpdateDependency, [dependencyInstalling]);
 	useEffect(handleUpdateFile, [files]);
 
@@ -136,12 +120,6 @@ function BrowserV2({ ...props }) {
 
 	return (
 		<Styled.Frame>
-			{isBuildingCoconut && (
-				<Styled.LoadingOverlay>
-					<CoconutSpinner />
-					<p>Please wait to build complete...</p>
-				</Styled.LoadingOverlay>
-			)}
 			<Styled.BrowserV2
 				ref={iframeReference}
 				src={`${COCONUT_SERVER}/${projectId}`}
