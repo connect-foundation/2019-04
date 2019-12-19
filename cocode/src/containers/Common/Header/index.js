@@ -10,7 +10,7 @@ import UserProfile from 'components/Common/UserProfile';
 import ModalPortal from 'components/Common/ModalPortal';
 import LoginModalBody from 'components/Common/LoginModalBody';
 
-import UserContext from 'contexts/UserContext';
+import { UserContext } from 'contexts';
 
 const CONFIRM_LOGOUT = '로그아웃 하시겠습니까?';
 

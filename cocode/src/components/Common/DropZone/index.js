@@ -26,7 +26,7 @@ function DropZone({ draggableComponentOverColor, ...props }) {
 			onDragLeave={handleDragLeave}
 			onDrop={handleDrop}
 			{...props}
-		></Styled.DropZone>
+		/>
 	);
 }
 

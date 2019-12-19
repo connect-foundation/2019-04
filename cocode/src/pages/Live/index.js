@@ -19,7 +19,7 @@ import { SplitPaneContainer } from 'components/Common/SplitPane';
 import addToast from 'components/Common/Toast';
 
 import { LiveContext, ProjectContext, UserContext } from 'contexts';
-import ProjectReducer from 'reducers/ProjectReducer';
+import { ProjectReducer } from 'reducers';
 import { fetchProjectActionCreator } from 'actions/Project';
 import {
 	liveOnActionCreator,

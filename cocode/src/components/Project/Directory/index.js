@@ -7,7 +7,7 @@ import DropZone from 'components/Common/DropZone';
 import File from 'components/Project/File';
 import NewFile from 'components/Project/NewFile';
 
-import ProjectContext from 'contexts/ProjectContext';
+import { ProjectContext } from 'contexts';
 
 import { EXPLORER_TAB_CONTAINER_THEME } from 'constants/theme';
 import * as NOTIFICATION from 'constants/notificationMessage';
@@ -37,11 +37,11 @@ function isProtectedFile({ files, root, entry, fileId }) {
 	return false;
 }
 
-function isFileNotMoveable({ files, fileId, newParentId }) {
+function isFileNotMovable({ files, fileId, newParentId }) {
 	const fileName = files[fileId].name;
-	const childsOfNewParent = files[newParentId].child;
+	const childrenOfNewParent = files[newParentId].child;
 
-	return childsOfNewParent
+	return childrenOfNewParent
 		.map(id => files[id].name)
 		.some(name => name === fileName);
 }
@@ -93,7 +93,7 @@ function Directory({
 				.filter(isNotPackageJSON)
 		: [];
 
-	// Evnet handler
+	// Event handler
 	const handleToggleDirectory = () =>
 		setToggleDirectoryOpen(!toggleDirectoryOpen);
 	const handleEditFileName = changedName => {
@@ -114,7 +114,7 @@ function Directory({
 		if (
 			fileId === id ||
 			isProtectedFile({ files, root, entry, fileId }) ||
-			isFileNotMoveable({ files, fileId, newParentId: id })
+			isFileNotMovable({ files, fileId, newParentId: id })
 		)
 			return addToast.error(NOTIFICATION.FILE_IS_NOT_MOVABLE);
 

@@ -4,7 +4,7 @@ import FileTab from '../FileTab';
 
 import FileImagesSrc from 'constants/fileImagesSrc';
 
-import ProjectContext from 'contexts/ProjectContext';
+import { ProjectContext } from 'contexts';
 import { selectFileActionCreator } from 'actions/Project';
 
 const DEFAULT_OPENED_FILE_INDEX = 0;

@@ -8,7 +8,7 @@ import {
 import Directory from 'components/Project/Directory';
 import NewFile from 'components/Project/NewFile';
 
-import ProjectContext from 'contexts/ProjectContext';
+import { ProjectContext } from 'contexts';
 import {
 	selectFileActionCreator,
 	updateFileNameActionCreator,

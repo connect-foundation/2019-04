@@ -15,7 +15,7 @@ import {
 	updateCoconutNameActionCreator,
 	deleteCoconutActionCreator
 } from 'actions/Dashboard';
-import DashBoardContext from 'contexts/DashBoardContext';
+import { DashBoardContext } from 'contexts';
 import useFetch from 'hooks/useFetch';
 import {
 	updateCoconutsAPICreator,
