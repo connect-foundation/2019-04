@@ -12,18 +12,22 @@ import LoginModalBody from 'components/Common/LoginModalBody';
 
 import UserContext from 'contexts/UserContext';
 
+const CONFIRM_LOGOUT = '로그아웃 하시겠습니까?';
+
 function Header({ name }) {
 	const history = useHistory();
-	const { user } = useContext(UserContext);
+	const { user, setUser } = useContext(UserContext);
 	const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
 
 	const handleOpenSignInModal = () => setIsSignInModalOpen(true);
 	const handleCloseSignInModal = () => setIsSignInModalOpen(false);
 	const handleClickDashBoard = () => history.push('/dashboard');
 	const handleSignOut = () => {
-		const confirm = window.confirm('로그아웃 하시겠습니까?');
+		const confirm = window.confirm(CONFIRM_LOGOUT);
 		if (!confirm) return;
 		deleteCookie('jwt');
+		setUser(null);
+		history.replace('../');
 	};
 
 	const profileDropDownMenuItems = [

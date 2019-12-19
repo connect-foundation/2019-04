@@ -20,7 +20,7 @@ function App() {
 	}, [data]);
 
 	return (
-		<UserContext.Provider value={{ user }}>
+		<UserContext.Provider value={{ user, setUser }}>
 			<Router>
 				<ThemeProvider theme={DEFAULT_THEME}>
 					<GlobalStyle />

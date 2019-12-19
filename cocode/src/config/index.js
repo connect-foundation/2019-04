@@ -24,9 +24,10 @@ const COCODE_SERVER =
 		: process.env.DEV_COCODE_SERVER_IP;
 
 const DEFAULT_REQUEST_OPTION = {
+	headers: {'Cache-Control': 'no-cache'},
 	withCredentials: true,
 	mode: 'cors',
-	credentials: 'include'
+	credentials: 'include',
 };
 
 const API = {
