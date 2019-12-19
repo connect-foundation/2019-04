@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useReducer, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 import * as Styled from './style';
 
 import CoconutSpinner from 'components/CoconutSpinner';
@@ -14,6 +15,9 @@ import {
 } from 'hooks';
 
 import ProjectReducer from 'reducers/ProjectReducer';
+
+import BuildWorker from 'worker/build.worker.js';
+import { requireInMain } from 'bundler/requireInMain';
 
 const PROJECT_IDBNAME = 'Coconut';
 const DEPENDENCY_IDBNAME = 'Dependency';
@@ -57,6 +61,9 @@ const buildProjectFailState = errorPhrase => ({
 function Coconut() {
 	const { projectId } = useParams();
 
+	const [worker] = useState(new BuildWorker());
+	const [innerCode, setInnerCode] = useState('');
+
 	const [buildState, setBuildState] = useState(initilaBuildState);
 	const [project, dispatchProject] = useReducer(ProjectReducer, undefined);
 
@@ -85,6 +92,7 @@ function Coconut() {
 			return;
 		}
 
+		window.require = requireInMain;
 		return () => closeConnections();
 	}, [iDBConnectionState, closeConnections]);
 
@@ -112,19 +120,22 @@ function Coconut() {
 			return;
 		}
 
-		buildProject(project);
-	}, [dependencyState, buildProject, project]);
+		buildProject(project, worker);
+	}, [dependencyState, buildProject, project, worker]);
 
 	const handleBuildProject = useCallback(() => {
 		if (!buildResult) return;
 
-		const { error } = buildResult;
+		const { error, bundledCode } = buildResult;
 		const resultBuildState = error
 			? buildProjectFailState(error)
 			: successBuildState;
 		setBuildState(resultBuildState);
 
 		sendToCocode({ command: BUILD_END });
+		if (error) return;
+
+		setInnerCode(bundledCode);
 	}, [buildResult, sendToCocode]);
 
 	useEffect(handleConnectToIDB, [iDBConnectionState]);
@@ -142,6 +153,9 @@ function Coconut() {
 				</Styled.BuildStateOverlay>
 			)}
 			<div id="coconut-root" />
+			<Helmet>
+				<script>{innerCode}</script>
+			</Helmet>
 		</>
 	);
 }
