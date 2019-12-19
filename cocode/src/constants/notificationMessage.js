@@ -18,6 +18,8 @@ const LOADING_DASHBOARD = 'Please wait to fetch coconuts';
 const SUCCESS_FORK = 'Forked Coconut, Success!';
 const CONFLICT_FORK ='already forked! enjoy Coconut!';
 
+const SHUT_DOWN_LIVE_SHARE = 'The live share has been shut down';
+
 export {
 	FAIL_INSTALL_DEPENDENCY,
 	FAIL_TO_MOVE_FILE,
@@ -34,4 +36,5 @@ export {
 	LOADING_DASHBOARD,
 	SUCCESS_FORK,
 	CONFLICT_FORK,
+	SHUT_DOWN_LIVE_SHARE,
 };
