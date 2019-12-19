@@ -1,9 +1,24 @@
 import { useState, useCallback } from 'react';
 
-import * as bundler from 'bundler';
-
 function useBuildProject() {
 	const [buildResult, setBuildResult] = useState(undefined);
+
+	const buildProject = (project, worker) => {
+		const { files, root } = project;
+
+		const rootPath = files[root].path;
+		fileParser(project, rootPath, root);
+
+		worker.postMessage({
+			command: 'start',
+			fileSystem: window.fileSystem
+		});
+
+		worker.onmessage = ({ data: { error, bundledCode } }) => {
+			if (!error) setBuildResult({ bundledCode });
+			else setBuildResult({ error });
+		};
+	};
 
 	const fileParser = useCallback((project, path, id) => {
 		const { files } = project;
@@ -20,25 +35,6 @@ function useBuildProject() {
 			});
 		}
 	}, []);
-
-	const buildProject = useCallback(
-		project => {
-			const { files, root } = project;
-
-			const rootPath = files[root].path;
-			if (project) fileParser(project, rootPath, root);
-
-			try {
-				bundler.init();
-				bundler.require('./index.js');
-
-				setBuildResult({ error: undefined });
-			} catch (error) {
-				setBuildResult({ error: error.stack });
-			}
-		},
-		[fileParser, setBuildResult]
-	);
 
 	return [buildResult, buildProject];
 }
