@@ -11,18 +11,19 @@
 		"react": "^16.12.0",
 		"react-app-rewired": "^2.1.5",
 		"react-dom": "^16.12.0",
+		"react-helmet": "^5.2.1",
 		"react-router-dom": "^5.1.2",
 		"react-scripts": "3.3.0",
 		"styled-components": "^4.4.1",
 		"worker-loader": "^2.0.0"
 	},
 	"devDependencies": {
-		"prettier": "^1.19.1",
-		"eslint-config-prettier": "^6.5.0",
-		"lint-staged": "^9.4.2",
-		"husky": "^3.0.9",
 		"@commitlint/cli": "^8.2.0",
-		"@commitlint/config-conventional": "^8.2.0"
+		"@commitlint/config-conventional": "^8.2.0",
+		"eslint-config-prettier": "^6.5.0",
+		"husky": "^3.0.9",
+		"lint-staged": "^9.4.2",
+		"prettier": "^1.19.1"
 	},
 	"scripts": {
 		"start": "NODE_PATH=src react-app-rewired start",
