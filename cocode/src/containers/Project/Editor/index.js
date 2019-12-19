@@ -58,7 +58,7 @@ function Editor() {
 		const { files, selectedFileId } = project;
 		if (!files[selectedFileId].isEditing) return;
 
-		const isProgress = forkCoconut();
+		const isProgress = forkCoconut({});
 		if (isProgress) return;
 
 		handleRequestUpdateCode();
