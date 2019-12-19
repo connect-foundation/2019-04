@@ -116,6 +116,12 @@ function BrowserV2({ ...props }) {
 		}
 	};
 
+	const handleChangeCurrentURL = () => {
+		const address = `${COCONUT_SERVER}/${projectId}`;
+		setAddressInput(address);
+		addressReference.current.value = address;
+	};
+
 	const handleIframeOnLoad = useCallback(() => {
 		setIsReadyToReceiveMessage(true);
 
@@ -128,6 +134,7 @@ function BrowserV2({ ...props }) {
 		iframeReference.current.contentWindow.postMessage(data, '*');
 	}, [project]);
 
+	useEffect(handleChangeCurrentURL, [projectId]);
 	useEffect(handleUpdateDependency, [dependencyInstalling]);
 	useEffect(handleUpdateFile, [files]);
 
