@@ -14,7 +14,7 @@ import UserContext from 'contexts/UserContext';
 
 function Header({ name }) {
 	const history = useHistory();
-	const { user } = useContext(UserContext);
+	const { user, setUser } = useContext(UserContext);
 	const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
 
 	const handleOpenSignInModal = () => setIsSignInModalOpen(true);
@@ -24,6 +24,8 @@ function Header({ name }) {
 		const confirm = window.confirm('로그아웃 하시겠습니까?');
 		if (!confirm) return;
 		deleteCookie('jwt');
+		setUser(null);
+		history.replace('../');
 	};
 
 	const profileDropDownMenuItems = [
