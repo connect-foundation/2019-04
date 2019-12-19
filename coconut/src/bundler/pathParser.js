@@ -1,3 +1,4 @@
+/* eslint no-restricted-globals: 0 */
 import { pathStack } from './global';
 import path from 'path';
 

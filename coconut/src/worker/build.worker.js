@@ -1,3 +1,4 @@
+/* eslint no-restricted-globals: 0 */
 import * as bundler from 'bundler';
 
 self.process = {};
