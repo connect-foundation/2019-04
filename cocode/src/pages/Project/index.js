@@ -23,6 +23,7 @@ import copyProject from 'template/copyProject';
 import { getProjectInfoAPICreator, forkProjectAPICreator } from 'apis/Project';
 import parseProject from 'pages/Project/parseProject';
 import { CREATED, CONFLICT } from 'constants/statusCode';
+import { SUCCESS_FORK, CONFLICT_FORK } from 'constants/notificationMessage';
 
 const DEFAULT_CLICKED_TAB_INDEX = 0;
 
@@ -69,17 +70,14 @@ function Project() {
 	};
 
 	const handleChangeHistoryAtForked = () => {
-		if (status === CONFLICT) {
-			addToast.error('already forked! enjoy Coconut ');
-		}
-
+		if (status === CONFLICT) addToast.error(CONFLICT_FORK);
 		if (status !== CREATED) return;
 
 		projectId !== 'new'
 			? history.push(`../project/${data._id}`)
 			: history.replace(`../project/${data._id}`);
 
-		addToast.info('Forked Coconut, Success !');
+		addToast.info(SUCCESS_FORK);
 	};
 
 	const handleSetProject = () => {
