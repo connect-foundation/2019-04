@@ -15,7 +15,7 @@ function DashBoard() {
 	const { user } = useContext(UserContext);
 	const history = useHistory();
 	const [coconuts, dispatchDashboard] = useReducer(DashBoardReducer, []);
-	const [{ data, error }, setRequest] = useFetch({});
+	const [{ data, loading, error }, setRequest] = useFetch({});
 
 	const handleRequestGetCoconutAPI = () => {
 		user && setRequest(getCoconutsAPICreator(user.username));
@@ -26,8 +26,6 @@ function DashBoard() {
 
 	useEffect(handleRequestGetCoconutAPI, [user]);
 	useEffect(handleSetDashBoardState, [data]);
-
-	const loading = true;
 
 	if (loading) return <LoadingSpinner message={LOADING_DASHBOARD} />;
 	if (error) history.push('/weAreSorry');
