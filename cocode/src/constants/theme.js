@@ -17,11 +17,11 @@ const DROPDOWN_THEME = {
 };
 
 const BROWSER_THEME = {
+	iframeBGColor: '#ffffff',
+	loadingOverlayBGColor: '#000000',
 	browserHeaderBGColor: '#1d2022',
-	addressInputBGColor: '#000',
-	addressInputTextColor: '#fff',
-
-	browserHeight: '88vh'
+	addressInputBGColor: '#000000',
+	addressInputTextColor: '#ffffff',
 };
 
 const TAB_CONTAINER_THEME = {

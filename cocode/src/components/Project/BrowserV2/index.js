@@ -8,6 +8,7 @@ import React, {
 import { useParams } from 'react-router-dom';
 import * as Styled from './style';
 
+import search from './search.svg';
 import addToast from 'components/Common/Toast';
 
 import { ProjectContext } from 'contexts';
@@ -23,13 +24,17 @@ import getUpdatedPackageJSON from 'pages/Project/getUpdatedPackageJSON';
 import { COCONUT_SERVER } from 'config';
 
 import * as NOTIFICATION from 'constants/notificationMessage';
+import { KEY_CODE_ENTER } from 'constants/keyCode';
 
 // Constants
 const MIN_WAIT_TIME = 1500;
 const UPDATE_PROJECT = 'updateProject';
+const PROTOCOL = 'http://';
 
 function BrowserV2({ ...props }) {
 	const { projectId } = useParams();
+
+	const DEFAULT_URL = `${COCONUT_SERVER}/${projectId}`;
 
 	const { project, dispatchProject } = useContext(ProjectContext);
 	const [{ data, error }, setRequest] = useFetch({});
@@ -37,7 +42,10 @@ function BrowserV2({ ...props }) {
 		false
 	);
 	const [dependency, setDependency] = useState(undefined);
+	const [addressInputURL, setAddressInput] = useState(DEFAULT_URL);
+
 	const iframeReference = useRef();
+	const addressReference = useRef();
 
 	const { files, root, dependencyInstalling } = project;
 
@@ -100,6 +108,14 @@ function BrowserV2({ ...props }) {
 		addToast.error(NOTIFICATION.FAIL_INSTALL_DEPENDENCY);
 	};
 
+	const handleAddressInputKeyDown = ({ keyCode, target: { value } }) => {
+		if (keyCode === KEY_CODE_ENTER) {
+			const address = value.includes(PROTOCOL) ? value : `${PROTOCOL}${value}`;
+			setAddressInput(address);
+			addressReference.current.value = address;
+		}
+	};
+
 	const handleIframeOnLoad = useCallback(() => {
 		setIsReadyToReceiveMessage(true);
 
@@ -120,9 +136,18 @@ function BrowserV2({ ...props }) {
 
 	return (
 		<Styled.Frame>
+			<Styled.AddressContainer>
+				<Styled.SearchIcon src={search} />
+				<Styled.AddressInput
+					type="url"
+					ref={addressReference}
+					defaultValue={addressInputURL}
+					onKeyUp={handleAddressInputKeyDown}
+				/>
+			</Styled.AddressContainer>
 			<Styled.BrowserV2
 				ref={iframeReference}
-				src={`${COCONUT_SERVER}/${projectId}`}
+				src={addressInputURL}
 				onLoad={handleIframeOnLoad}
 				{...props}
 			/>
