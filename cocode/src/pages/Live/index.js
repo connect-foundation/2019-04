@@ -129,7 +129,7 @@ function Live() {
 
 	// //TODO loading 컴포넌트 만들기
 	if (loading) return <p>Loading...</p>;
-	if (error) return <p>다시 시도해주세요.</p>;
+	if (error) history.push('/weAreSorry');
 
 	return (
 		<ProjectContext.Provider
