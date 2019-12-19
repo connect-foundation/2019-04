@@ -34,6 +34,8 @@ const API_NOTIFICATION = {
 };
 
 function isNotChangeableFileName({ files, changedName, parentId }) {
+	if (!changedName.trim().length) return true;
+
 	const childrenOfParent = files[parentId].child;
 
 	return childrenOfParent
