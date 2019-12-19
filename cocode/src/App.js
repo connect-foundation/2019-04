@@ -10,6 +10,7 @@ import { LiveStore } from 'stores';
 
 import GlobalStyle from 'components/Common/GlobalStyle';
 import { Home, DashBoard, Project, History, NotFound, Live } from 'pages';
+import SignIn from './pages/SignIn';
 
 function App() {
 	const [user, setUser] = useState(null);
@@ -34,6 +35,7 @@ function App() {
 							</LiveStore>
 						</Route>
 						<Route path="/history" component={History} />
+						<Route path="/signIn" component={SignIn} />
 						<Route component={NotFound} />
 					</Switch>
 				</ThemeProvider>
