@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import * as Styled from './style';
+import { ProjectContext } from 'contexts';
 
 const OFF_BUTTON_LABEL = 'Go Live';
 const OFF_DESCRIPTION =
@@ -9,7 +10,13 @@ const OFF_DESCRIPTION =
 function LiveOffTab() {
 	const history = useHistory();
 	const { projectId } = useParams();
-	const handleConnectSocket = () => history.replace(`../live/${projectId}`);
+	const { forkCoconut } = useContext(ProjectContext);
+	const handleConnectSocket = () => {
+		const idOfNewProject = forkCoconut({ live: true });
+		if (idOfNewProject) return;
+
+		history.replace(`../live/${projectId}`);
+	};
 
 	return (
 		<Styled.Container>

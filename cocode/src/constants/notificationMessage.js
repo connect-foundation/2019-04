@@ -15,6 +15,9 @@ const CONFIRM_DELETE_COCONUT = 'Are you delete this coconut?';
 
 const LOADING_DASHBOARD = 'Please wait to fetch coconuts';
 
+const SUCCESS_FORK = 'Forked Coconut, Success!';
+const CONFLICT_FORK ='already forked! enjoy Coconut!';
+
 export {
 	FAIL_INSTALL_DEPENDENCY,
 	FAIL_TO_MOVE_FILE,
@@ -29,4 +32,6 @@ export {
 	CONFIRM_DELETE_FILE,
 	CONFIRM_DELETE_COCONUT,
 	LOADING_DASHBOARD,
+	SUCCESS_FORK,
+	CONFLICT_FORK,
 };
