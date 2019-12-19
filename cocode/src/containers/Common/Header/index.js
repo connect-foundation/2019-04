@@ -12,7 +12,7 @@ import LoginModalBody from 'components/Common/LoginModalBody';
 
 import UserContext from 'contexts/UserContext';
 
-function Header() {
+function Header({ name }) {
 	const history = useHistory();
 	const { user } = useContext(UserContext);
 	const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
@@ -38,14 +38,12 @@ function Header() {
 	];
 
 	return (
-		<Styled.Header>
+		<Styled.Header isMinHeight={name}>
 			<Link to="/">
 				<Logo />
 			</Link>
-			{/* <Link to="/history">
-				<Styled.HeaderCategory>History</Styled.HeaderCategory>
-			</Link> */}
-			<Styled.HeaderRightSideArea>
+			<Styled.ProjectName>{name || ''}</Styled.ProjectName>
+			<div>
 				{user ? (
 					<UserProfile
 						username={user.username}
@@ -67,7 +65,7 @@ function Header() {
 						)}
 					</>
 				)}
-			</Styled.HeaderRightSideArea>
+			</div>
 		</Styled.Header>
 	);
 }

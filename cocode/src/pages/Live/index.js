@@ -16,6 +16,7 @@ import Editor from 'containers/Live/Editor';
 import LoadingSpinner from 'containers/Common/LoadingSpinner';
 import BrowserV2 from 'components/Project/BrowserV2';
 import { SplitPaneContainer } from 'components/Common/SplitPane';
+import addToast from 'components/Common/Toast';
 
 import { LiveContext, ProjectContext, UserContext } from 'contexts';
 import ProjectReducer from 'reducers/ProjectReducer';
@@ -31,7 +32,7 @@ import { TAB_BAR_THEME } from 'constants/theme';
 import { COCODE_SERVER } from 'config';
 import useFetch from 'hooks/useFetch';
 import { getProjectInfoAPICreator } from 'apis/Project';
-import { LOADING_LIVE } from 'constants/notificationMessage';
+import { SHUT_DOWN_LIVE_SHARE, LOADING_LIVE } from 'constants/notificationMessage';
 
 const DEFAULT_CLICKED_TAB_INDEX = 0;
 let socket;
@@ -111,6 +112,7 @@ function Live() {
 	const handleCloseSocket = () => {
 		socket.close();
 		dispatchLive(liveOffActionCreator());
+		addToast.error(SHUT_DOWN_LIVE_SHARE);
 	};
 
 	const handleConnectSocket = useCallback(() => {
@@ -141,7 +143,7 @@ function Live() {
 				setClickedTabIndex
 			}}
 		>
-			<Header />
+			<Header name={project.name}/>
 			{isFetched && (
 				<Styled.Main>
 					<TabBar theme={TAB_BAR_THEME} />
