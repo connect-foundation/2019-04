@@ -38,7 +38,7 @@ function Header({ name }) {
 	];
 
 	return (
-		<Styled.Header>
+		<Styled.Header isMinHeight={name}>
 			<Link to="/">
 				<Logo />
 			</Link>

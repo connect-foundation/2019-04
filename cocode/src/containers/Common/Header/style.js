@@ -7,7 +7,8 @@ const Header = styled.header`
 		justify-content: space-between;
 		align-items: center;
 
-		height: ${({ theme }) => theme.headerHeight};
+		height: ${({ theme, isMinHeight }) =>
+			isMinHeight ? theme.headerMinHeight : theme.headerHeight};
 
 		background-color: ${({ theme }) => theme.backgroundColor};
 		padding: 2rem 2.3rem;
