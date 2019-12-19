@@ -23,7 +23,7 @@ const Title = styled.h1`
 	& {
 		text-align: center;
 		font-size: 3rem;
-		font-weight: 700;
+		font-weight: 100;
 	}
 `;
 
