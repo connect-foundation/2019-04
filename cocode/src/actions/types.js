@@ -7,6 +7,7 @@ const API_FAIL = 'API_FAILURE';
 // Project
 const UPDATE_PROJECT_INFO = 'updateProjectInfo';
 const UPDATE_CODE = 'updateCode';
+const UPDATE_CODE_FROM_FILE_ID = 'updateCodeFromFileId';
 const FETCH_PROJECT = 'fetchProject';
 const SELECT_FILE = 'selectFile';
 const CREATE_FILE = 'createFile';
@@ -35,6 +36,7 @@ export {
 	API_FAIL,
 	UPDATE_PROJECT_INFO,
 	UPDATE_CODE,
+	UPDATE_CODE_FROM_FILE_ID,
 	FETCH_PROJECT,
 	SELECT_FILE,
 	UPDATE_FILE_NAME,
