@@ -6,13 +6,14 @@ import {
 
 const {
 	explorerTabContainerSelectedFileBGColor,
-} = 'EXPLORER_TAB_CONTAINER_THEME';
+} = EXPLORER_TAB_CONTAINER_THEME;
+
 const {
 	tabContainerHeaderBGColor,
 	tabContainerTitleColor,
 	tabContainerTitleSize,
 	tabContainerTitleWeight
-} = 'TAB_CONTAINER_THEME';
+} = TAB_CONTAINER_THEME;
 
 const TabBody = styled.div`
 	& {
