@@ -2,7 +2,7 @@ import React from 'react';
 import * as Styled from './style';
 import CoconutSpinner from 'components/Common/CoconutSpinner';
 
-function LoadingSpinner(message) {
+function LoadingSpinner({ message }) {
 	return (
 		<Styled.LoadingDisplay>
 			<CoconutSpinner />
