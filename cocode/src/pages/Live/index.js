@@ -51,7 +51,10 @@ function Live() {
 	);
 	const [project, dispatchProject] = useReducer(ProjectReducer, {});
 
-	if (!getCookie('jwt')) history.replace('../signin');
+	if (!getCookie('jwt')) {
+		localStorage.setItem('redirectURL', window.location.href);
+		history.replace('../signin');
+	}
 
 	const handleFetchProject = () => {
 		const getProjectInfoAPI = getProjectInfoAPICreator(projectId);

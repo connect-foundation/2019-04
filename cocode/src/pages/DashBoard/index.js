@@ -25,7 +25,10 @@ function DashBoard() {
 		data && dispatchDashboard(fetchCoconutActionCreator(data));
 	};
 
-	if (!getCookie('jwt')) history.replace('../signin');
+	if (!getCookie('jwt')) {
+		localStorage.setItem('redirectURL', window.location.href);
+		history.replace('../signin');
+	}
 
 	useEffect(handleRequestGetCoconutAPI, [user]);
 	useEffect(handleSetDashBoardState, [data]);
