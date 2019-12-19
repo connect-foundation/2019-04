@@ -3,13 +3,13 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
 import { DEFAULT_THEME } from 'constants/theme';
-import UserContext from 'contexts/UserContext';
+import { UserContext } from 'contexts';
 import useFetch from 'hooks/useFetch';
 import { getUserAPICreator } from 'apis/User';
 import { LiveStore } from 'stores';
 
 import GlobalStyle from 'components/Common/GlobalStyle';
-import { Home, DashBoard, Project, History, NotFound, Live } from 'pages';
+import { Home, DashBoard, Project, NotFound, Live } from 'pages';
 
 function App() {
 	const [user, setUser] = useState(null);
@@ -33,7 +33,6 @@ function App() {
 								<Live />
 							</LiveStore>
 						</Route>
-						<Route path="/history" component={History} />
 						<Route component={NotFound} />
 					</Switch>
 				</ThemeProvider>

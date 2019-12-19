@@ -4,7 +4,7 @@ import * as Styled from './style';
 import Modify from './modify.svg';
 
 import { KEY_CODE_ENTER } from 'constants/keyCode';
-import ProjectContext from 'contexts/ProjectContext';
+import { ProjectContext } from 'contexts';
 import { updateProjectInfoActionCreator } from 'actions/Project';
 import useFetch from 'hooks/useFetch';
 import {

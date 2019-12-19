@@ -5,7 +5,7 @@ import Header from 'containers/Common/Header';
 import LoadingSpinner from 'containers/Common/LoadingSpinner';
 
 import { UserContext, DashBoardContext } from 'contexts';
-import DashBoardReducer from 'reducers/DashboardReducer';
+import { DashBoardReducer } from 'reducers';
 import useFetch from 'hooks/useFetch';
 import { getCoconutsAPICreator } from 'apis/DashBoard';
 import { fetchCoconutActionCreator } from 'actions/Dashboard';

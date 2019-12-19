@@ -6,7 +6,7 @@ import Dependency from 'components/Project/Dependency';
 import DependencyNow from 'components/Project/DependencyNow';
 import DependencySearch from 'components/Project/DependencySearch';
 
-import ProjectContext from 'contexts/ProjectContext';
+import { ProjectContext } from 'contexts';
 
 const TabTitleFirst = 'DEPENDENCIES';
 const TabTitleSecond = 'SEARCH DEPENDENCY';

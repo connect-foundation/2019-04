@@ -25,7 +25,7 @@ import { deleteFileAPICreator, updateFileAPICreator } from 'apis/File';
 
 import { DELETE_FILE, UPDATE_FILE_NAME } from 'actions/types';
 
-import ProjectContext from 'contexts/ProjectContext';
+import { ProjectContext } from 'contexts';
 
 // Constants
 const API_NOTIFICATION = {
@@ -34,9 +34,9 @@ const API_NOTIFICATION = {
 };
 
 function isNotChangeableFileName({ files, changedName, parentId }) {
-	const childsOfParent = files[parentId].child;
+	const childrenOfParent = files[parentId].child;
 
-	return childsOfParent
+	return childrenOfParent
 		.map(id => files[id].name)
 		.some(name => name === changedName);
 }
@@ -60,7 +60,7 @@ function File({
 	const [toggleEdit, setToggleEdit] = useState(false);
 	const [requestedAPI, setRequestedAPI] = useState(null);
 
-	const nameEditReferenece = useRef(null);
+	const nameEditReference = useRef(null);
 	const [{ data, error }, setRequest] = useFetch({});
 
 	const {
@@ -71,7 +71,7 @@ function File({
 	const successHandler = {
 		[DELETE_FILE]: handleDeleteFile,
 		[UPDATE_FILE_NAME]: () => {
-			const changedName = nameEditReferenece.current.textContent;
+			const changedName = nameEditReference.current.textContent;
 			setFileName(changedName);
 			handleEditFileName(changedName);
 		}
@@ -87,7 +87,7 @@ function File({
 			return;
 		}
 
-		changeDivEditable(nameEditReferenece.current, true);
+		changeDivEditable(nameEditReference.current, true);
 		setToggleEdit(true);
 	};
 
@@ -138,7 +138,7 @@ function File({
 	const handleKeyDown = e => {
 		if (e.keyCode === KEY_CODE_ENTER) {
 			setToggleEdit(false);
-			nameEditReferenece.current.contentEditable = false;
+			nameEditReference.current.contentEditable = false;
 		}
 	};
 
@@ -177,7 +177,7 @@ function File({
 		>
 			<Styled.Icon src={FileImagesSrc[type]} alt={`${name}_${type}`} />
 			<Styled.NameEdit
-				ref={nameEditReferenece}
+				ref={nameEditReference}
 				onFocus={selectAllTextAboutFocusedDom}
 				onBlur={handleEditFileNameEnd}
 				onKeyDown={handleKeyDown}

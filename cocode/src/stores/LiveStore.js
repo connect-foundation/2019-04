@@ -1,5 +1,5 @@
 import React, { useReducer } from 'react';
-import LiveReducer from 'reducers/LiveReducer';
+import { LiveReducer } from 'reducers';
 import { LiveContext } from 'contexts';
 import { LIVE_SERVER } from 'config';
 

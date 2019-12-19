@@ -5,7 +5,7 @@ import * as Styled from './style';
 
 import addToast from 'components/Common/Toast';
 
-import ProjectContext from 'contexts/ProjectContext';
+import { ProjectContext } from 'contexts';
 import { createFileActionCreator } from 'actions/Project';
 
 import { getFileExtension } from 'utils';
@@ -27,7 +27,7 @@ function NewFile({ depth, type, parentId, handleEndCreateFile }) {
 		dispatchProject
 	} = useContext(ProjectContext);
 	const [fileName, setFileName] = useState('');
-	const fileNameInputReferenece = useRef(null);
+	const fileNameInputReference = useRef(null);
 	const [{ data, error }, setRequest] = useFetch({});
 
 	const isDuplicatedFileName = fileName => {
@@ -76,17 +76,17 @@ function NewFile({ depth, type, parentId, handleEndCreateFile }) {
 			type
 		});
 		dispatchProject(createFileAction);
-		changeDivEditable(fileNameInputReferenece.current, false);
+		changeDivEditable(fileNameInputReference.current, false);
 	};
 
 	const handleErrorResponse = () => {
 		if (!error) return;
 		addToast.error(NOTIFICATION.FAIL_TO_CREATE_FILE);
-		changeDivEditable(fileNameInputReferenece.current, false);
+		changeDivEditable(fileNameInputReference.current, false);
 	};
 
 	useEffect(() => {
-		fileNameInputReferenece.current.focus();
+		fileNameInputReference.current.focus();
 	}, []);
 	useEffect(handleSetNewFileState, [data]);
 	useEffect(handleErrorResponse, [error]);
@@ -95,7 +95,7 @@ function NewFile({ depth, type, parentId, handleEndCreateFile }) {
 		<Styled.NewFile depth={depth}>
 			<Styled.Icon src={FileImagesSrc[type]} alt="newFile" />
 			<Styled.FileNameInput
-				ref={fileNameInputReferenece}
+				ref={fileNameInputReference}
 				onBlur={handleBlur}
 				onKeyDown={handleKeyDown}
 				onInput={handleWriteFileName}

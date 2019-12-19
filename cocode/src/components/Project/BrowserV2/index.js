@@ -11,7 +11,7 @@ import * as Styled from './style';
 import addToast from 'components/Common/Toast';
 import CoconutSpinner from 'components/Common/CoconutSpinner';
 
-import ProjectContext from 'contexts/ProjectContext';
+import { ProjectContext } from 'contexts';
 
 import { installDependencyActionCreator } from 'actions/Project';
 

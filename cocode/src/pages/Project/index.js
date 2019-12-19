@@ -11,13 +11,12 @@ import BrowserV2 from 'components/Project/BrowserV2';
 import { SplitPaneContainer } from 'components/Common/SplitPane';
 import addToast from 'components/Common/Toast';
 
-import ProjectReducer from 'reducers/ProjectReducer';
-import ProjectContext from 'contexts/ProjectContext';
+import { ProjectReducer } from 'reducers';
+import { ProjectContext, UserContext } from 'contexts';
 import { fetchProjectActionCreator } from 'actions/Project';
 
 import { TAB_BAR_THEME } from 'constants/theme';
 
-import UserContext from 'contexts/UserContext';
 import useFetch from 'hooks/useFetch';
 import { reactTemplate } from 'template/react';
 import copyProject from 'template/copyProject';
@@ -48,7 +47,7 @@ function Project() {
 	const forkCoconut = ({ live, info }) => {
 		if (!isNotMyProject) return false;
 
-		const parsedProject = pretreatBeforeFork({ live, info });
+		const parsedProject = preTreatBeforeFork({ live, info });
 		const forkProjectInfoAPI = forkProjectAPICreator(parsedProject);
 		setRequest(forkProjectInfoAPI);
 
@@ -56,7 +55,7 @@ function Project() {
 		return parsedProject._id;
 	};
 
-	const pretreatBeforeFork = ({ live, info }) => {
+	const preTreatBeforeFork = ({ live, info }) => {
 		if (live) setIsLive(true);
 
 		const username = user ? user.username : 'anonymous';

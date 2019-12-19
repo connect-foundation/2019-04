@@ -8,7 +8,7 @@ import {
 import Directory from 'components/Project/Directory';
 import NewFile from 'components/Project/NewFile';
 
-import ProjectContext from 'contexts/ProjectContext';
+import { ProjectContext } from 'contexts';
 import {
 	selectFileActionCreator,
 	updateFileNameActionCreator,
@@ -16,7 +16,7 @@ import {
 	moveFileActionCreator
 } from 'actions/Project';
 
-const TAB_TITLE = 'EXPLOLER';
+const TAB_TITLE = 'EXPLORER';
 
 function TabHeader({ handleCreateFile }) {
 	return (

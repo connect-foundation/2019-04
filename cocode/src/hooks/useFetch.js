@@ -1,7 +1,7 @@
 import { useState, useEffect, useReducer } from 'react';
 import axios from 'axios';
 import { DEFAULT_REQUEST_OPTION } from 'config';
-import APIReducer from 'reducers/APIReducer';
+import { APIReducer } from 'reducers';
 import {
 	fetchReadyActionCreator,
 	fetchLoadActionCreator,
