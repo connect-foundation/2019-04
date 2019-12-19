@@ -140,7 +140,7 @@ function Live() {
 				setClickedTabIndex
 			}}
 		>
-			<Header name={project.name || ''}/>
+			<Header name={project.name}/>
 			{isFetched && (
 				<Styled.Main>
 					<TabBar theme={TAB_BAR_THEME} />
