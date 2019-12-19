@@ -9,10 +9,7 @@ function useBuildProject() {
 		const rootPath = files[root].path;
 		fileParser(project, rootPath, root);
 
-		worker.postMessage({
-			command: 'start',
-			fileSystem: window.fileSystem
-		});
+		worker.postMessage({ fileSystem: window.fileSystem });
 
 		worker.onmessage = ({ data: { error, bundledCode } }) => {
 			if (!error) setBuildResult({ bundledCode });
