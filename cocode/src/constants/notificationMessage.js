@@ -15,6 +15,8 @@ const CONFIRM_DELETE_COCONUT = 'Are you delete this coconut?';
 
 const LOADING_DASHBOARD = 'Please wait to fetch coconuts';
 
+const SHUT_DOWN_LIVE_SHARE = 'The live share has been shut down';
+
 export {
 	FAIL_INSTALL_DEPENDENCY,
 	FAIL_TO_MOVE_FILE,
@@ -29,4 +31,5 @@ export {
 	CONFIRM_DELETE_FILE,
 	CONFIRM_DELETE_COCONUT,
 	LOADING_DASHBOARD,
+	SHUT_DOWN_LIVE_SHARE
 };
