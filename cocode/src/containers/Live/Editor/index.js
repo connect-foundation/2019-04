@@ -8,103 +8,81 @@ import MonacoEditor from 'components/Project/MonacoEditor';
 import { LiveContext, UserContext, ProjectContext } from 'contexts';
 import {
 	updateCodeActionCreator,
-	saveFileActionCreator
+	updateCodeFromFileIdActionCreator
 } from 'actions/Project';
 
 import useFetch from 'hooks/useFetch';
-import { updateFileAPICreator } from 'apis/File';
 
-import { isPressCtrlAndS } from 'utils/keyDownEvent';
+import { CursorWidget } from 'utils/monacoWidget';
 
-
-class CursorWidget {
-    constructor(editor, userName, position) {
-        this.editor = editor;
-        this.id = userName;
-        this.domNode = null;
-        this.position = position;
-    }
-
-    getId() {
-        return this.id;
-    }
-
-    getDomNode() {
-        if (!this.domNode) {
-            this.domNode = document.createElement('div');
-            this.domNode.innerHTML = this.id;
-            this.domNode.style.background = 'grey';
-            this.domNode.id = this.id;
-        }
-        return this.domNode;
-    }
-
-    getPosition() {
-        return {
-            position: this.position,
-            preference: [0]
-        };
-    }
-    updatePosition(position) {
-        this.position = position;
-        this.editor.layoutContentWidget(this);
-    }
-}
-
-// Constatnts
 let timer;
-const DEBOUNCING_TIME = 800;
+const DEBOUNCING_TIME = 1000;
+
+const MAX_RANGE = {
+	startLineNumber: 1,
+	startColumn: 1,
+	endLineNumber: 9999,
+	endColumn: 9999
+};
+
 const userCursor = {};
 
 function Editor({ handleForkCoconut }) {
 	const { user } = useContext(UserContext);
 	const { projectId } = useParams();
 	const { project, dispatchProject } = useContext(ProjectContext);
-	const { socket, dispatchLive } = useContext(LiveContext);
+	const { socket } = useContext(LiveContext);
 	const [code, setCode] = useState(project.editingCode);
 	const [isEditorMounted, setIsEditorMounted] = useState(false);
 	const [_, setRequest] = useFetch({});
 
 	const [fileSelectFlag, setFileSelectFlag] = useState(undefined);
-	const { selectedFileId } = project;
+	const { selectedFileId, files } = project;
 
 	const editorRef = useRef();
 	const isBusy = useRef(true);
 	const pendingEvent = useRef(false);
+	const selectedRef = useRef();
+	const filesRef = useRef();
 
 	const handleOnChangeCodeInMonaco = (_, changedCode) => {
-		// if (timer) clearTimeout(timer);
+		if (timer) clearTimeout(timer);
 
-		// timer = setTimeout(() => {
-		// 	setCode(changedCode);
-		// }, DEBOUNCING_TIME);
+		timer = setTimeout(() => {
+			setCode(changedCode);
+		}, DEBOUNCING_TIME);
 	};
 
-	const handleChangedSelectedFile = () => setCode(project.editingCode);
-
-	const handleRequestUpdateCode = () => {
-		if (!isEditorMounted) return;
-
-		const updateFileAPI = updateFileAPICreator(projectId, selectedFileId, {
-			contents: project.editingCode
-		});
-		setRequest(updateFileAPI);
-	};
-
-	const handleOnKeyDown = e => {
-		if (!isPressCtrlAndS(e)) return;
-
-		e.preventDefault();
-		const { files, selectedFileId } = project;
-		if (!files[selectedFileId].isEditing) return;
-
-		if (user.username !== project.author) {
-			handleForkCoconut();
-			return;
+	const handleChnageSelectedFileMonaco = (
+		source,
+		text,
+		range = MAX_RANGE
+	) => {
+		isBusy.current = true;
+		if (editorRef.current) {
+			editorRef.current.executeEdits(source, [
+				{
+					range,
+					text,
+					forceMoveMarkers: true
+				}
+			]);
 		}
+		setTimeout(() => {
+			isBusy.current = false;
+		}, 0);
+	};
 
-		handleRequestUpdateCode();
-		dispatchProject(saveFileActionCreator());
+	const handleChangedSelectedFile = () => {
+		if (!project) return;
+		if (!filesRef.current) return;
+		selectedRef.current = selectedFileId;
+		setCode(project.editingCode);
+
+		handleChnageSelectedFileMonaco(
+			'changeFile',
+			filesRef.current[selectedFileId].contents
+		);
 	};
 
 	const handleUpdateCode = () => {
@@ -118,27 +96,30 @@ function Editor({ handleForkCoconut }) {
 		dispatchProject(updateCodeAction);
 	};
 
-    const handleEmit = (e, timeStamp) => {
-        if (isBusy.current) return;
-        if (!timeStamp) timeStamp = Date();
-        if (pendingEvent.current) handleEmit(e, timeStamp);
-        const change = e.changes[0];
-        const operation = {
-            rangeLength: change.rangeLength,
-            rangeOffset: change.rangeOffset,
-            text: change.text.replace(/\r\n/g, '\n'),
-            timeStamp: timeStamp
+	const handleEmit = (e, timeStamp) => {
+		if (isBusy.current) return;
+		if (!timeStamp) timeStamp = Date();
+		// if (pendingEvent.current) handleEmit(e, timeStamp);
+		const change = e.changes[0];
+		const operation = {
+			rangeLength: change.rangeLength,
+			rangeOffset: change.rangeOffset,
+			text: change.text.replace(/\r\n/g, '\n'),
+			timeStamp: timeStamp
 		};
-        socket.emit('change', operation);
-    };
+		if (!socket) return;
+		// pendingEvent.current = true;
+		socket.emit('change', selectedRef.current, operation);
+	};
 
-    const handleCursor = e => {
-        socket.emit('moveCursor', e.position);
+	const handleCursor = e => {
+		if (!socket) return;
+		socket.emit('moveCursor', selectedRef.current, e.position);
 	};
 
 	const handleEditorDidMount = (_, editor) => {
 		editorRef.current = editor;
-        editor.onDidChangeModelContent(handleEmit);
+		editor.onDidChangeModelContent(handleEmit);
 		editor.onDidChangeCursorPosition(handleCursor);
 		setIsEditorMounted(true);
 	};
@@ -147,70 +128,93 @@ function Editor({ handleForkCoconut }) {
 	useEffect(handleChangedSelectedFile, [project.selectedFileId]);
 
 	useEffect(() => {
+		if (!isEditorMounted) return;
+		selectedRef.current = selectedFileId;
+		isBusy.current = true;
+		handleChnageSelectedFileMonaco('initial', project.editingCode);
+	}, [isEditorMounted]);
+
+	useEffect(() => {
+		//initialize
 		if (!socket) return;
+		if (!isEditorMounted) return;
 		isBusy.current = false;
-		socket.on('change', (socketId, op) => {
-			if (socket.id === socketId) {
-				setTimeout(() => {
-					pendingEvent.current = false;
-				}, 10);
-			} else {
-				const rangeOffset = op.rangeOffset;
-				const rangeLength = op.rangeLength;
-				const text = op.text;
+		filesRef.current = JSON.parse(JSON.stringify(files));
+		socket.on('change', handleOnChangeCode);
+		socket.on('moveCursor', handleMoveCursor);
+	}, [socket, isEditorMounted]);
 
-				const startPosition = editorRef.current
-					.getModel()
-					.getPositionAt(rangeOffset);
-				const endPosition = editorRef.current
-					.getModel()
-					.getPositionAt(rangeOffset + rangeLength);
-				isBusy.current = true;
-				editorRef.current.executeEdits(socketId, [
-					{
-						range: {
-							startLineNumber: startPosition.lineNumber,
-							startColumn: startPosition.column,
-							endLineNumber: endPosition.lineNumber,
-							endColumn: endPosition.column
-						},
-						text,
-						forceMoveMarkers: true
-					}
-				]);
-				isBusy.current = false;
-			}
-		});
+	const handleOnChangeCode = (socketId, fileId, op) => {
+		if (socket.id === socketId) {
+			setTimeout(() => {
+				pendingEvent.current = false;
+			}, 10);
+			return;
+		}
 
-		socket.on('moveCursor', (username, position) => {
-			if (!userCursor[username]) {
-				const widget = new CursorWidget(
-					editorRef.current,
-					username,
-					position
-				);
-				userCursor[username] = widget;
-				editorRef.current.addContentWidget(widget);
-				return;
-			}
-			userCursor[username].updatePosition(position);
+		if (selectedRef.current !== fileId) {
+			const originCode = filesRef.current[fileId].contents;
+
+			const str1 = originCode.slice(0, op.rangeOffset);
+			const str2 = originCode.slice(op.rangeOffset + op.rangeLength);
+			const changedCode = `${str1}${op.text}${str2}`;
+			filesRef.current[fileId].contents = changedCode;
+			const updateCodeFromFileIdAction = updateCodeFromFileIdActionCreator(
+				{
+					fileId,
+					changedCode
+				}
+			);
+			dispatchProject(updateCodeFromFileIdAction);
+			return;
+		}
+
+		const rangeOffset = op.rangeOffset;
+		const rangeLength = op.rangeLength;
+		const text = op.text;
+
+		const startPosition = editorRef.current
+			.getModel()
+			.getPositionAt(rangeOffset);
+		const endPosition = editorRef.current
+			.getModel()
+			.getPositionAt(rangeOffset + rangeLength);
+
+		handleChnageSelectedFileMonaco(socketId, text, {
+			startLineNumber: startPosition.lineNumber,
+			startColumn: startPosition.column,
+			endLineNumber: endPosition.lineNumber,
+			endColumn: endPosition.column
 		});
-	}, [socket]);
+	};
+
+	const handleMoveCursor = (username, fileId, position) => {
+		if (!userCursor[username]) {
+			const widget = new CursorWidget(
+				editorRef.current,
+				username,
+				position
+			);
+			userCursor[username] = widget;
+			editorRef.current.addContentWidget(widget);
+		}
+		if (selectedRef.current === fileId)
+			userCursor[username].showCursor(position);
+		else userCursor[username].hiddenCursor();
+	};
 
 	return (
 		<Styled.Editor>
 			<FileTabBar />
 			<MonacoEditor
 				isFilesEmpty={!project.selectedFileId}
-				code={code}
+				code={''}
 				handleUpdateCode={handleOnChangeCodeInMonaco}
 				handleEditorDidMount={handleEditorDidMount}
 				className="Stretch-width"
-				onKeyDown={handleOnKeyDown}
 			/>
 		</Styled.Editor>
 	);
 }
-
 
 export default Editor;
