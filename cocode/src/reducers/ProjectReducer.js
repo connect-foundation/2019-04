@@ -2,6 +2,7 @@
 import {
 	UPDATE_PROJECT_INFO,
 	UPDATE_CODE,
+	UPDATE_CODE_FROM_FILE_ID,
 	FETCH_PROJECT,
 	SELECT_FILE,
 	CREATE_FILE,
@@ -106,6 +107,20 @@ const updateCode = (state, { changedCode }) => {
 			}
 		}
 		// editingFiles : [...]
+	};
+};
+
+const updateCodeFromFileId = (state, { fileId, changedCode }) => {
+	return {
+		...state,
+		files: {
+			...state.files,
+			[fileId]: {
+				...state.files[fileId],
+				contents: changedCode,
+				isEditing: true
+			}
+		}
 	};
 };
 
@@ -314,6 +329,7 @@ function ProjectReducer(state, { type, payload }) {
 		[UPDATE_PROJECT_INFO]: updateProjectInfo,
 		[FETCH_PROJECT]: fetchProject,
 		[UPDATE_CODE]: updateCode,
+		[UPDATE_CODE_FROM_FILE_ID]: updateCodeFromFileId,
 		[SELECT_FILE]: selectFile,
 		[UPDATE_FILE_NAME]: updateFileName,
 		[CREATE_FILE]: createFile,

@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import * as Styled from './style';
 import { Link, useHistory } from 'react-router-dom';
 
-import deleteCookie from 'utils/deleteCookie';
+import { deleteCookie } from 'utils/controlCookie';
 
 import Logo from 'components/Common/Logo';
 import Modal from 'components/Common/Modal';

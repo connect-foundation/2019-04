@@ -1,6 +1,7 @@
 import {
 	UPDATE_PROJECT_INFO,
 	UPDATE_CODE,
+	UPDATE_CODE_FROM_FILE_ID,
 	FETCH_PROJECT,
 	SELECT_FILE,
 	UPDATE_FILE_NAME,
@@ -22,6 +23,9 @@ function fetchProjectActionCreator(payload) {
 
 function updateCodeActionCreator(payload) {
 	return { type: UPDATE_CODE, payload };
+}
+function updateCodeFromFileIdActionCreator(payload) {
+	return { type: UPDATE_CODE_FROM_FILE_ID, payload };
 }
 
 function selectFileActionCreator(payload) {
@@ -59,6 +63,7 @@ function saveFileActionCreator(payload) {
 export {
 	updateProjectInfoActionCreator,
 	updateCodeActionCreator,
+	updateCodeFromFileIdActionCreator,
 	fetchProjectActionCreator,
 	selectFileActionCreator,
 	updateFileNameActionCreator,

@@ -10,6 +10,7 @@ import useFetch from 'hooks/useFetch';
 import { getCoconutsAPICreator } from 'apis/DashBoard';
 import { fetchCoconutActionCreator } from 'actions/Dashboard';
 import { LOADING_DASHBOARD } from 'constants/notificationMessage';
+import { getCookie } from 'utils/controlCookie';
 
 function DashBoard() {
 	const { user } = useContext(UserContext);
@@ -23,6 +24,8 @@ function DashBoard() {
 	const handleSetDashBoardState = () => {
 		data && dispatchDashboard(fetchCoconutActionCreator(data));
 	};
+
+	if (!getCookie('jwt')) history.replace('../signin');
 
 	useEffect(handleRequestGetCoconutAPI, [user]);
 	useEffect(handleSetDashBoardState, [data]);
