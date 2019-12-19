@@ -4,14 +4,9 @@ const PORT = 3040;
 const rooms = {};
 
 io.on('connection', socket => {
-	console.log('someone connectted');
 	const isNotHost = (host, username) => host.username !== username;
-	const isFirstVisit = (participants, username) =>
-		indexOfUser(participants, username) === -1;
-	const indexOfUser = (participants, username) =>
-		participants.findIndex(
-			participant => participant.username === username
-		);
+	const isFirstVisit = (participants, username) => indexOfUser(participants, username) === -1;
+	const indexOfUser = (participants, username) => participants.findIndex(participant => participant.username === username);
 
 	const handleCreateRoom = ({ projectId, user, project }) => {
 		socket.user = user;
@@ -26,13 +21,7 @@ io.on('connection', socket => {
 			} = socket;
 
 			// 호스트 혹은 이미 접속한 사람이 재접속했을 때 참가자에 추가되는 것을 방지
-			if (
-				isNotHost(host, username) &&
-				isFirstVisit(participants, username)
-			) {
-				if (!socket.user) socket.user = userName.pop();
-				participants.push(socket.user);
-			}
+			if (isNotHost(host, username) && isFirstVisit(participants, username)) participants.push(socket.user);
 
 			// 본인에게 알리기
 			socket.emit('alreadyExistRoom', { host, project });
@@ -84,12 +73,7 @@ io.on('connection', socket => {
 	};
 
 	const handleOnMoveCursor = (filePath, position) => {
-		socket.broadcast.emit(
-			'moveCursor',
-			socket.user.username,
-			filePath,
-			position
-		);
+		socket.broadcast.emit('moveCursor', socket.user.username, filePath, position);
 	};
 
 	socket.emit('connected');
