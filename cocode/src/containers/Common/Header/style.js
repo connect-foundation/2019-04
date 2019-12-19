@@ -4,7 +4,7 @@ const Header = styled.header`
 	& {
 		display: flex;
 		flex-direction: row;
-		justify-content: flex-start;
+		justify-content: space-between;
 		align-items: center;
 
 		height: ${({ theme }) => theme.headerHeight};
@@ -14,22 +14,9 @@ const Header = styled.header`
 	}
 `;
 
-const HeaderCategory = styled.button`
+const ProjectName = styled.div`
 	& {
-		margin-left: 1.5rem;
-
-		font-size: 1.4rem;
-		font-weight: 100;
-	}
-
-	&:hover {
-		color: ${({ theme }) => theme.mainColor};
-	}
-`;
-
-const HeaderRightSideArea = styled.div`
-	& {
-		margin-left: auto;
+		font-size: 1.3rem;
 	}
 `;
 
@@ -44,4 +31,4 @@ const SignInButton = styled.button`
 	}
 `;
 
-export { Header, SignInButton, HeaderCategory, HeaderRightSideArea };
+export { Header, SignInButton, ProjectName };

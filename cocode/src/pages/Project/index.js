@@ -103,7 +103,7 @@ function Project() {
 				setClickedTabIndex
 			}}
 		>
-			<Header />
+			<Header name={project.name || ''}/>
 			{isFetched && (
 				<Styled.Main>
 					<TabBar theme={TAB_BAR_THEME} />
