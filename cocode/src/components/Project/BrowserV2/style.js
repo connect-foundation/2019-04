@@ -1,37 +1,17 @@
 import styled from 'styled-components';
+import { BROWSER_THEME } from 'constants/theme';
 
 const Frame = styled.div`
 	& {
 		position: relative;
 	}
 `;
-const ErrorDisplay = styled.div`
-	& {
-		position: absolute;
-		z-index: ${({ errorDescription }) => (errorDescription ? 1 : -1)};
-		overflow-x: scroll;
-
-		padding: 1rem;
-
-		height: 100%;
-		width: 100%;
-
-		background-color: ${({ errorDescription }) =>
-			errorDescription ? 'rgba(0, 0, 0, 0.7)' : 'transparent'};
-
-		font-size: 2rem;
-		font-weight: lighter;
-	}
-`;
 
 const BrowserV2 = styled.iframe`
 	& {
-		position: absolute;
-
-		height: 100%;
+		height: calc(100% - 3.1rem);
 		width: 100%;
-
-		background-color: white;
+		background-color: ${BROWSER_THEME.iframeBGColor};
 	}
 `;
 
@@ -50,15 +30,51 @@ const LoadingOverlay = styled.section`
 		justify-content: center;
 		align-items: center;
 
-		background-color: black;
+		background-color: ${BROWSER_THEME.loadingOverlayBGColor};
 
 		p {
 			margin-top: 2rem;
-
 			font-size: 3rem;
 			font-weight: lighter;
 		}
 	}
 `;
 
-export { Frame, ErrorDisplay, BrowserV2, LoadingOverlay };
+const AddressContainer = styled.div`
+	& {
+		display: flex;
+		align-items: center;
+		height: 3.1rem;
+		width: 100%;
+		padding: 0.8rem;
+		background: ${BROWSER_THEME.browserHeaderBGColor};
+		font-size: 1rem;
+	}
+`;
+
+const AddressInput = styled.input`
+	& {
+		width: 100%;
+		height: 100%;
+		padding: 0.3rem;
+		background: ${BROWSER_THEME.addressInputBGColor};
+		color: ${BROWSER_THEME.addressInputTextColor};
+	}
+`;
+
+const SearchIcon = styled.img`
+	& {
+		height: 100%;
+		padding: 0.4rem 0;
+		background: ${BROWSER_THEME.addressInputBGColor};
+	}
+`;
+
+export {
+	Frame,
+	BrowserV2,
+	LoadingOverlay,
+	AddressContainer,
+	AddressInput,
+	SearchIcon
+};
