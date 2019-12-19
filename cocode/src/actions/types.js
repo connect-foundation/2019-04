@@ -7,6 +7,7 @@ const API_FAIL = 'API_FAILURE';
 // Project
 const UPDATE_PROJECT_INFO = 'updateProjectInfo';
 const UPDATE_CODE = 'updateCode';
+const UPDATE_CODE_FROM_FILE_ID = 'updateCodeFromFileId';
 const FETCH_PROJECT = 'fetchProject';
 const SELECT_FILE = 'selectFile';
 const CREATE_FILE = 'createFile';
@@ -23,11 +24,10 @@ const UPDATE_COCONUT_NAME = 'updateCoconutName';
 const DELETE_COCONUT = 'deleteCoconut';
 
 //Live
-const FETCH_LIVE = 'fetchLive';
 const LIVE_ON = 'liveOn';
 const LIVE_OFF = 'liveOff';
 const LIVE_JOIN_USER = 'liveJoinUser';
-const LIVE_LEFT_USER = 'liveLeftUser';
+const LIVE_LEAVE_USER = 'liveLeaveUser';
 
 export {
 	API_READY,
@@ -36,6 +36,7 @@ export {
 	API_FAIL,
 	UPDATE_PROJECT_INFO,
 	UPDATE_CODE,
+	UPDATE_CODE_FROM_FILE_ID,
 	FETCH_PROJECT,
 	SELECT_FILE,
 	UPDATE_FILE_NAME,
@@ -47,10 +48,9 @@ export {
 	FETCH_COCONUT,
 	UPDATE_COCONUT_NAME,
 	DELETE_COCONUT,
-	FETCH_LIVE,
 	LIVE_ON,
 	LIVE_OFF,
 	LIVE_JOIN_USER,
-	LIVE_LEFT_USER,
+	LIVE_LEAVE_USER,
 	SAVE_FILE
 };

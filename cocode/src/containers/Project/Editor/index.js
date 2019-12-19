@@ -5,7 +5,7 @@ import * as Styled from './style';
 import FileTabBar from 'components/Project/FileTabBar';
 import MonacoEditor from 'components/Project/MonacoEditor';
 
-import { UserContext, ProjectContext } from 'contexts';
+import { ProjectContext } from 'contexts';
 import {
 	updateCodeActionCreator,
 	saveFileActionCreator
@@ -20,10 +20,11 @@ import { isPressCtrlAndS } from 'utils/keyDownEvent';
 let timer;
 const DEBOUNCING_TIME = 800;
 
-function Editor({ handleForkCoconut }) {
-	const { user } = useContext(UserContext);
+function Editor() {
 	const { projectId } = useParams();
-	const { project, dispatchProject } = useContext(ProjectContext);
+	const { project, dispatchProject, forkCoconut } = useContext(
+		ProjectContext
+	);
 	const [code, setCode] = useState(project.editingCode);
 	const [isEditorMounted, setIsEditorMounted] = useState(false);
 	const [_, setRequest] = useFetch({});
@@ -50,8 +51,6 @@ function Editor({ handleForkCoconut }) {
 		setRequest(updateFileAPI);
 	};
 
-	const isNotMyProject = !user || user.username !== project.author;
-
 	const handleOnKeyDown = e => {
 		if (!isPressCtrlAndS(e)) return;
 
@@ -59,10 +58,8 @@ function Editor({ handleForkCoconut }) {
 		const { files, selectedFileId } = project;
 		if (!files[selectedFileId].isEditing) return;
 
-		if (isNotMyProject) {
-			handleForkCoconut();
-			return;
-		}
+		const isProgress = forkCoconut({});
+		if (isProgress) return;
 
 		handleRequestUpdateCode();
 		dispatchProject(saveFileActionCreator());

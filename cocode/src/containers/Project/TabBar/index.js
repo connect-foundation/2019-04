@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import * as Styled from './style';
 
-import ProjectContext from 'contexts/ProjectContext';
+import { ProjectContext } from 'contexts';
 
 import TabIcon from 'components/Project/TabIcon';
 

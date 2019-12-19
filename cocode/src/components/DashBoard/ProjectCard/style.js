@@ -15,6 +15,7 @@ const ProjectArticle = styled.article`
 
 		background-color: ${PROJECT_CARD_THEME.cardBackgroundColor};
 		border-radius: 1rem;
+		cursor: pointer;
 	}
 `;
 

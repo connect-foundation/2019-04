@@ -6,6 +6,7 @@ const DEFAULT_THEME = {
 	textColor: '#ffffff',
 
 	exceptHeaderHeight: '88vh',
+	headerMinHeight: '9vh',
 	headerHeight: '12vh'
 };
 
@@ -16,11 +17,11 @@ const DROPDOWN_THEME = {
 };
 
 const BROWSER_THEME = {
+	iframeBGColor: '#ffffff',
+	loadingOverlayBGColor: '#000000',
 	browserHeaderBGColor: '#1d2022',
-	addressInputBGColor: '#000',
-	addressInputTextColor: '#fff',
-
-	browserHeight: '88vh'
+	addressInputBGColor: '#000000',
+	addressInputTextColor: '#ffffff',
 };
 
 const TAB_CONTAINER_THEME = {
@@ -100,12 +101,13 @@ const INFO_TAB_THEME = {
 };
 
 const LIVE_TAB_THEME = {
-	liveButtonBGColorHover: '#C74040B2',
-	liveButtonBGColor: '#880000',
+	liveButtonBGColorHover: '#880000',
+	liveButtonBGColor: '#880000ba',
 	liveFontColor: '#bcbcbc',
 	liveStatusLabelColor: '#c74040b3',
 	liveLinkBGColor: '#000000',
-	liveSelfLabelColor: '#333333'
+	liveSelfLabelColor: '#676767',
+	liveCircleBGColor: '#ffffff'
 };
 
 const FILE_TAB_THEME = {
@@ -125,6 +127,12 @@ const TOAST_THEME = {
 	toastErrorDeco: 'rgba(233,42,61,0.98)'
 };
 
+const SIGN_IN_THEME = {
+	signInButtonBGColor: '#e7e7e7',
+	signInButtonBGHoverColor: '#ffffff',
+	signInButtonTextColor: '#000000',
+};
+
 export {
 	DEFAULT_THEME,
 	DROPDOWN_THEME,
@@ -138,5 +146,6 @@ export {
 	FILE_TAB_THEME,
 	MONACO_THEME,
 	LIVE_TAB_THEME,
-	TOAST_THEME
+	TOAST_THEME,
+	SIGN_IN_THEME
 };

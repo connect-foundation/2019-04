@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from 'react';
 import * as Styled from './style';
 
-import ProjectContext from 'contexts/ProjectContext';
+import { ProjectContext } from 'contexts';
 
 import InfoTab from '../InfoTab';
 import ExplorerTab from '../ExplorerTab';

@@ -8,10 +8,10 @@ import React, {
 import { useParams } from 'react-router-dom';
 import * as Styled from './style';
 
+import search from './search.svg';
 import addToast from 'components/Common/Toast';
-import CoconutSpinner from 'components/Common/CoconutSpinner';
 
-import ProjectContext from 'contexts/ProjectContext';
+import { ProjectContext } from 'contexts';
 
 import { installDependencyActionCreator } from 'actions/Project';
 
@@ -24,13 +24,17 @@ import getUpdatedPackageJSON from 'pages/Project/getUpdatedPackageJSON';
 import { COCONUT_SERVER } from 'config';
 
 import * as NOTIFICATION from 'constants/notificationMessage';
+import { KEY_CODE_ENTER } from 'constants/keyCode';
 
 // Constants
 const MIN_WAIT_TIME = 1500;
 const UPDATE_PROJECT = 'updateProject';
+const PROTOCOLS = ['http://', 'https://'];
 
 function BrowserV2({ ...props }) {
 	const { projectId } = useParams();
+
+	const DEFAULT_URL = `${COCONUT_SERVER}/${projectId}`;
 
 	const { project, dispatchProject } = useContext(ProjectContext);
 	const [{ data, error }, setRequest] = useFetch({});
@@ -38,23 +42,12 @@ function BrowserV2({ ...props }) {
 		false
 	);
 	const [dependency, setDependency] = useState(undefined);
-	const [isBuildingCoconut, setIsBuildingCoconut] = useState(true);
+	const [addressInputURL, setAddressInput] = useState(DEFAULT_URL);
+
 	const iframeReference = useRef();
+	const addressReference = useRef();
 
 	const { files, root, dependencyInstalling } = project;
-
-	const handleComponentDidMount = () => {
-		window.addEventListener('message', receiveMsgFromChild);
-	};
-
-	const receiveMsgFromChild = e => {
-		const { command, dependency } = e.data;
-
-		const cocodeActions = { buildEnd };
-		cocodeActions[command] && cocodeActions[command](dependency);
-	};
-
-	const buildEnd = () => setIsBuildingCoconut(false);
 
 	const endInstallDependency = useCallback(dependency => {
 		setTimeout(() => {
@@ -65,6 +58,9 @@ function BrowserV2({ ...props }) {
 			dispatchProject(installDependencyAction);
 		}, MIN_WAIT_TIME);
 	});
+
+	const isHaveProtocol = (value) =>
+		PROTOCOLS.some(PROTOCOL => value.includes(PROTOCOL));
 
 	const handleUpdateDependency = () => {
 		if (!isReadyToReceiveMessage) return;
@@ -115,6 +111,20 @@ function BrowserV2({ ...props }) {
 		addToast.error(NOTIFICATION.FAIL_INSTALL_DEPENDENCY);
 	};
 
+	const handleAddressInputKeyDown = ({ keyCode, target: { value } }) => {
+		if (keyCode === KEY_CODE_ENTER) {
+			const address = isHaveProtocol(value) ? value : `${PROTOCOLS[0]}${value}`;
+			setAddressInput(address);
+			addressReference.current.value = address;
+		}
+	};
+
+	const handleChangeCurrentURL = () => {
+		const address = `${COCONUT_SERVER}/${projectId}`;
+		setAddressInput(address);
+		addressReference.current.value = address;
+	};
+
 	const handleIframeOnLoad = useCallback(() => {
 		setIsReadyToReceiveMessage(true);
 
@@ -127,7 +137,7 @@ function BrowserV2({ ...props }) {
 		iframeReference.current.contentWindow.postMessage(data, '*');
 	}, [project]);
 
-	useEffect(handleComponentDidMount, []);
+	useEffect(handleChangeCurrentURL, [projectId]);
 	useEffect(handleUpdateDependency, [dependencyInstalling]);
 	useEffect(handleUpdateFile, [files]);
 
@@ -136,15 +146,18 @@ function BrowserV2({ ...props }) {
 
 	return (
 		<Styled.Frame>
-			{isBuildingCoconut && (
-				<Styled.LoadingOverlay>
-					<CoconutSpinner />
-					<p>Please wait to build complete...</p>
-				</Styled.LoadingOverlay>
-			)}
+			<Styled.AddressContainer>
+				<Styled.SearchIcon src={search} />
+				<Styled.AddressInput
+					type="url"
+					ref={addressReference}
+					defaultValue={addressInputURL}
+					onKeyUp={handleAddressInputKeyDown}
+				/>
+			</Styled.AddressContainer>
 			<Styled.BrowserV2
 				ref={iframeReference}
-				src={`${COCONUT_SERVER}/${projectId}`}
+				src={addressInputURL}
 				onLoad={handleIframeOnLoad}
 				{...props}
 			/>

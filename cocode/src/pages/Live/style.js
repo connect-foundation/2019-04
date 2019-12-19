@@ -5,11 +5,11 @@ const Main = styled.main`
 		display: flex;
 		flex-direction: row;
 
-		height: ${({ theme }) => theme.exceptHeaderHeight};
-	}
+		height: 91vh;
 
-	.Stretch-item {
-		width: 100%;
+		.Project-main-stretch {
+			flex-grow: 2;
+		}
 	}
 `;
 

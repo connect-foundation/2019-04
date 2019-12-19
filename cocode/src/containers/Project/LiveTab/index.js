@@ -1,53 +1,17 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import * as Styled from './style';
-import { LiveContext } from 'contexts';
-import LiveOn from './LiveOn';
-import LiveOff from './LiveOff';
 
-import { liveOffActionCreator, fetchLiveActionCreator } from 'actions/Live';
-import avatar from 'components/Common/UserProfile/avatar.jpeg';
+import LiveOffTab from 'containers/Project/LiveOffTab';
 
-const TAB_TATILE = 'LIVE';
-
-const dummy = {
-	url: 'https://cocode.com/live/',
-	participants: [
-		{
-			username: 'basiltoast',
-			avatar
-		},
-		{
-			username: 'basiltoast',
-			avatar
-		},
-		{
-			username: 'basiltoast',
-			avatar
-		}
-	],
-	owner: {
-		username: 'lallaheeee',
-		avatar
-	}
-};
+const TAB_TITLE = 'LIVE';
 
 function LiveTab() {
-	const { url, dispatchLive } = useContext(LiveContext);
-
-	const handleTurnLive = () => {
-		if (url) dispatchLive(liveOffActionCreator());
-		else dispatchLive(fetchLiveActionCreator(dummy));
-	};
 	return (
 		<>
-			<Styled.Title>{TAB_TATILE}</Styled.Title>
-			<Styled.Wrapper>
-				{url ? (
-					<LiveOn onClick={handleTurnLive} />
-				) : (
-					<LiveOff onClick={handleTurnLive} />
-				)}
-			</Styled.Wrapper>
+			<Styled.Title>{TAB_TITLE}</Styled.Title>
+			<div>
+				<LiveOffTab />
+			</div>
 		</>
 	);
 }

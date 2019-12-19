@@ -6,46 +6,67 @@ import Header from 'containers/Common/Header';
 import TabBar from 'containers/Project/TabBar';
 import TabContainer from 'containers/Project/TabContainer';
 import Editor from 'containers/Project/Editor';
+import LoadingSpinner from 'containers/Common/LoadingSpinner';
 import BrowserV2 from 'components/Project/BrowserV2';
 import { SplitPaneContainer } from 'components/Common/SplitPane';
 import addToast from 'components/Common/Toast';
 
-import ProjectReducer from 'reducers/ProjectReducer';
-import ProjectContext from 'contexts/ProjectContext';
+import { ProjectReducer } from 'reducers';
+import { ProjectContext, UserContext } from 'contexts';
 import { fetchProjectActionCreator } from 'actions/Project';
 
 import { TAB_BAR_THEME } from 'constants/theme';
 
-import UserContext from 'contexts/UserContext';
 import useFetch from 'hooks/useFetch';
 import { reactTemplate } from 'template/react';
 import copyProject from 'template/copyProject';
 import { getProjectInfoAPICreator, forkProjectAPICreator } from 'apis/Project';
-import { LiveStore } from 'stores';
 import parseProject from 'pages/Project/parseProject';
 import { CREATED, CONFLICT } from 'constants/statusCode';
+import {
+	SUCCESS_FORK,
+	CONFLICT_FORK,
+	LOADING_PROJECT
+} from 'constants/notificationMessage';
 
 const DEFAULT_CLICKED_TAB_INDEX = 0;
 
 function Project() {
 	const { user } = useContext(UserContext);
-	const history = useHistory();
 	const { projectId } = useParams();
+	const history = useHistory();
 	const [{ data, loading, error, status }, setRequest] = useFetch({});
+	const [isLive, setIsLive] = useState(false);
 	const [isFetched, setIsFetched] = useState(false);
 	const [clickedTabIndex, setClickedTabIndex] = useState(
 		DEFAULT_CLICKED_TAB_INDEX
 	);
 	const [project, dispatchProject] = useReducer(ProjectReducer, {});
+	const isNotMyProject = !user || user.username !== project.author;
 
-	const handleForkCoconut = () => {
-		const username = user ? user.username : 'anonymous';
-		const parsedProject = parseProject(project, username);
+	const forkCoconut = ({ live, info }) => {
+		if (!isNotMyProject) return false;
+
+		const parsedProject = preTreatBeforeFork({ live, info });
 		const forkProjectInfoAPI = forkProjectAPICreator(parsedProject);
 		setRequest(forkProjectInfoAPI);
 
 		handleSetProjectState(parsedProject);
-		return project;
+		return parsedProject._id;
+	};
+
+	const preTreatBeforeFork = ({ live, info }) => {
+		if (live) setIsLive(true);
+
+		const username = user ? user.username : 'anonymous';
+		let parsedProject = parseProject(project, username);
+
+		if (info) {
+			Object.entries(info).forEach(([title, value]) => {
+				parsedProject[title] = value;
+			});
+		}
+		return parsedProject;
 	};
 
 	const handleFetchProject = () => {
@@ -66,17 +87,13 @@ function Project() {
 	};
 
 	const handleChangeHistoryAtForked = () => {
-		if (status === CONFLICT) {
-			addToast.error('already forked! enjoy Coconut ');
-		}
-
+		if (status === CONFLICT) addToast.error(CONFLICT_FORK);
 		if (status !== CREATED) return;
 
-		projectId !== 'new'
-			? history.push(`../project/${data._id}`)
-			: history.replace(`../project/${data._id}`);
+		const url = isLive ? `../live/${data._id}` : `../project/${data._id}`;
+		projectId !== 'new' ? history.push(url) : history.replace(url);
 
-		addToast.info('Forked Coconut, Success !');
+		addToast.info(SUCCESS_FORK);
 	};
 
 	const handleSetProject = () => {
@@ -91,9 +108,8 @@ function Project() {
 
 	useEffect(handleChangeHistoryAtForked, [status]);
 
-	// //TODO loading 컴포넌트 만들기
-	if (loading) return <p>Loading...</p>;
-	if (error) return <p>다시 시도해주세요.</p>;
+	if (loading) return <LoadingSpinner message={LOADING_PROJECT} />;
+	if (error) history.push('/weAreSorry');
 
 	return (
 		<ProjectContext.Provider
@@ -101,27 +117,23 @@ function Project() {
 				project,
 				dispatchProject,
 				clickedTabIndex,
-				setClickedTabIndex
+				setClickedTabIndex,
+				forkCoconut
 			}}
 		>
-			<LiveStore>
-				<Header />
-				{isFetched && (
-					<Styled.Main>
-						<TabBar theme={TAB_BAR_THEME} />
-						<SplitPaneContainer split="vertical" defaultSize="20vw">
-							<TabContainer />
-							<SplitPaneContainer
-								split="vertical"
-								defaultSize="40vw"
-							>
-								<Editor handleForkCoconut={handleForkCoconut} />
-								<BrowserV2 />
-							</SplitPaneContainer>
+			<Header name={project.name}/>
+			{isFetched && (
+				<Styled.Main>
+					<TabBar theme={TAB_BAR_THEME} />
+					<SplitPaneContainer split="vertical" defaultSize="20vw">
+						<TabContainer />
+						<SplitPaneContainer split="vertical" defaultSize="40vw">
+							<Editor />
+							<BrowserV2 />
 						</SplitPaneContainer>
-					</Styled.Main>
-				)}
-			</LiveStore>
+					</SplitPaneContainer>
+				</Styled.Main>
+			)}
 		</ProjectContext.Provider>
 	);
 }

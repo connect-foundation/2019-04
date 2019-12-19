@@ -1,20 +1,31 @@
 import React, { useReducer } from 'react';
-import LiveReducer from 'reducers/LiveReducer';
+import { LiveReducer } from 'reducers';
 import { LiveContext } from 'contexts';
+import { LIVE_SERVER } from 'config';
 
 function LiveStore({ children }) {
-	const [{ url, participants, owner }, dispatchLive] = useReducer(
-		LiveReducer,
-		{
-			url: null,
-			owner: undefined,
-			participants: []
-		}
-	);
+	const initialValue = {
+		liveServer: LIVE_SERVER,
+		url: '',
+		project: {},
+		socket: null,
+		owner: undefined,
+		participants: []
+	};
+
+	const [live, dispatchLive] = useReducer(LiveReducer, initialValue);
+	const { liveServer, url, socket, participants, owner } = live;
 
 	return (
 		<LiveContext.Provider
-			value={{ url, participants, owner, dispatchLive }}
+			value={{
+				liveServer,
+				url,
+				socket,
+				participants,
+				owner,
+				dispatchLive
+			}}
 		>
 			{children}
 		</LiveContext.Provider>

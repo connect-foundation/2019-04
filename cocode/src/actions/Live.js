@@ -1,31 +1,26 @@
 import {
-	FETCH_LIVE,
 	LIVE_ON,
 	LIVE_OFF,
 	LIVE_JOIN_USER,
-	LIVE_LEFT_USER
+	LIVE_LEAVE_USER
 } from './types';
 
-function fetchLiveActionCreator(payload) {
-	return { type: FETCH_LIVE, payload };
-}
 function liveOnActionCreator(payload) {
 	return { type: LIVE_ON, payload };
 }
-function liveOffActionCreator(payload) {
-	return { type: LIVE_OFF, payload };
+function liveOffActionCreator() {
+	return { type: LIVE_OFF };
 }
 function liveJoinUserActionCreator(payload) {
 	return { type: LIVE_JOIN_USER, payload };
 }
-function liveLeftUserActionCreator(payload) {
-	return { type: LIVE_LEFT_USER, payload };
+function liveLeaveUserActionCreator(payload) {
+	return { type: LIVE_LEAVE_USER, payload };
 }
 
 export {
-	fetchLiveActionCreator,
 	liveOnActionCreator,
 	liveOffActionCreator,
 	liveJoinUserActionCreator,
-	liveLeftUserActionCreator
+	liveLeaveUserActionCreator
 };
