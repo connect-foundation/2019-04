@@ -17,6 +17,7 @@ import { CursorWidget } from 'utils/monacoWidget';
 
 let timer;
 const DEBOUNCING_TIME = 1000;
+const EVENT_DELAY = 10;
 
 const MAX_RANGE = {
 	startLineNumber: 1,
@@ -148,7 +149,7 @@ function Editor({ handleForkCoconut }) {
 		if (socket.id === socketId) {
 			setTimeout(() => {
 				pendingEvent.current = false;
-			}, 10);
+			}, EVENT_DELAY);
 			return;
 		}
 
