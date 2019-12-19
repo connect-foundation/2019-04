@@ -6,6 +6,7 @@ const DEFAULT_THEME = {
 	textColor: '#ffffff',
 
 	exceptHeaderHeight: '88vh',
+	headerMinHeight: '9vh',
 	headerHeight: '12vh'
 };
 
