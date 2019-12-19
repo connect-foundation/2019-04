@@ -29,6 +29,7 @@ function Info({
 	setRequest,
 	dispatchProject
 }) {
+	const { forkCoconut } = useContext(ProjectContext);
 	const input = useRef();
 	const [isEditable, setIsEditable] = useState(false);
 	const [value, setValue] = useState(content);
@@ -44,6 +45,12 @@ function Info({
 		const newContent = event.currentTarget.textContent;
 		if (content === newContent) return;
 		setValue(event.currentTarget.textContent);
+
+		const isProgress = forkCoconut({
+			info: { [title]: newContent }
+		});
+		if (isProgress) return;
+
 		setRequest(
 			updateCoconutsAPICreator(projectId, { [title]: newContent })
 		);

@@ -29,27 +29,40 @@ const DEFAULT_CLICKED_TAB_INDEX = 0;
 
 function Project() {
 	const { user } = useContext(UserContext);
-	const history = useHistory();
 	const { projectId } = useParams();
+	const history = useHistory();
 	const [{ data, loading, error, status }, setRequest] = useFetch({});
+	const [isLive, setIsLive] = useState(false);
 	const [isFetched, setIsFetched] = useState(false);
 	const [clickedTabIndex, setClickedTabIndex] = useState(
 		DEFAULT_CLICKED_TAB_INDEX
 	);
 	const [project, dispatchProject] = useReducer(ProjectReducer, {});
-
 	const isNotMyProject = !user || user.username !== project.author;
 
-	const forkCoconut = () => {
+	const forkCoconut = ({ live, info }) => {
 		if (!isNotMyProject) return false;
 
-		const username = user ? user.username : 'anonymous';
-		const parsedProject = parseProject(project, username);
+		const parsedProject = pretreatBeforeFork({ live, info });
 		const forkProjectInfoAPI = forkProjectAPICreator(parsedProject);
 		setRequest(forkProjectInfoAPI);
 
 		handleSetProjectState(parsedProject);
-		return true;
+		return parsedProject._id;
+	};
+
+	const pretreatBeforeFork = ({ live, info }) => {
+		if (live) setIsLive(true);
+
+		const username = user ? user.username : 'anonymous';
+		let parsedProject = parseProject(project, username);
+
+		if (info) {
+			Object.entries(info).forEach(([title, value]) => {
+				parsedProject[title] = value;
+			});
+		}
+		return parsedProject;
 	};
 
 	const handleFetchProject = () => {
@@ -73,9 +86,8 @@ function Project() {
 		if (status === CONFLICT) addToast.error(CONFLICT_FORK);
 		if (status !== CREATED) return;
 
-		projectId !== 'new'
-			? history.push(`../project/${data._id}`)
-			: history.replace(`../project/${data._id}`);
+		const url = isLive ? `../live/${data._id}` : `../project/${data._id}`;
+		projectId !== 'new' ? history.push(url) : history.replace(url);
 
 		addToast.info(SUCCESS_FORK);
 	};
@@ -113,7 +125,7 @@ function Project() {
 					<SplitPaneContainer split="vertical" defaultSize="20vw">
 						<TabContainer />
 						<SplitPaneContainer split="vertical" defaultSize="40vw">
-							<Editor/>
+							<Editor />
 							<BrowserV2 />
 						</SplitPaneContainer>
 					</SplitPaneContainer>
