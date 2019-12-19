@@ -35,7 +35,7 @@ function App() {
 							</LiveStore>
 						</Route>
 						<Route path="/history" component={History} />
-						<Route path="/signIn" component={SignIn} />
+						<Route path="/signin" component={SignIn} />
 						<Route component={NotFound} />
 					</Switch>
 				</ThemeProvider>
