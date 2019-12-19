@@ -9,14 +9,7 @@ import { getUserAPICreator } from 'apis/User';
 import { LiveStore } from 'stores';
 
 import GlobalStyle from 'components/Common/GlobalStyle';
-import {
-	Home,
-	DashBoard,
-	Project,
-	History,
-	NotFound,
-	Live
-} from 'pages';
+import { Home, DashBoard, Project, History, NotFound, Live } from 'pages';
 
 function App() {
 	const [user, setUser] = useState(null);
@@ -35,9 +28,11 @@ function App() {
 						<Route exact path="/" component={Home} />
 						<Route path="/dashboard" component={DashBoard} />
 						<Route path="/project/:projectId" component={Project} />
-						<LiveStore>
-							<Route path="/live/:projectId" component={Live} />
-						</LiveStore>
+						<Route path="/live/:projectId">
+							<LiveStore>
+								<Live />
+							</LiveStore>
+						</Route>
 						<Route path="/history" component={History} />
 						<Route component={NotFound} />
 					</Switch>
