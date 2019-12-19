@@ -20,6 +20,8 @@ const LOADING_LIVE = 'Please wait to connect live share';
 const SUCCESS_FORK = 'Forked Coconut, Success!';
 const CONFLICT_FORK = 'Already forked! Enjoy Coconut!';
 
+const SHUT_DOWN_LIVE_SHARE = 'The live share has been shut down';
+
 export {
 	FAIL_INSTALL_DEPENDENCY,
 	FAIL_TO_MOVE_FILE,
@@ -37,5 +39,6 @@ export {
 	LOADING_PROJECT,
 	LOADING_LIVE,
 	SUCCESS_FORK,
-	CONFLICT_FORK
+	CONFLICT_FORK,
+	SHUT_DOWN_LIVE_SHARE,
 };

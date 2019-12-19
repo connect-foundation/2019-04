@@ -73,6 +73,7 @@ const LinkURL = styled.div`
 		background-color: ${LIVE_TAB_THEME.liveLinkBGColor};
 		color: ${LIVE_TAB_THEME.liveFontColor};
 		font-size: 0.9rem;
+		user-select: text;
 	}
 `;
 
