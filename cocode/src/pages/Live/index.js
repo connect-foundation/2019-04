@@ -13,6 +13,7 @@ import Header from 'containers/Common/Header';
 import TabBar from 'containers/Live/TabBar';
 import TabContainer from 'containers/Live/TabContainer';
 import Editor from 'containers/Live/Editor';
+import LoadingSpinner from 'containers/Common/LoadingSpinner';
 import BrowserV2 from 'components/Project/BrowserV2';
 import { SplitPaneContainer } from 'components/Common/SplitPane';
 
@@ -30,6 +31,7 @@ import { TAB_BAR_THEME } from 'constants/theme';
 import { COCODE_SERVER } from 'config';
 import useFetch from 'hooks/useFetch';
 import { getProjectInfoAPICreator } from 'apis/Project';
+import { LOADING_LIVE } from 'constants/notificationMessage';
 
 const DEFAULT_CLICKED_TAB_INDEX = 0;
 let socket;
@@ -127,8 +129,7 @@ function Live() {
 	useEffect(handleConnectSocket, [project]);
 	useEffect(handleSetProject, [data, isFetched]);
 
-	// //TODO loading 컴포넌트 만들기
-	if (loading) return <p>Loading...</p>;
+	if (loading) return <LoadingSpinner message={LOADING_LIVE} />;
 	if (error) history.push('/weAreSorry');
 
 	return (

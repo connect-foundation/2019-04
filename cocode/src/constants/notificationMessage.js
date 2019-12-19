@@ -14,9 +14,11 @@ const CONFIRM_DELETE_FILE = 'Are you delete this file?';
 const CONFIRM_DELETE_COCONUT = 'Are you delete this coconut?';
 
 const LOADING_DASHBOARD = 'Please wait to fetch coconuts';
+const LOADING_PROJECT = 'Please wait to fetch coconut';
+const LOADING_LIVE = 'Please wait to connect live share';
 
 const SUCCESS_FORK = 'Forked Coconut, Success!';
-const CONFLICT_FORK ='already forked! enjoy Coconut!';
+const CONFLICT_FORK = 'Already forked! Enjoy Coconut!';
 
 export {
 	FAIL_INSTALL_DEPENDENCY,
@@ -32,6 +34,8 @@ export {
 	CONFIRM_DELETE_FILE,
 	CONFIRM_DELETE_COCONUT,
 	LOADING_DASHBOARD,
+	LOADING_PROJECT,
+	LOADING_LIVE,
 	SUCCESS_FORK,
-	CONFLICT_FORK,
+	CONFLICT_FORK
 };
