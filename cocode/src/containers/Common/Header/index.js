@@ -12,6 +12,8 @@ import LoginModalBody from 'components/Common/LoginModalBody';
 
 import UserContext from 'contexts/UserContext';
 
+const CONFIRM_LOGOUT = '로그아웃 하시겠습니까?';
+
 function Header({ name }) {
 	const history = useHistory();
 	const { user, setUser } = useContext(UserContext);
@@ -21,7 +23,7 @@ function Header({ name }) {
 	const handleCloseSignInModal = () => setIsSignInModalOpen(false);
 	const handleClickDashBoard = () => history.push('/dashboard');
 	const handleSignOut = () => {
-		const confirm = window.confirm('로그아웃 하시겠습니까?');
+		const confirm = window.confirm(CONFIRM_LOGOUT);
 		if (!confirm) return;
 		deleteCookie('jwt');
 		setUser(null);
