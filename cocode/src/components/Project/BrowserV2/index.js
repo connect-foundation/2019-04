@@ -29,7 +29,7 @@ import { KEY_CODE_ENTER } from 'constants/keyCode';
 // Constants
 const MIN_WAIT_TIME = 1500;
 const UPDATE_PROJECT = 'updateProject';
-const PROTOCOL = 'http://';
+const PROTOCOLS = ['http://', 'https://'];
 
 function BrowserV2({ ...props }) {
 	const { projectId } = useParams();
@@ -58,6 +58,9 @@ function BrowserV2({ ...props }) {
 			dispatchProject(installDependencyAction);
 		}, MIN_WAIT_TIME);
 	});
+
+	const isHaveProtocol = (value) =>
+		PROTOCOLS.some(PROTOCOL => value.includes(PROTOCOL));
 
 	const handleUpdateDependency = () => {
 		if (!isReadyToReceiveMessage) return;
@@ -110,7 +113,7 @@ function BrowserV2({ ...props }) {
 
 	const handleAddressInputKeyDown = ({ keyCode, target: { value } }) => {
 		if (keyCode === KEY_CODE_ENTER) {
-			const address = value.includes(PROTOCOL) ? value : `${PROTOCOL}${value}`;
+			const address = isHaveProtocol(value) ? value : `${PROTOCOLS[0]}${value}`;
 			setAddressInput(address);
 			addressReference.current.value = address;
 		}
