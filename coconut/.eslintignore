@@ -1,0 +1,8 @@
+README.md
+webpack.config.js
+.babelrc
+.prettierrc
+.env
+public/*
+src/template/*
+init-script/*

@@ -1,0 +1,3 @@
+const pathStack = [];
+
+export { pathStack };

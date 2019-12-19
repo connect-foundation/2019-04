@@ -1,0 +1,63 @@
+{
+	"homepage": "./",
+	"name": "coconut",
+	"version": "0.1.0",
+	"private": true,
+	"dependencies": {
+		"@testing-library/jest-dom": "^4.2.4",
+		"@testing-library/react": "^9.3.2",
+		"@testing-library/user-event": "^7.1.2",
+		"axios": "^0.19.0",
+		"react": "^16.12.0",
+		"react-app-rewired": "^2.1.5",
+		"react-dom": "^16.12.0",
+		"react-helmet": "^5.2.1",
+		"react-router-dom": "^5.1.2",
+		"react-scripts": "3.3.0",
+		"styled-components": "^4.4.1",
+		"worker-loader": "^2.0.0"
+	},
+	"devDependencies": {
+		"@commitlint/cli": "^8.2.0",
+		"@commitlint/config-conventional": "^8.2.0",
+		"eslint-config-prettier": "^6.5.0",
+		"husky": "^3.0.9",
+		"lint-staged": "^9.4.2",
+		"prettier": "^1.19.1"
+	},
+	"scripts": {
+		"start": "NODE_PATH=src react-app-rewired start",
+		"start:docker": "webpack-dev-server --open --host 0.0.0.0",
+		"build": "react-app-rewired build",
+		"test": "react-app-rewired test",
+		"eject": "react-scripts eject"
+	},
+	"eslintConfig": {
+		"extends": "react-app"
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "jest && lint-staged",
+			"pre-push": "jest",
+			"commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+		}
+	},
+	"lint-staged": {
+		"*.js": [
+			"eslint --fix",
+			"git add"
+		]
+	},
+	"browserslist": {
+		"production": [
+			">0.2%",
+			"not dead",
+			"not op_mini all"
+		],
+		"development": [
+			"last 1 chrome version",
+			"last 1 firefox version",
+			"last 1 safari version"
+		]
+	}
+}

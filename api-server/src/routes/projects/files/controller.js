@@ -16,6 +16,8 @@ async function preloadFile(req, res, next, fileId) {
 
 async function createFile(req, res) {
 	const { _id } = req.project;
+	if (_id === 'new') return res.status(201).send({ newFileId: _id });
+
 	const projectId = _id;
 	const { parentId, ...newFileInfo } = req.body;
 

@@ -34,7 +34,7 @@ jobs:
     - stage: Deploy
       if: branch = master AND type = pull_request
       before_install:
-        - openssl aes-256-cbc -K $encrypted_cbda4f86f796_key -iv $encrypted_cbda4f86f796_iv -in env.tar.enc -out env.tar -d
+        - openssl aes-256-cbc -K $encrypted_278d2d9eb060_key -iv $encrypted_278d2d9eb060_iv -in env.tar.enc -out env.tar -d
         - tar xvf env.tar
       install:
         - sudo apt-get install sshpass
@@ -50,6 +50,8 @@ jobs:
         - |
           if [ "${SERVICE}" = "cocode" ]; then
               sshpass -p "${COCODE_PASSWORD}" ssh -o StrictHostKeyChecking=no root@"${COCODE_IP}" /root/2019-04/script/deploy.sh "$SERVICE" "$COCODE_PORT"
+          elif [ "${SERVICE}" = "coconut" ]; then
+              sshpass -p "${COCONUT_PASSWORD}" ssh -o StrictHostKeyChecking=no root@"${COCONUT_IP}" /root/2019-04/script/deploy.sh "$SERVICE" "$COCONUT_PORT"
           elif [ "${SERVICE}" = "api-server" ]; then
               sshpass -p "${API_SERVER_PASSWORD}" ssh -o StrictHostKeyChecking=no root@"${API_SERVER_IP}" /root/2019-04/script/deploy.sh "$SERVICE" "$API_SERVER_PORT"
           else
