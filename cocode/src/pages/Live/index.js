@@ -5,7 +5,7 @@ import React, {
 	useContext,
 	useCallback
 } from 'react';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import * as Styled from './style';
 import io from 'socket.io-client';
 
@@ -33,11 +33,13 @@ import { COCODE_SERVER } from 'config';
 import useFetch from 'hooks/useFetch';
 import { getProjectInfoAPICreator } from 'apis/Project';
 import { SHUT_DOWN_LIVE_SHARE, LOADING_LIVE } from 'constants/notificationMessage';
+import { getCookie } from 'utils/controlCookie';
 
 const DEFAULT_CLICKED_TAB_INDEX = 0;
 let socket;
 
 function Live() {
+	const history = useHistory();
 	const { projectId } = useParams();
 	const { user } = useContext(UserContext);
 	const { liveServer, dispatchLive } = useContext(LiveContext);
@@ -48,6 +50,8 @@ function Live() {
 		DEFAULT_CLICKED_TAB_INDEX
 	);
 	const [project, dispatchProject] = useReducer(ProjectReducer, {});
+
+	if (!getCookie('jwt')) history.replace('../signin');
 
 	const handleFetchProject = () => {
 		const getProjectInfoAPI = getProjectInfoAPICreator(projectId);
