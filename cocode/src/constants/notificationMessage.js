@@ -15,6 +15,9 @@ const CONFIRM_DELETE_COCONUT = 'Are you delete this coconut?';
 
 const LOADING_DASHBOARD = 'Please wait to fetch coconuts';
 
+const SUCCESS_FORK = 'Forked Coconut, Success!';
+const CONFLICT_FORK ='already forked! enjoy Coconut!';
+
 const SHUT_DOWN_LIVE_SHARE = 'The live share has been shut down';
 
 export {
@@ -31,5 +34,7 @@ export {
 	CONFIRM_DELETE_FILE,
 	CONFIRM_DELETE_COCONUT,
 	LOADING_DASHBOARD,
-	SHUT_DOWN_LIVE_SHARE
+	SUCCESS_FORK,
+	CONFLICT_FORK,
+	SHUT_DOWN_LIVE_SHARE,
 };
