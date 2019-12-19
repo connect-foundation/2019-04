@@ -1,10 +1,9 @@
 import styled from 'styled-components';
+import { SIGN_IN_THEME } from 'constants/theme';
 
 const Logo = styled.img`
-	padding-right: 1rem;
-	padding-top: 0.3rem;
-
-	height: 1.5rem;
+	height: 1.2rem;
+	margin-right: 0.8rem;
 	filter: invert(1);
 `;
 
@@ -30,14 +29,21 @@ const Title = styled.h1`
 
 const LoginButton = styled.button`
 	& {
+		display: flex;
+		justify-content: center;
+		align-items: center;
 		margin: 2rem 0 1.5rem 0;
 		padding: 1rem 2.5rem;
 
 		font-size: 1.5rem;
 
-		background-color: white;
-		color: black;
+		background-color: ${SIGN_IN_THEME.signInButtonBGColor};
+		color: ${SIGN_IN_THEME.signInButtonTextColor};
 		border-radius: 0.5rem;
+	}
+	
+	&:hover {
+		background-color: ${SIGN_IN_THEME.signInButtonBGHoverColor};
 	}
 `;
 

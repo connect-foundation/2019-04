@@ -127,6 +127,12 @@ const TOAST_THEME = {
 	toastErrorDeco: 'rgba(233,42,61,0.98)'
 };
 
+const SIGN_IN_THEME = {
+	signInButtonBGColor: '#e7e7e7',
+	signInButtonBGHoverColor: '#ffffff',
+	signInButtonTextColor: '#000000',
+};
+
 export {
 	DEFAULT_THEME,
 	DROPDOWN_THEME,
@@ -140,5 +146,6 @@ export {
 	FILE_TAB_THEME,
 	MONACO_THEME,
 	LIVE_TAB_THEME,
-	TOAST_THEME
+	TOAST_THEME,
+	SIGN_IN_THEME
 };
