@@ -6,6 +6,7 @@ import Header from 'containers/Common/Header';
 import TabBar from 'containers/Project/TabBar';
 import TabContainer from 'containers/Project/TabContainer';
 import Editor from 'containers/Project/Editor';
+import LoadingSpinner from 'containers/Common/LoadingSpinner';
 import BrowserV2 from 'components/Project/BrowserV2';
 import { SplitPaneContainer } from 'components/Common/SplitPane';
 import addToast from 'components/Common/Toast';
@@ -23,7 +24,11 @@ import copyProject from 'template/copyProject';
 import { getProjectInfoAPICreator, forkProjectAPICreator } from 'apis/Project';
 import parseProject from 'pages/Project/parseProject';
 import { CREATED, CONFLICT } from 'constants/statusCode';
-import { SUCCESS_FORK, CONFLICT_FORK } from 'constants/notificationMessage';
+import {
+	SUCCESS_FORK,
+	CONFLICT_FORK,
+	LOADING_PROJECT
+} from 'constants/notificationMessage';
 
 const DEFAULT_CLICKED_TAB_INDEX = 0;
 
@@ -104,9 +109,8 @@ function Project() {
 
 	useEffect(handleChangeHistoryAtForked, [status]);
 
-	// //TODO loading 컴포넌트 만들기
-	if (loading) return <p>Loading...</p>;
-	if (error) return <p>다시 시도해주세요.</p>;
+	if (loading) return <LoadingSpinner message={LOADING_PROJECT} />;
+	if (error) history.push('/weAreSorry');
 
 	return (
 		<ProjectContext.Provider
