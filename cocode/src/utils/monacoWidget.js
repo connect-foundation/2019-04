@@ -1,9 +1,10 @@
 class CursorWidget {
-	constructor(editor, userName, position) {
+	constructor(editor, userName, position, color) {
 		this.editor = editor;
 		this.id = userName;
 		this.domNode = null;
 		this.position = position;
+		this.color = color;
 	}
 
 	getId() {
@@ -14,7 +15,8 @@ class CursorWidget {
 		if (!this.domNode) {
 			this.domNode = document.createElement('div');
 			this.domNode.innerHTML = this.id;
-			this.domNode.style.background = 'grey';
+			this.domNode.style.background = this.color;
+			this.domNode.style.color = 'white';
 			this.domNode.id = this.id;
 		}
 		return this.domNode;
