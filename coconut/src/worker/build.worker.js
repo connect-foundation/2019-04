@@ -7,7 +7,10 @@ self.process.env.NODE_MODULE = 'development';
 
 self.exports = {};
 
-self.addEventListener('message', ({ data: { fileSystem } }) => {
+self.addEventListener('message', ({ data }) => {
+	const { fileSystem, updatedFilePath } = data;
+
+	self.exports[updatedFilePath] = undefined;
 	self.fileSystem = fileSystem;
 	self.bundledCode = '';
 

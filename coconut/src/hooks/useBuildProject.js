@@ -4,12 +4,13 @@ function useBuildProject() {
 	const [buildResult, setBuildResult] = useState(undefined);
 
 	const buildProject = (project, worker) => {
-		const { files, root } = project;
+		const { files, root, selectedFileId } = project;
 
 		const rootPath = files[root].path;
 		fileParser(project, rootPath, root);
 
-		worker.postMessage({ fileSystem: window.fileSystem });
+		const updatedFilePath = files[selectedFileId].path;
+		worker.postMessage({ fileSystem: window.fileSystem, updatedFilePath });
 
 		worker.onmessage = ({ data: { error, bundledCode } }) => {
 			if (!error) setBuildResult({ bundledCode });
