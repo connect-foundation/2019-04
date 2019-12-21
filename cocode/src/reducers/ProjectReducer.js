@@ -225,11 +225,15 @@ const deleteFile = (state, { deleteFileId }) => {
 		id => id !== deleteFileId
 	);
 
+	const updatedFiles = Object.entries(files).reduce((acc, [fileId, file]) => {
+		if (fileId === deleteFileId) return acc;
+		return { ...acc, [fileId]: file };
+	}, {});
+
 	return {
 		...state,
 		files: {
-			...state.files,
-			[deleteFileId]: undefined,
+			...updatedFiles,
 			[parentId]: {
 				...state.files[parentId],
 				child: updatedParentChilds

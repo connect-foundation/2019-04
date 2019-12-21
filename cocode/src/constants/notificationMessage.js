@@ -8,6 +8,7 @@ const FAIL_TO_UPDATE_PROJECT_CARD = 'Fail to request. sorry, try again please';
 const FILE_IS_NOT_MOVABLE = 'This file is not movable';
 const FILE_IS_NOT_EDITABLE = 'This file is not editable';
 const FILE_IS_DUPLICATED = 'This file name is duplicated';
+const FILE_NAME_IS_INCORRECT = 'This file name is incorrect';
 const FILE_IS_NOT_REMOVABLE = 'This file is not removable';
 
 const CONFIRM_DELETE_FILE = 'Are you delete this file?';
@@ -32,6 +33,7 @@ export {
 	FILE_IS_NOT_MOVABLE,
 	FILE_IS_NOT_EDITABLE,
 	FILE_IS_DUPLICATED,
+	FILE_NAME_IS_INCORRECT,
 	FILE_IS_NOT_REMOVABLE,
 	CONFIRM_DELETE_FILE,
 	CONFIRM_DELETE_COCONUT,
@@ -40,5 +42,5 @@ export {
 	LOADING_LIVE,
 	SUCCESS_FORK,
 	CONFLICT_FORK,
-	SHUT_DOWN_LIVE_SHARE,
+	SHUT_DOWN_LIVE_SHARE
 };

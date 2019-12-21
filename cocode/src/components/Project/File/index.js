@@ -101,7 +101,12 @@ function File({
 
 		if (isNotChangeableFileName({ files, parentId, changedName })) {
 			currentTarget.textContent = fileName;
-			addToast.error(NOTIFICATION.FILE_IS_DUPLICATED);
+			addToast.error(NOTIFICATION.FILE_NAME_IS_INCORRECT);
+			return;
+		}
+
+		if (projectId === 'new') {
+			successHandler[UPDATE_FILE_NAME]();
 			return;
 		}
 
@@ -122,6 +127,11 @@ function File({
 
 		const acceptDeleteThisFile = confirm(NOTIFICATION.CONFIRM_DELETE_FILE);
 		if (!acceptDeleteThisFile) return;
+
+		if (projectId === 'new') {
+			successHandler[DELETE_FILE](_id);
+			return;
+		}
 
 		const deleteFileId = _id;
 		const deleteFileAPI = deleteFileAPICreator(projectId, deleteFileId, {

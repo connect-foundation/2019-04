@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect, useContext, useRef } from 'react';
 import { useParams } from 'react-router-dom';
+import ObjectID from 'bson-objectid';
 import * as Styled from './style';
 
 import addToast from 'components/Common/Toast';
@@ -30,17 +31,38 @@ function NewFile({ depth, type, parentId, handleEndCreateFile }) {
 	const fileNameInputReference = useRef(null);
 	const [{ data, error }, setRequest] = useFetch({});
 
-	const isDuplicatedFileName = fileName => {
-		return files[parentId].child
-			.map(id => files[id].name)
-			.some(name => name === fileName);
+	const isIncorrectFileName = fileName => {
+		return (
+			fileName.trim() === '' ||
+			files[parentId].child
+				.map(id => files[id].name)
+				.some(name => name === fileName)
+		);
+	};
+
+	const updateFileState = newFileId => {
+		const createFileAction = createFileActionCreator({
+			newFileId,
+			name: fileName,
+			parentId,
+			type
+		});
+		dispatchProject(createFileAction);
+		changeDivEditable(fileNameInputReference.current, false);
 	};
 
 	const requestCreateFile = e => {
 		const name = e.currentTarget.textContent;
-		if (isDuplicatedFileName(name)) {
+		if (isIncorrectFileName(name)) {
 			e.preventDefault();
-			addToast.error(NOTIFICATION.FILE_IS_DUPLICATED);
+			addToast.error(NOTIFICATION.FILE_NAME_IS_INCORRECT);
+			return;
+		}
+
+		if (projectId === 'new') {
+			const newFileId = ObjectID().str;
+			updateFileState(newFileId);
+
 			return;
 		}
 
@@ -69,14 +91,7 @@ function NewFile({ depth, type, parentId, handleEndCreateFile }) {
 		if (!data) return;
 
 		const { newFileId } = data;
-		const createFileAction = createFileActionCreator({
-			newFileId,
-			name: fileName,
-			parentId,
-			type
-		});
-		dispatchProject(createFileAction);
-		changeDivEditable(fileNameInputReference.current, false);
+		updateFileState(newFileId);
 	};
 
 	const handleErrorResponse = () => {
