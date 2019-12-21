@@ -58,10 +58,11 @@ const buildProjectFailState = errorPhrase => ({
 	description: errorPhrase
 });
 
+let worker = new BuildWorker();
+
 function Coconut() {
 	const { projectId } = useParams();
 
-	const [worker] = useState(new BuildWorker());
 	const [innerCode, setInnerCode] = useState('');
 
 	const [buildState, setBuildState] = useState(initilaBuildState);
@@ -121,7 +122,7 @@ function Coconut() {
 		}
 
 		buildProject(project, worker);
-	}, [dependencyState, buildProject, project, worker]);
+	}, [dependencyState, buildProject, project]);
 
 	const handleBuildProject = useCallback(() => {
 		if (!buildResult) return;

@@ -7,8 +7,7 @@ function transformCode(code) {
 	try {
 		const result = babel.transform(code, {
 			presets: [presetEnv, presetReact],
-			compact: true,
-			minified: true
+			compact: true
 		});
 		return {
 			state: true,
