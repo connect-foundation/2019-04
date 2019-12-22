@@ -31,7 +31,7 @@ function useUpdateDependency(idbConnection) {
 	const [response, setRequest] = useFetch({});
 
 	const installDependency = dependency => {
-		setDependencyState(undefined);
+		setDependencyState(initialState);
 		setDependency(dependency);
 	};
 

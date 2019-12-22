@@ -31,6 +31,13 @@ const initilaBuildState = {
 	description: 'Please wait to load project...'
 };
 
+const installDependencyBuildState = {
+	success: false,
+	loading: true,
+	error: false,
+	description: 'Please wait to install dependency...'
+};
+
 const successBuildState = {
 	...initilaBuildState,
 	success: true,
@@ -115,7 +122,10 @@ function Coconut() {
 		if (!dependencyState) return;
 
 		const { loading, error } = dependencyState;
-		if (loading) return;
+		if (loading) {
+			setBuildState(installDependencyBuildState);
+			return;
+		}
 		if (error) {
 			setBuildState(loadDependencyFailState);
 			return;
