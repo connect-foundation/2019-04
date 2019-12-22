@@ -14,7 +14,7 @@ import {
 
 import useFetch from 'hooks/useFetch';
 
-import { LabelWidget } from 'utils/monacoWidget';
+import { LabelWidget, CaratWidget } from 'utils/monacoWidget';
 
 let timer;
 const DEBOUNCING_TIME = 1000;
@@ -197,13 +197,21 @@ function Editor({ handleForkCoconut }) {
 				position,
 				color
 			);
-			userCursor[username] = { label };
+			const carat = new CaratWidget(
+				editorRef.current,
+				position,
+				color
+			);
+			userCursor[username] = { label, carat };
 			editorRef.current.addContentWidget(label);
+			editorRef.current.addContentWidget(carat);
 		}
 		if (selectedRef.current === fileId) {
 			userCursor[username].label.showCursor(position);
+			userCursor[username].carat.showCursor(position);
 		} else {
 			userCursor[username].label.hiddenCursor();
+			userCursor[username].carat.hiddenCursor();
 		}
 	};
 
