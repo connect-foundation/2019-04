@@ -40,7 +40,12 @@ function LiveOnTab() {
 			</Styled.LiveStatusLabel>
 			<Styled.Description>{ON_DESCRIPTION}</Styled.Description>
 			<Styled.LinkURL ref={link}>
-				<Styled.Copy src={copy} onClick={handleCopyLink} />
+				<Styled.Copy
+					src={copy}
+					onClick={handleCopyLink}
+					alt="Copy to Clipboard"
+					title="Copy to Clipboard"
+				/>
 				{url}
 			</Styled.LinkURL>
 			{user === owner ? (
