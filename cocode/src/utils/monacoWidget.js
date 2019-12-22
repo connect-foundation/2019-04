@@ -1,4 +1,4 @@
-class CursorWidget {
+class LabelWidget {
 	constructor(editor, userName, position, color) {
 		this.editor = editor;
 		this.id = userName;
@@ -15,8 +15,10 @@ class CursorWidget {
 		if (!this.domNode) {
 			this.domNode = document.createElement('div');
 			this.domNode.innerHTML = this.id;
+			this.domNode.style.fontSize = '0.5rem';
 			this.domNode.style.background = this.color;
 			this.domNode.style.color = 'white';
+			this.domNode.style.transform = 'translateX(3px)';
 			this.domNode.id = this.id;
 		}
 		return this.domNode;
@@ -45,4 +47,4 @@ class CursorWidget {
 	}
 }
 
-export { CursorWidget };
+export { LabelWidget };

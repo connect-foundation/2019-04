@@ -14,7 +14,7 @@ import {
 
 import useFetch from 'hooks/useFetch';
 
-import { CursorWidget } from 'utils/monacoWidget';
+import { LabelWidget } from 'utils/monacoWidget';
 
 let timer;
 const DEBOUNCING_TIME = 1000;
@@ -191,18 +191,20 @@ function Editor({ handleForkCoconut }) {
 		const max = colors.length - 1;
 		if (!userCursor[username]) {
 			const color = colors[Math.floor(Math.random() * (min, max))];
-			const widget = new CursorWidget(
+			const label = new LabelWidget(
 				editorRef.current,
 				username,
 				position,
 				color
 			);
-			userCursor[username] = widget;
-			editorRef.current.addContentWidget(widget);
+			userCursor[username] = { label };
+			editorRef.current.addContentWidget(label);
 		}
-		if (selectedRef.current === fileId)
-			userCursor[username].showCursor(position);
-		else userCursor[username].hiddenCursor();
+		if (selectedRef.current === fileId) {
+			userCursor[username].label.showCursor(position);
+		} else {
+			userCursor[username].label.hiddenCursor();
+		}
 	};
 
 	return (
