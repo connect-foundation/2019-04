@@ -20,7 +20,10 @@ import addToast from 'components/Common/Toast';
 
 import { LiveContext, ProjectContext, UserContext } from 'contexts';
 import { ProjectReducer } from 'reducers';
-import { fetchProjectActionCreator } from 'actions/Project';
+import {
+	fetchProjectActionCreator,
+	updateFilesActionCreator
+} from 'actions/Project';
 import {
 	liveOnActionCreator,
 	liveOffActionCreator,
@@ -32,7 +35,10 @@ import { TAB_BAR_THEME } from 'constants/theme';
 import { COCODE_SERVER } from 'config';
 import useFetch from 'hooks/useFetch';
 import { getProjectInfoAPICreator } from 'apis/Project';
-import { SHUT_DOWN_LIVE_SHARE, LOADING_LIVE } from 'constants/notificationMessage';
+import {
+	SHUT_DOWN_LIVE_SHARE,
+	LOADING_LIVE
+} from 'constants/notificationMessage';
 import { getCookie } from 'utils/controlCookie';
 
 const DEFAULT_CLICKED_TAB_INDEX = 0;
@@ -77,6 +83,12 @@ function Live() {
 	};
 
 	const handleAlreadyExistRoom = ({ host, project, participants }) => {
+		const { files } = project;
+		const filesCopy = JSON.parse(JSON.stringify(files));
+		const updateFilesAction = updateFilesActionCreator({
+			files: filesCopy
+		});
+		dispatchProject(updateFilesAction);
 		dispatchLive(
 			liveOnActionCreator({
 				socket,
@@ -150,14 +162,14 @@ function Live() {
 				setClickedTabIndex
 			}}
 		>
-			<Header name={project.name}/>
+			<Header name={project.name} />
 			{isFetched && (
 				<Styled.Main>
 					<TabBar theme={TAB_BAR_THEME} />
 					<SplitPaneContainer split="vertical" defaultSize="20vw">
 						<TabContainer />
 						<SplitPaneContainer split="vertical" defaultSize="40vw">
-							<Editor />
+							<Editor isConnected={isConnected} />
 							<BrowserV2 />
 						</SplitPaneContainer>
 					</SplitPaneContainer>

@@ -29,11 +29,12 @@ const MAX_RANGE = {
 
 const userCursor = {};
 
-function Editor({ handleForkCoconut }) {
+function Editor({ isConnected }) {
 	const { user } = useContext(UserContext);
 	const { projectId } = useParams();
 	const { project, dispatchProject } = useContext(ProjectContext);
-	const { socket } = useContext(LiveContext);
+	const liveContext = useContext(LiveContext);
+	const { socket } = liveContext;
 	const [code, setCode] = useState(project.editingCode);
 	const [isEditorMounted, setIsEditorMounted] = useState(false);
 	const [_, setRequest] = useFetch({});
@@ -140,11 +141,12 @@ function Editor({ handleForkCoconut }) {
 		//initialize
 		if (!socket) return;
 		if (!isEditorMounted) return;
+		if (!isConnected) return;
 		isBusy.current = false;
 		filesRef.current = JSON.parse(JSON.stringify(files));
 		socket.on('change', handleOnChangeCode);
 		socket.on('moveCursor', handleMoveCursor);
-	}, [socket, isEditorMounted]);
+	}, [socket, isEditorMounted, isConnected]);
 
 	const handleOnChangeCode = (socketId, fileId, op) => {
 		if (socket.id === socketId) {
@@ -161,8 +163,9 @@ function Editor({ handleForkCoconut }) {
 			const str2 = originCode.slice(op.rangeOffset + op.rangeLength);
 			const changedCode = `${str1}${op.text}${str2}`;
 			filesRef.current[fileId].contents = changedCode;
-			const updateCodeFromFileIdAction =
-				updateCodeFromFileIdActionCreator({ fileId, changedCode });
+			const updateCodeFromFileIdAction = updateCodeFromFileIdActionCreator(
+				{ fileId, changedCode }
+			);
 			dispatchProject(updateCodeFromFileIdAction);
 			return;
 		}
