@@ -20,6 +20,7 @@ function require(path) {
 		stackLength = pathStack.length;
 		result = eval(executeCodeTemplate(code));
 	} catch (error) {
+		self.exports[newPath] = {};
 		while (stackLength < pathStack.length) pathStack.pop();
 		result = eval(executeCodeTemplate(code));
 	}

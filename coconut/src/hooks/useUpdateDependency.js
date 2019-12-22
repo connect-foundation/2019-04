@@ -24,7 +24,9 @@ const getDataSuccessState = {
 	loading: false
 };
 
-function useUpdateDependency(idbConnection) {
+let isProgressingInstallDependency = false;
+
+function useUpdateDependency(idbConnection, displayInstallLoading) {
 	const [dependency, setDependency] = useState(undefined);
 	const [dependencyState, setDependencyState] = useState(undefined);
 	const [needToInstall, setNeedToInstall] = useState(undefined);
@@ -52,6 +54,7 @@ function useUpdateDependency(idbConnection) {
 				});
 			});
 
+			if (needToInstall.length) isProgressingInstallDependency = true;
 			setNeedToInstall(needToInstall);
 		};
 
@@ -75,7 +78,9 @@ function useUpdateDependency(idbConnection) {
 
 	const handleInstallDependency = useCallback(() => {
 		if (!needToInstall) return;
+		if (isProgressingInstallDependency) displayInstallLoading();
 		if (!needToInstall.length) {
+			isProgressingInstallDependency = false;
 			setNeedToInstall(undefined);
 			setDependencyState(getDataSuccessState);
 			return;
@@ -84,7 +89,7 @@ function useUpdateDependency(idbConnection) {
 		const [name, version] = JSON.parse(needToInstall[0]);
 		const getModuleAPI = getModule(name, version);
 		setRequest(getModuleAPI);
-	}, [needToInstall, setRequest]);
+	}, [needToInstall, setRequest, displayInstallLoading]);
 
 	const handleRequestDependencyAPI = useCallback(() => {
 		if (!response) return;
