@@ -22,6 +22,7 @@ const SUCCESS_FORK = 'Forked Coconut, Success!';
 const CONFLICT_FORK = 'Already forked! Enjoy Coconut!';
 
 const SHUT_DOWN_LIVE_SHARE = 'The live share has been shut down';
+const NEED_TO_SAVE = 'Please change your code and save';
 
 export {
 	FAIL_INSTALL_DEPENDENCY,
@@ -42,5 +43,6 @@ export {
 	LOADING_LIVE,
 	SUCCESS_FORK,
 	CONFLICT_FORK,
-	SHUT_DOWN_LIVE_SHARE
+	SHUT_DOWN_LIVE_SHARE,
+	NEED_TO_SAVE
 };
