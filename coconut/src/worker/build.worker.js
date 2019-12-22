@@ -23,7 +23,6 @@ function buildProject() {
 		bundler.require('./index.js');
 
 		buildRemainModule();
-
 		self.postMessage({ bundledCode: self.bundledCode });
 	} catch (error) {
 		self.postMessage({ error: error.stack });
@@ -36,18 +35,9 @@ function buildRemainModule() {
 		path => !bundledModules.includes(path)
 	);
 
-	const ignoreList = [
-		'react',
-		'react-dom',
-		'scheduler',
-		'@emotion',
-		'react-is',
-		'prop-types',
-		'styled-components'
-	];
+	const installList = ['axios'];
 
 	remainModules = remainModules
-		.filter(path => !ignoreList.includes(path.split('/')[2]))
-		.filter(path => path !== '/root/package.json')
+		.filter(path => installList.includes(path.split('/')[2]))
 		.forEach(path => bundler.require(path));
 }
