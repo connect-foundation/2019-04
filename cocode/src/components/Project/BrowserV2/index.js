@@ -8,6 +8,7 @@ import React, {
 import { useParams } from 'react-router-dom';
 import * as Styled from './style';
 
+import open from './open.svg';
 import search from './search.svg';
 import addToast from 'components/Common/Toast';
 
@@ -30,6 +31,7 @@ import { KEY_CODE_ENTER } from 'constants/keyCode';
 const MIN_WAIT_TIME = 1500;
 const UPDATE_PROJECT = 'updateProject';
 const PROTOCOLS = ['http://', 'https://'];
+const NEW_COCONUT = `${COCONUT_SERVER}/new`;
 
 function BrowserV2({ ...props }) {
 	const { projectId } = useParams();
@@ -137,6 +139,13 @@ function BrowserV2({ ...props }) {
 		iframeReference.current.contentWindow.postMessage(data, '*');
 	}, [project]);
 
+	const handleClickOpenTab = () => {
+		const coconutUrl = addressReference.current.value;
+		if (NEW_COCONUT === coconutUrl)
+			return addToast.error(NOTIFICATION.NEED_TO_SAVE);
+		window.open(coconutUrl, '_blank');
+	};
+
 	useEffect(handleChangeCurrentURL, [projectId]);
 	useEffect(handleUpdateDependency, [dependencyInstalling]);
 	useEffect(handleUpdateFile, [files]);
@@ -153,6 +162,12 @@ function BrowserV2({ ...props }) {
 					ref={addressReference}
 					defaultValue={addressInputURL}
 					onKeyUp={handleAddressInputKeyDown}
+				/>
+				<Styled.OpenIcon
+					src={open}
+					alt="Open New Tab"
+					title="Open New Tab"
+					onClick={handleClickOpenTab}
 				/>
 			</Styled.AddressContainer>
 			<Styled.BrowserV2

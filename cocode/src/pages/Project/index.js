@@ -29,7 +29,7 @@ import {
 	LOADING_PROJECT
 } from 'constants/notificationMessage';
 
-const DEFAULT_CLICKED_TAB_INDEX = 0;
+const DEFAULT_CLICKED_TAB_INDEX = 1;
 
 function Project() {
 	const { user } = useContext(UserContext);
@@ -121,7 +121,7 @@ function Project() {
 				forkCoconut
 			}}
 		>
-			<Header name={project.name}/>
+			<Header name={project.name} />
 			{isFetched && (
 				<Styled.Main>
 					<TabBar theme={TAB_BAR_THEME} />

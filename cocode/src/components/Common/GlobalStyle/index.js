@@ -81,6 +81,14 @@ const GlobalStyle = createGlobalStyle`
 	div, span{
 		user-select: none;
 	}
+	
+	.blink{
+  		animation: blink 1s step-start 0s infinite;
+	}
+	
+	@keyframes blink {
+  		50% { opacity: 0.0; }
+	}
 `;
 
 export default GlobalStyle;

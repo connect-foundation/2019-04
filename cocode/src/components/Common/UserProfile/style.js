@@ -20,8 +20,21 @@ const UserAvatar = styled.img`
         width: 3rem;
         height: 3rem;
         border-radius: 0.5rem;
-        cursor: pointer;
     }
 `;
 
-export { UserProfile, UserName, UserAvatar };
+const DownArrow = styled.img`
+	& {
+		width: 1rem;
+		height: 1rem;
+		margin: auto 0 auto 1rem;
+		cursor: pointer;
+		filter: invert(0.3);
+	}
+	
+	&:hover {
+		filter: invert(0);
+	}
+`;
+
+export { UserProfile, UserName, UserAvatar, DownArrow };

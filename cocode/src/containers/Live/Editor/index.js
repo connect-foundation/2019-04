@@ -5,6 +5,7 @@ import * as Styled from './style';
 import FileTabBar from 'components/Project/FileTabBar';
 import MonacoEditor from 'components/Project/MonacoEditor';
 
+import { colors } from 'constants/cursorColors';
 import { LiveContext, UserContext, ProjectContext } from 'contexts';
 import {
 	updateCodeActionCreator,
@@ -13,7 +14,7 @@ import {
 
 import useFetch from 'hooks/useFetch';
 
-import { CursorWidget } from 'utils/monacoWidget';
+import { LabelWidget, CaratWidget } from 'utils/monacoWidget';
 
 let timer;
 const DEBOUNCING_TIME = 1000;
@@ -28,11 +29,12 @@ const MAX_RANGE = {
 
 const userCursor = {};
 
-function Editor({ handleForkCoconut }) {
+function Editor({ isConnected }) {
 	const { user } = useContext(UserContext);
 	const { projectId } = useParams();
 	const { project, dispatchProject } = useContext(ProjectContext);
-	const { socket } = useContext(LiveContext);
+	const liveContext = useContext(LiveContext);
+	const { socket } = liveContext;
 	const [code, setCode] = useState(project.editingCode);
 	const [isEditorMounted, setIsEditorMounted] = useState(false);
 	const [_, setRequest] = useFetch({});
@@ -54,7 +56,7 @@ function Editor({ handleForkCoconut }) {
 		}, DEBOUNCING_TIME);
 	};
 
-	const handleChnageSelectedFileMonaco = (
+	const handleChangeSelectedFileMonaco = (
 		source,
 		text,
 		range = MAX_RANGE
@@ -80,7 +82,7 @@ function Editor({ handleForkCoconut }) {
 		selectedRef.current = selectedFileId;
 		setCode(project.editingCode);
 
-		handleChnageSelectedFileMonaco(
+		handleChangeSelectedFileMonaco(
 			'changeFile',
 			filesRef.current[selectedFileId].contents
 		);
@@ -132,18 +134,19 @@ function Editor({ handleForkCoconut }) {
 		if (!isEditorMounted) return;
 		selectedRef.current = selectedFileId;
 		isBusy.current = true;
-		handleChnageSelectedFileMonaco('initial', project.editingCode);
+		handleChangeSelectedFileMonaco('initial', project.editingCode);
 	}, [isEditorMounted]);
 
 	useEffect(() => {
 		//initialize
 		if (!socket) return;
 		if (!isEditorMounted) return;
+		if (!isConnected) return;
 		isBusy.current = false;
 		filesRef.current = JSON.parse(JSON.stringify(files));
 		socket.on('change', handleOnChangeCode);
 		socket.on('moveCursor', handleMoveCursor);
-	}, [socket, isEditorMounted]);
+	}, [socket, isEditorMounted, isConnected]);
 
 	const handleOnChangeCode = (socketId, fileId, op) => {
 		if (socket.id === socketId) {
@@ -161,10 +164,7 @@ function Editor({ handleForkCoconut }) {
 			const changedCode = `${str1}${op.text}${str2}`;
 			filesRef.current[fileId].contents = changedCode;
 			const updateCodeFromFileIdAction = updateCodeFromFileIdActionCreator(
-				{
-					fileId,
-					changedCode
-				}
+				{ fileId, changedCode }
 			);
 			dispatchProject(updateCodeFromFileIdAction);
 			return;
@@ -181,7 +181,7 @@ function Editor({ handleForkCoconut }) {
 			.getModel()
 			.getPositionAt(rangeOffset + rangeLength);
 
-		handleChnageSelectedFileMonaco(socketId, text, {
+		handleChangeSelectedFileMonaco(socketId, text, {
 			startLineNumber: startPosition.lineNumber,
 			startColumn: startPosition.column,
 			endLineNumber: endPosition.lineNumber,
@@ -190,18 +190,32 @@ function Editor({ handleForkCoconut }) {
 	};
 
 	const handleMoveCursor = (username, fileId, position) => {
+		const min = 0;
+		const max = colors.length - 1;
 		if (!userCursor[username]) {
-			const widget = new CursorWidget(
+			const color = colors[Math.floor(Math.random() * (min, max))];
+			const label = new LabelWidget(
 				editorRef.current,
 				username,
-				position
+				position,
+				color
 			);
-			userCursor[username] = widget;
-			editorRef.current.addContentWidget(widget);
+			const carat = new CaratWidget(
+				editorRef.current,
+				position,
+				color
+			);
+			userCursor[username] = { label, carat };
+			editorRef.current.addContentWidget(label);
+			editorRef.current.addContentWidget(carat);
 		}
-		if (selectedRef.current === fileId)
-			userCursor[username].showCursor(position);
-		else userCursor[username].hiddenCursor();
+		if (selectedRef.current === fileId) {
+			userCursor[username].label.showCursor(position);
+			userCursor[username].carat.showCursor(position);
+		} else {
+			userCursor[username].label.hiddenCursor();
+			userCursor[username].carat.hiddenCursor();
+		}
 	};
 
 	return (

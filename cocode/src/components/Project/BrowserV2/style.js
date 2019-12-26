@@ -15,31 +15,6 @@ const BrowserV2 = styled.iframe`
 	}
 `;
 
-const LoadingOverlay = styled.section`
-	& {
-		position: fixed;
-		top: 12vh;
-		left: 0;
-		z-index: 100;
-
-		height: 100vh;
-		width: 100vw;
-
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-
-		background-color: ${BROWSER_THEME.loadingOverlayBGColor};
-
-		p {
-			margin-top: 2rem;
-			font-size: 3rem;
-			font-weight: lighter;
-		}
-	}
-`;
-
 const AddressContainer = styled.div`
 	& {
 		display: flex;
@@ -70,11 +45,20 @@ const SearchIcon = styled.img`
 	}
 `;
 
+const OpenIcon = styled.img`
+	& {
+		height: 100%;
+		padding: 0.4rem 0;
+		background: ${BROWSER_THEME.addressInputBGColor};
+		cursor: pointer;
+	}
+`;
+
 export {
 	Frame,
 	BrowserV2,
-	LoadingOverlay,
 	AddressContainer,
 	AddressInput,
-	SearchIcon
+	SearchIcon,
+	OpenIcon
 };

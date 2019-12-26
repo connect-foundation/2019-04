@@ -16,8 +16,9 @@ const Item = styled.li`
 const Description = styled.div`
     & {
         display: flex;
-        margin-top: 0.3rem;
+        justify-content: flex-end;
         align-items: center;
+        margin-top: 0.5rem;
     }
 `;
 

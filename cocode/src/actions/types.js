@@ -9,6 +9,7 @@ const UPDATE_PROJECT_INFO = 'updateProjectInfo';
 const UPDATE_CODE = 'updateCode';
 const UPDATE_CODE_FROM_FILE_ID = 'updateCodeFromFileId';
 const FETCH_PROJECT = 'fetchProject';
+const UPDATE_FILES = 'updateFiles';
 const SELECT_FILE = 'selectFile';
 const CREATE_FILE = 'createFile';
 const UPDATE_FILE_NAME = 'updateFileName';
@@ -38,6 +39,7 @@ export {
 	UPDATE_CODE,
 	UPDATE_CODE_FROM_FILE_ID,
 	FETCH_PROJECT,
+	UPDATE_FILES,
 	SELECT_FILE,
 	UPDATE_FILE_NAME,
 	CREATE_FILE,

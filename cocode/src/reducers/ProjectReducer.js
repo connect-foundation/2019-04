@@ -1,6 +1,7 @@
 // 참고: https://github.com/dal-lab/frontend-tdd-examples/blob/master/6-todo-redux/src/reducers.js
 import {
 	UPDATE_PROJECT_INFO,
+	UPDATE_FILES,
 	UPDATE_CODE,
 	UPDATE_CODE_FROM_FILE_ID,
 	FETCH_PROJECT,
@@ -93,6 +94,13 @@ function getDependencyList(files, root) {
 		return { ...acc, [key]: { name: key, version: value } };
 	}, {});
 }
+
+const updateFiles = (state, { files }) => {
+	return {
+		...state,
+		files
+	};
+};
 
 // Update code
 const updateCode = (state, { changedCode }) => {
@@ -225,11 +233,15 @@ const deleteFile = (state, { deleteFileId }) => {
 		id => id !== deleteFileId
 	);
 
+	const updatedFiles = Object.entries(files).reduce((acc, [fileId, file]) => {
+		if (fileId === deleteFileId) return acc;
+		return { ...acc, [fileId]: file };
+	}, {});
+
 	return {
 		...state,
 		files: {
-			...state.files,
-			[deleteFileId]: undefined,
+			...updatedFiles,
 			[parentId]: {
 				...state.files[parentId],
 				child: updatedParentChilds
@@ -328,6 +340,7 @@ function ProjectReducer(state, { type, payload }) {
 	const reducers = {
 		[UPDATE_PROJECT_INFO]: updateProjectInfo,
 		[FETCH_PROJECT]: fetchProject,
+		[UPDATE_FILES]: updateFiles,
 		[UPDATE_CODE]: updateCode,
 		[UPDATE_CODE_FROM_FILE_ID]: updateCodeFromFileId,
 		[SELECT_FILE]: selectFile,

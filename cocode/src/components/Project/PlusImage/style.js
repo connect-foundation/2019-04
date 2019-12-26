@@ -5,7 +5,6 @@ const Image = styled.svg`
 	& {
         width: ${DEPENDENCY_TAB_THEME.dependencyTabIconSize};
         height: ${DEPENDENCY_TAB_THEME.dependencyTabIconSize};
-        margin-left: auto;
         margin-right: 0.5rem;
         fill: ${DEPENDENCY_TAB_THEME.dependencyTabIconColor}
 	}
