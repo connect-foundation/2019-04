@@ -1,14 +1,15 @@
 import * as babel from '@babel/core';
 import presetEnv from '@babel/preset-env';
 import presetReact from '@babel/preset-react';
+import pluginRegenerator from '@babel/plugin-transform-regenerator';
 import { pathStack } from './global';
 
 function transformCode(code) {
 	try {
 		const result = babel.transform(code, {
 			presets: [presetEnv, presetReact],
-			compact: true,
-			minified: true
+			plugins: [pluginRegenerator],
+			compact: true
 		});
 		return {
 			state: true,

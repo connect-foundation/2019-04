@@ -1,5 +1,6 @@
 const scriptCodeTemplate = (code, newPath, parentPath) => /*javascript*/ `
 exports['${newPath}'] = (() => {
+	if(window === undefined) return {};
 	window.pathStack = [];
 	pathStack.push('${parentPath}');
 
@@ -37,7 +38,11 @@ const executeCodeTemplate = code => /*javascript*/ `
 			'Cannot set property default of #<Object> which has only a getter',
 			'document is not defined'
 		];
+		const assignEmptyErrorType = "Module not found: 'path'";
+
 		const errorType = e.message;
+		if(errorType.startsWith(assignEmptyErrorType)) 
+			return Object.keys(exports).length ? exports : module.exports;
 		const isExistInIgnoreList = ignoreErrorList.some(ignoreError =>
 			errorType.startsWith(ignoreError)
 		);
